@@ -735,18 +735,110 @@ function htmlToArticleText(html) {
 }
 
 function cleanReaderArticleText(text) {
-  return normalizeArticleText(text)
+  return markdownToPlainText(text)
     .split(/\n+/)
     .map((line) => line.trim())
     .filter(
       (line) =>
         line &&
-        !/^(Title|URL Source|Published Time|Markdown Content|Warning|Images?|Links?|Buttons?)\s*:/i.test(
-          line
-        ) &&
-        !/^This page maybe not yet fully loaded/i.test(line)
+        !isReaderNoiseLine(line)
     )
     .join("\n");
+}
+
+function markdownToPlainText(text) {
+  return normalizeArticleText(text)
+    .replace(/!\[[^\]]*]\([^)]+\)/g, " ")
+    .replace(/\[([^\]]+)]\([^)]+\)/g, "$1")
+    .replace(/^#{1,6}\s*/gm, "")
+    .replace(/[*_`]+/g, "")
+    .replace(/\s+([，。；：！？、,.!?%％])/g, "$1")
+    .replace(/([（(])\s+/g, "$1")
+    .replace(/\s+([）)])/g, "$1")
+    .trim();
+}
+
+function isReaderNoiseLine(line) {
+  return (
+    /^(Title|URL Source|Published Time|Markdown Content|Warning|Images?|Links?|Buttons?)\s*:/i.test(line) ||
+    /^This page maybe not yet fully loaded/i.test(line) ||
+    /^Oops, something went wrong$/i.test(line) ||
+    /^Skip to /i.test(line) ||
+    /^Yahoo Finance$/i.test(line) ||
+    /^Tip: Try a valid symbol/i.test(line) ||
+    /^Trending Tickers$/i.test(line) ||
+    /^Trade Alcoa on Coinbase$/i.test(line) ||
+    /^Learn more$/i.test(line) ||
+    /^Playback speed$/i.test(line) ||
+    /^Quality$/i.test(line) ||
+    /^Auto$/i.test(line) ||
+    /^Back$/i.test(line) ||
+    /^(\d+(\.\d+)?x|1080p|720p|360p|240p|144p|\/)$/i.test(line) ||
+    /^[A-Z0-9^=-]{1,12}\s+[-+]?\d[\d,.]*\s*\([-+]?\d/.test(line) ||
+    /^\d+$/.test(line)
+  );
+}
+
+function titleFromReaderText(text) {
+  return normalizeArticleText(text).match(/^Title:\s*(.+)$/im)?.[1]?.trim() || "";
+}
+
+function cropReaderMarkdownToArticle(text, url) {
+  const normalized = normalizeArticleText(text);
+  const host = url.hostname.toLowerCase();
+  const title = titleFromReaderText(normalized);
+  let start = -1;
+  let end = normalized.length;
+
+  if (title) {
+    const escapedTitle = title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const heading = new RegExp(`\\n#{1,3}\\s*${escapedTitle}\\s*\\n`, "i");
+    const match = heading.exec(normalized.slice(300));
+    if (match) start = 300 + match.index;
+  }
+
+  if (host === "finance.yahoo.com") {
+    const yahooStarts = [
+      /\nInvestors in \*\*Alcoa Corporation\*\*/i,
+      /\nInvestors in Alcoa Corporation/i,
+      /\nClearly, options traders/i,
+      /\nWhat is Implied Volatility\?/i
+    ];
+    for (const pattern of yahooStarts) {
+      const match = pattern.exec(normalized);
+      if (match) {
+        start = match.index;
+        break;
+      }
+    }
+  }
+
+  if (start < 0 && host.includes("proactiveinvestors.com")) {
+    const proactiveStart = /\n\[[^\]]+]\([^)]+\)\s+has strengthened/i.exec(normalized);
+    if (proactiveStart) start = proactiveStart.index;
+  }
+
+  const cropped = start >= 0 ? normalized.slice(start) : normalized;
+  const endPatterns = [
+    /\nView comments/i,
+    /\nRelated Quotes/i,
+    /\nRecommended Stories/i,
+    /\nMost Read/i,
+    /\nAdvertisement/i,
+    /\nShare this article/i,
+    /\nWatch/i,
+    /\nSign in/i,
+    /\nWant the latest/i,
+    /\nThis article originally appeared/i
+  ];
+  for (const pattern of endPatterns) {
+    const match = pattern.exec(cropped);
+    if (match && match.index > 300) {
+      end = Math.min(end, match.index);
+    }
+  }
+
+  return cropped.slice(0, end);
 }
 
 function extractSmmArticleText(html) {
@@ -785,11 +877,13 @@ async function fetchArticleText(rawUrl) {
   if (directText.length >= 1200) return directText;
 
   try {
-    const readerText = cleanReaderArticleText(
-      await fetchText(`${JINA_READER_PREFIX}${url.toString()}`, {
+    const rawReaderText = await fetchText(`${JINA_READER_PREFIX}${url.toString()}`, {
         Accept: "text/plain, text/markdown, */*"
-      })
-    ).slice(0, ARTICLE_TEXT_MAX_CHARS);
+      });
+    const readerText = cleanReaderArticleText(cropReaderMarkdownToArticle(rawReaderText, url)).slice(
+      0,
+      ARTICLE_TEXT_MAX_CHARS
+    );
     return readerText.length > directText.length ? readerText : directText;
   } catch (error) {
     return directText;
@@ -822,11 +916,17 @@ function extractOpenAIText(payload) {
   return chunks.join("\n").trim();
 }
 
-function fallbackArticleSummary(payload, articleText = "") {
+async function fallbackArticleSummary(payload, articleText = "") {
   const title = payload.titleZh || payload.title || payload.originalTitle || "这条新闻";
   const description = payload.descriptionZh || payload.description || "";
-  const leadSummary = buildFallbackLeadSummary(payload, articleText, description);
-  const dataPoints = extractArticleDataPoints(payload, articleText);
+  const isAlcoa = isAlcoaArticlePayload(payload);
+  const leadSummary = isAlcoa
+    ? await translateAlcoaFallbackText(buildFallbackLeadSummary(payload, articleText, description))
+    : buildFallbackLeadSummary(payload, articleText, description);
+  const rawDataPoints = extractArticleDataPoints(payload, articleText);
+  const dataPoints = isAlcoa
+    ? await Promise.all(rawDataPoints.map((point) => translateAlcoaFallbackText(point)))
+    : rawDataPoints;
   return ensureDetailedSummary(
     [
       "文章总结：",
@@ -857,7 +957,7 @@ function articleSentences(text) {
     .map((line) => cleanChineseSentence(line).trim())
     .filter(Boolean)
     .filter((line) => line.length >= 14)
-    .filter((line) => !/扫码|登录|下载|声明|免责声明|仅供参考|访问TA|暂无简介/.test(line))
+    .filter((line) => !isArticleNoiseSentence(line))
     .map((line) => `${line}。`);
 }
 
@@ -868,7 +968,17 @@ function buildFallbackLeadSummary(payload, articleText = "", description = "") {
     return `${title}。当前只能读取到标题或摘要，完整正文需打开原文核对。`;
   }
 
-  const lead = sentences.slice(0, 5).join("");
+  const selected = sentences.slice(0, isAlcoaArticlePayload(payload) ? 4 : 5);
+  if (isAlcoaArticlePayload(payload)) {
+    for (const sentence of sentences) {
+      if (!/Zacks|Rank|Bottom|60 days|earnings|analysts|implied volatility|\$\d|Call|Strong Sell/i.test(sentence)) {
+        continue;
+      }
+      if (!selected.includes(sentence)) selected.push(sentence);
+      if (selected.length >= 8) break;
+    }
+  }
+  const lead = selected.join("");
   const context =
     "从交易角度看，这类信息需要拆成宏观风险、供应扰动、需求韧性、库存变化和资金情绪几条线索观察，不能只按标题判断方向。";
   return `${title}。${lead}${lead.length < 220 ? context : ""}`;
@@ -894,27 +1004,76 @@ function extractArticleDataPoints(payload, articleText = "") {
       .filter(Boolean)
       .join("\n")
   );
-  const candidates = sourceText
-    .split(/[\n。！？!?；;]+/)
-    .map((line) => cleanChineseSentence(line).trim())
+  const titleKeys = [
+    payload.titleZh,
+    payload.title,
+    payload.originalTitle
+  ]
     .filter(Boolean)
-    .filter((line) => line.length >= 12 && line.length <= 180)
-    .filter((line) =>
+    .map((item) => cleanChineseSentence(item).toLowerCase());
+  const candidates = splitTextToInfoLines(sourceText)
+    .map((line, index) => ({
+      text: cleanChineseSentence(line).trim(),
+      index
+    }))
+    .filter((item) => item.text)
+    .filter((item) => !titleKeys.includes(item.text.toLowerCase()))
+    .map((item) => ({
+      ...item,
+      score: articleDataPointScore(item.text)
+    }))
+    .filter(Boolean)
+    .filter((item) => item.text.length >= 12 && item.text.length <= 360)
+    .filter((item) => !isArticleNoiseSentence(item.text))
+    .filter((item) =>
       /(\d|%|％|美元|美金|元|吨|万吨|手|股|库存|产量|价格|涨|跌|成交|持仓|公司|项目|公告|政策|关税|期权|Alcoa|AA|沪铝|伦铝|LME|SHFE)/i.test(
-        line
+        item.text
       )
-    );
+    )
+    .sort((a, b) => b.score - a.score || a.index - b.index);
 
   const unique = [];
   const seen = new Set();
-  for (const line of candidates) {
+  for (const item of candidates) {
+    const line = item.text;
     const key = line.toLowerCase().replace(/\s+/g, " ").slice(0, 90);
     if (seen.has(key)) continue;
     seen.add(key);
     unique.push(line);
-    if (unique.length >= 8) break;
+    if (unique.length >= 10) break;
   }
   return unique;
+}
+
+function splitTextToInfoLines(text) {
+  return normalizeArticleText(text)
+    .replace(/(\d)\.(\d)/g, "$1__DOT__$2")
+    .replace(/\b(Sept|Sep|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Oct|Nov|Dec)\./gi, "$1__DOT__")
+    .split(/[\n。！？!?；;]+|\.\s+(?=[A-Z])/)
+    .map((line) => line.replace(/__DOT__/g, ".").trim())
+    .filter(Boolean);
+}
+
+function articleDataPointScore(line) {
+  let score = 0;
+  if (/[%％]|\$\d|美元|元\/吨|万吨|吨|个百分点|basis points?/i.test(line)) score += 5;
+  if (/\b(20\d{2}|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|days?|日|月|年)\b/i.test(line)) {
+    score += 3;
+  }
+  if (/Zacks|Rank|Strong Sell|Bottom|analysts?|earnings|estimate|implied volatility|options?|Call|Put/i.test(line)) {
+    score += 4;
+  }
+  if (/库存|产量|供应|需求|开工|进口|出口|社库|复产|关税|冲突|美联储|加息|期权|隐含波动率|评级/i.test(line)) {
+    score += 3;
+  }
+  if (!/\d/.test(line)) score -= 2;
+  return score;
+}
+
+function isArticleNoiseSentence(line) {
+  return /扫码|登录|下载|声明|免责声明|仅供参考|访问TA|暂无简介|Trade Alcoa|Coinbase|Trading disclosure|free report|Free Stock Analysis|download 7 Best|Click to get|Yahoo Finance|Zacks Equity Research|Image \d|Skip to|Oops, something went wrong/i.test(
+    String(line || "")
+  );
 }
 
 function ensureDetailedSummary(summary, payload, articleText = "") {
@@ -929,6 +1088,57 @@ function ensureDetailedSummary(summary, payload, articleText = "") {
     ? `\n\n补充信息：文章可读内容还包括：${sourceText}。整理这条新闻时，应重点留意其中出现的时间、价格、涨跌幅、公司名称、项目进展、库存、产量、政策或市场预期等信息，并把这些信息放到沪铝、美铝和铝产业链供需逻辑里判断。`
     : ` ${title}目前可读信息有限，详情页需要打开原文继续核对。后续应重点关注原文中的时间、价格、涨跌幅、产量、库存、公司经营、项目进展、政策表述、成交量和持仓变化等信息，再判断它对沪铝、美铝和产业链情绪的影响。`;
   return normalizeSummaryText(`${text} ${extra}`);
+}
+
+async function translateFallbackSummaryIfNeeded(payload, summary) {
+  const text = normalizeSummaryText(summary);
+  if (!isAlcoaArticlePayload(payload)) return text;
+  const englishLetters = (text.match(/[a-z]/gi) || []).length;
+  const chineseChars = (text.match(/[\u4e00-\u9fff]/g) || []).length;
+  if (englishLetters < 80 || chineseChars > englishLetters * 1.2) return text;
+
+  try {
+    const translated = await translateTextDynamic(text, "en", "fallback-summary");
+    return hasChineseText(translated) ? normalizeSummaryText(translated) : text;
+  } catch (error) {
+    return text;
+  }
+}
+
+async function translateAlcoaFallbackText(text) {
+  const cleanText = normalizeSummaryText(text);
+  const englishLetters = (cleanText.match(/[a-z]/gi) || []).length;
+  if (englishLetters < 8) return cleanText;
+
+  try {
+    const translated = await translateTextDynamic(cleanText, "en", "alcoa-fallback-line");
+    return polishAlcoaTranslation(hasChineseText(translated) ? translated : cleanText);
+  } catch (error) {
+    return cleanText;
+  }
+}
+
+function polishAlcoaTranslation(text) {
+  return normalizeSummaryText(text)
+    .replace(/美国铝业 \(Alcoa\)/g, "美铝")
+    .replace(/美国铝业公司/g, "美铝")
+    .replace(/强劲销售/g, "强烈卖出")
+    .replace(/巨大的隐含波动可能意味着贸易正在发展/g, "较高的隐含波动率可能意味着新的交易机会正在形成")
+    .replace(/巨大的隐含波动可能意味着交易正在发展/g, "较高的隐含波动率可能意味着新的交易机会正在形成")
+    .replace(/它捕捉到了衰退/g, "它试图赚取波动率回落带来的期权溢价")
+    .replace(/金属产品 - 分销/g, "金属产品-分销")
+    .replace(/美铝\s+在/g, "美铝在")
+    .replace(/AA股/g, "AA 股票")
+    .replace(/当前季度的 Zacks 共识估计从每股 ([\d.]+) 美元增至该时期的 ([\d.]+) 美元/g, (match, from, to) =>
+      Number(from) > Number(to)
+        ? `当前季度的 Zacks 一致预期从每股 ${from} 美元降至 ${to} 美元`
+        : match
+    )
+    .replace(/从每股 ([\d.]+) 美元增至(?:该时期的 )?([\d.]+) 美元/g, (match, from, to) =>
+      Number(from) > Number(to) ? `从每股 ${from} 美元降至 ${to} 美元` : match
+    )
+    .replace(/\bAA 股\b/g, "AA 股票")
+    .replace(/\s+([，。；：！？、])/g, "$1");
 }
 
 function isAlcoaArticlePayload(payload) {
@@ -1288,6 +1498,82 @@ function normalizeTranslation(text) {
     .replace(/([（《])\s+/g, "$1")
     .replace(/\s+([）》])/g, "$1")
     .trim();
+}
+
+function splitTextForTranslation(text, maxLength = 2600) {
+  const sentences = normalizeArticleText(text)
+    .replace(/([。！？!?])\s*/g, "$1\n")
+    .split(/\n+/)
+    .filter(Boolean);
+  const chunks = [];
+  let current = "";
+  for (const sentence of sentences) {
+    if (current && current.length + sentence.length + 1 > maxLength) {
+      chunks.push(current);
+      current = "";
+    }
+    if (sentence.length > maxLength) {
+      if (current) chunks.push(current);
+      for (let index = 0; index < sentence.length; index += maxLength) {
+        chunks.push(sentence.slice(index, index + maxLength));
+      }
+      continue;
+    }
+    current = current ? `${current}\n${sentence}` : sentence;
+  }
+  if (current) chunks.push(current);
+  return chunks;
+}
+
+async function translateTextDynamic(text, sourceLang = "auto", cacheNamespace = "text") {
+  const cleanText = normalizeArticleText(text);
+  if (!cleanText) return "";
+
+  const cacheKey = `${cacheNamespace}:${sourceLang}:${crypto
+    .createHash("sha1")
+    .update(cleanText)
+    .digest("hex")}`;
+  const cached = translationCache.get(cacheKey);
+  if (cached && cached.expiresAt > Date.now()) return cached.value;
+
+  const chunks = splitTextForTranslation(cleanText);
+  const translatedChunks = [];
+  for (const chunk of chunks) {
+    const url = new URL(TRANSLATE_ENDPOINT);
+    url.searchParams.set("client", "gtx");
+    url.searchParams.set("sl", sourceLang);
+    url.searchParams.set("tl", "zh-CN");
+    url.searchParams.set("dt", "t");
+    url.searchParams.set("q", chunk);
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+    try {
+      const response = await fetch(url, {
+        signal: controller.signal,
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 SHFE-Aluminum-PWA"
+        }
+      });
+      if (!response.ok) throw new Error(`Translate returned HTTP ${response.status}`);
+      const payload = await response.json();
+      translatedChunks.push(
+        normalizeTranslation(
+          Array.isArray(payload?.[0]) ? payload[0].map((part) => part?.[0] || "").join("") : ""
+        )
+      );
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
+
+  const translated = translatedChunks.join("\n").trim();
+  translationCache.set(cacheKey, {
+    value: translated,
+    expiresAt: Date.now() + TRANSLATION_CACHE_TTL_MS
+  });
+  return translated;
 }
 
 async function translateAlcoaTitleDynamic(title) {
@@ -1948,7 +2234,7 @@ async function handleArticleSummary(req, res) {
     } catch (error) {
       usedAi = false;
       warning = error.message;
-      summary = fallbackArticleSummary(payload, articleText);
+      summary = await fallbackArticleSummary(payload, articleText);
     }
 
     if (needsTranslation) {
