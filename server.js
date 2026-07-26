@@ -26,6 +26,7 @@ const TRANSLATE_ENDPOINT = "https://translate.googleapis.com/translate_a/single"
 const TRANSLATION_CACHE_TTL_MS = 12 * 60 * 60 * 1000;
 const OPENAI_RESPONSES_ENDPOINT = "https://api.openai.com/v1/responses";
 const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-5.5";
+const ARTICLE_SUMMARY_PROMPT_VERSION = "paragraph-v1";
 const ARTICLE_SUMMARY_CACHE_TTL_MS = 6 * 60 * 60 * 1000;
 const ARTICLE_TEXT_MAX_CHARS = 9000;
 const REQUEST_BODY_MAX_BYTES = 512 * 1024;
@@ -768,14 +769,23 @@ function extractOpenAIText(payload) {
 function fallbackArticleSummary(payload) {
   const title = payload.titleZh || payload.title || payload.originalTitle || "这条新闻";
   const description = payload.descriptionZh || payload.description || "";
-  const basis = description ? `摘要依据：${description}` : "摘要依据：当前只能读取到标题，完整正文需打开原文查看。";
-  return [
-    `一句话总结：${title}`,
-    "",
-    basis,
-    "",
-    "市场关注：请结合原文、沪铝盘面、美元指数、库存和现货升贴水进一步确认。"
-  ].join("\n");
+  const basis = description
+    ? `${title}。${description}`
+    : `${title}。当前只能读取到标题，完整正文需打开原文查看。`;
+  return normalizeSummaryParagraph(
+    `${basis} 这条信息需要结合沪铝盘面、美元指数、库存变化和现货升贴水一起观察，重点判断其对铝价情绪、供需预期和美铝相关资产的影响。`
+  );
+}
+
+function normalizeSummaryParagraph(value) {
+  const text = normalizeArticleText(value)
+    .replace(/^(一句话总结|摘要|总结|中文总结)\s*[:：]\s*/i, "")
+    .replace(/\n+/g, " ")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+
+  if (text.length <= 300) return text;
+  return `${text.slice(0, 299).replace(/[，、；：:,.!?！？\s]+$/g, "")}。`;
 }
 
 async function summarizeArticleWithOpenAI(payload, articleText) {
@@ -796,7 +806,9 @@ async function summarizeArticleWithOpenAI(payload, articleText) {
     "1. 不要编造正文没有的信息。",
     "2. 用中文输出，适合期货交易者快速阅读。",
     "3. 若正文不足，就明确说明基于标题/摘要判断。",
-    "4. 输出格式固定为：一句话总结、核心要点、对沪铝/美铝的可能影响、需要继续跟踪。",
+    "4. 只输出一段自然流畅的中文摘要，长度约 50-300 字。",
+    "5. 不要使用小标题、编号、项目符号或“ 一句话总结 ”这类标签。",
+    "6. 这一段里可以自然包含新闻要点、对沪铝/美铝的潜在影响，以及后续需要关注的因素。",
     "",
     `中文标题：${title}`,
     originalTitle ? `原标题：${originalTitle}` : "",
@@ -840,7 +852,7 @@ async function summarizeArticleWithOpenAI(payload, articleText) {
 
   const summary = extractOpenAIText(result);
   if (!summary) throw new Error("OpenAI API 未返回总结文本");
-  return summary;
+  return normalizeSummaryParagraph(summary);
 }
 
 function cookieFromSetCookie(headers, name) {
@@ -1696,7 +1708,7 @@ async function handleArticleSummary(req, res) {
       return;
     }
 
-    const cacheKey = `${OPENAI_MODEL}:${originalUrl}:${payload.title || ""}:${payload.description || ""}`;
+    const cacheKey = `${ARTICLE_SUMMARY_PROMPT_VERSION}:${OPENAI_MODEL}:${originalUrl}:${payload.title || ""}:${payload.description || ""}`;
     const cached = articleSummaryCache.get(cacheKey);
     if (cached && cached.expiresAt > Date.now()) {
       sendJson(res, 200, cached.value);

@@ -42,13 +42,10 @@ function openOriginal(event) {
 
 function localFallbackSummary() {
   const basis = descriptionZh || description || titleZh || title;
-  return [
-    `一句话总结：${title}`,
-    "",
-    basis ? `可读摘要：${basis}` : "当前只能读取到标题，完整内容请打开原文查看。",
-    "",
-    "说明：ChatGPT 总结暂时不可用时，会先显示这段本地兜底摘要。"
-  ].join("\n");
+  const text = basis
+    ? `${title}。${basis} 当前 ChatGPT 总结暂时不可用，页面先根据标题和可读摘要给出这段简要说明，完整信息请打开原文核对。`
+    : `${title}。当前只能读取到标题，完整内容请打开原文查看。`;
+  return text.slice(0, 300);
 }
 
 async function loadAiSummary(targetUrl) {

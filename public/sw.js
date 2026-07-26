@@ -1,5 +1,5 @@
-const STATIC_CACHE = "shfe-futures-static-v27";
-const DATA_CACHE = "shfe-futures-data-v27";
+const STATIC_CACHE = "shfe-futures-static-v28";
+const DATA_CACHE = "shfe-futures-data-v28";
 const STATIC_ASSETS = [
   "/",
   "/index.html",
