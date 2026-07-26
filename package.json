@@ -1,0 +1,14 @@
+{
+  "name": "shfe-aluminum-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Installable PWA for SHFE futures quotes.",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "icons": "powershell -ExecutionPolicy Bypass -File tools/make-icons.ps1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

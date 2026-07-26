@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="沪铝行情图标">
+  <defs>
+    <linearGradient id="bg" x1="72" x2="440" y1="58" y2="454" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0b7f8f" />
+      <stop offset="1" stop-color="#697782" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="#f6f8f9" />
+  <rect x="56" y="56" width="400" height="400" rx="72" fill="url(#bg)" />
+  <path d="M128 332h256" stroke="#ffffff" stroke-width="30" stroke-linecap="round" opacity="0.28" />
+  <path d="M144 300l54-94 44 58 44-78 82 126" fill="none" stroke="#ffffff" stroke-width="28" stroke-linecap="round" stroke-linejoin="round" />
+  <text x="256" y="382" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="96" font-weight="800" fill="#ffffff">AL</text>
+</svg>

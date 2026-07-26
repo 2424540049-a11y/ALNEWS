@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#1f1f1f" />
+    <title>新闻详情</title>
+    <link rel="stylesheet" href="/news-reader.css?v=3" />
+  </head>
+  <body>
+    <header class="reader-topbar">
+      <button id="backButton" class="back-button" type="button" aria-label="返回">‹</button>
+      <div class="reader-heading">
+        <h1 id="readerTitle">新闻详情</h1>
+        <p id="readerMeta">--</p>
+      </div>
+      <a id="originLink" class="origin-link" href="/" target="_blank" rel="noopener noreferrer">原文</a>
+    </header>
+
+    <main class="reader-main">
+      <section class="source-strip">
+        <span>来源</span>
+        <p id="readerUrl">--</p>
+      </section>
+      <section id="articleSummary" class="article-summary" hidden>
+        <h2>ChatGPT 中文总结</h2>
+        <p id="summaryText" class="summary-body"></p>
+        <p id="summaryZhText" class="summary-zh"></p>
+        <a id="summaryOriginalLink" class="summary-original-link" href="/" target="_blank" rel="noopener noreferrer">打开原文链接</a>
+        <p id="embedNotice" class="embed-notice" hidden>完整报道请点击原文链接查看。</p>
+      </section>
+      <iframe id="articleFrame" title="新闻原文" referrerpolicy="no-referrer" hidden></iframe>
+      <p id="readerStatus" class="reader-status" hidden></p>
+    </main>
+
+    <script src="/news-reader.js?v=3" type="module"></script>
+  </body>
+</html>
