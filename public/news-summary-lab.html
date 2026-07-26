@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#1f1f1f" />
+    <title>第一条快讯总结样板</title>
+    <link rel="stylesheet" href="/news-summary-lab.css?v=1" />
+  </head>
+  <body>
+    <header class="lab-topbar">
+      <a class="back-link" href="/">‹</a>
+      <div>
+        <h1>第一条快讯总结样板</h1>
+        <p id="labStatus">准备读取快讯...</p>
+      </div>
+      <button id="reloadButton" type="button">重刷</button>
+    </header>
+
+    <main class="lab-main">
+      <section class="article-card">
+        <p class="eyebrow" id="articleSection">--</p>
+        <h2 id="articleTitle">正在加载...</h2>
+        <p id="articleMeta" class="article-meta">--</p>
+        <a id="articleLink" class="article-link" href="/" target="_blank" rel="noopener noreferrer">打开原文</a>
+      </section>
+
+      <section class="summary-card">
+        <div class="card-heading">
+          <h2>当前总结样式</h2>
+          <span id="summaryInfo">--</span>
+        </div>
+        <pre id="summaryText" class="summary-text">等待生成...</pre>
+      </section>
+
+      <section id="translationCard" class="summary-card" hidden>
+        <div class="card-heading">
+          <h2>美铝全文翻译</h2>
+          <span id="translationInfo">--</span>
+        </div>
+        <pre id="translationText" class="summary-text">等待翻译...</pre>
+      </section>
+    </main>
+
+    <script src="/news-summary-lab.js?v=2" type="module"></script>
+  </body>
+</html>

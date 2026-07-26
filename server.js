@@ -27,11 +27,11 @@ const JINA_READER_PREFIX = "https://r.jina.ai/http://r.jina.ai/http://";
 const TRANSLATION_CACHE_TTL_MS = 12 * 60 * 60 * 1000;
 const OPENAI_RESPONSES_ENDPOINT = "https://api.openai.com/v1/responses";
 const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-5.5";
-const ARTICLE_SUMMARY_PROMPT_VERSION = "detailed-v2";
+const ARTICLE_SUMMARY_PROMPT_VERSION = "briefing-v3";
 const ARTICLE_SUMMARY_CACHE_TTL_MS = 6 * 60 * 60 * 1000;
-const ARTICLE_TEXT_MAX_CHARS = 20000;
-const ARTICLE_TRANSLATION_TEXT_MAX_CHARS = 18000;
-const OPENAI_SUMMARY_MAX_OUTPUT_TOKENS = Number(process.env.OPENAI_SUMMARY_MAX_OUTPUT_TOKENS || 2200);
+const ARTICLE_TEXT_MAX_CHARS = 30000;
+const ARTICLE_TRANSLATION_TEXT_MAX_CHARS = 22000;
+const OPENAI_SUMMARY_MAX_OUTPUT_TOKENS = Number(process.env.OPENAI_SUMMARY_MAX_OUTPUT_TOKENS || 3200);
 const OPENAI_TRANSLATION_MAX_OUTPUT_TOKENS = Number(
   process.env.OPENAI_TRANSLATION_MAX_OUTPUT_TOKENS || 9000
 );
@@ -628,6 +628,11 @@ function decodeHtml(value) {
     .replace(/&gt;/g, ">")
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
+    .replace(/&ldquo;|&#8220;/g, "“")
+    .replace(/&rdquo;|&#8221;/g, "”")
+    .replace(/&lsquo;|&#8216;/g, "‘")
+    .replace(/&rsquo;|&#8217;/g, "’")
+    .replace(/&nbsp;/g, " ")
     .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
     .replace(/&#x([0-9a-f]+);/gi, (_, code) => String.fromCharCode(parseInt(code, 16)));
 }
@@ -729,6 +734,35 @@ function htmlToArticleText(html) {
   );
 }
 
+function cleanReaderArticleText(text) {
+  return normalizeArticleText(text)
+    .split(/\n+/)
+    .map((line) => line.trim())
+    .filter(
+      (line) =>
+        line &&
+        !/^(Title|URL Source|Published Time|Markdown Content|Warning|Images?|Links?|Buttons?)\s*:/i.test(
+          line
+        ) &&
+        !/^This page maybe not yet fully loaded/i.test(line)
+    )
+    .join("\n");
+}
+
+function extractSmmArticleText(html) {
+  const blocks = [];
+  const matcher =
+    /<div\s+class=["'][^"']*newsDetailArticleContent[^"']*["'][^>]*>([\s\S]*?)<\/div>/gi;
+  let match;
+  while ((match = matcher.exec(String(html || ""))) !== null) {
+    const text = htmlToArticleText(match[1]);
+    if (text.length > 80 && !/扫码|会议|广告|下载/.test(text.slice(0, 80))) {
+      blocks.push(text);
+    }
+  }
+  return blocks[0] || "";
+}
+
 async function fetchArticleText(rawUrl) {
   if (!isAllowedNewsUrl(rawUrl)) return "";
   const url = new URL(rawUrl);
@@ -741,6 +775,8 @@ async function fetchArticleText(rawUrl) {
           Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
           Referer: `${url.protocol}//${url.hostname}/`
         });
+    const smmText = url.hostname === "news.smm.cn" ? extractSmmArticleText(html) : "";
+    if (smmText) return smmText.slice(0, ARTICLE_TEXT_MAX_CHARS);
     directText = htmlToArticleText(html).slice(0, ARTICLE_TEXT_MAX_CHARS);
   } catch (error) {
     directText = "";
@@ -749,7 +785,7 @@ async function fetchArticleText(rawUrl) {
   if (directText.length >= 1200) return directText;
 
   try {
-    const readerText = normalizeArticleText(
+    const readerText = cleanReaderArticleText(
       await fetchText(`${JINA_READER_PREFIX}${url.toString()}`, {
         Accept: "text/plain, text/markdown, */*"
       })
@@ -789,29 +825,96 @@ function extractOpenAIText(payload) {
 function fallbackArticleSummary(payload, articleText = "") {
   const title = payload.titleZh || payload.title || payload.originalTitle || "这条新闻";
   const description = payload.descriptionZh || payload.description || "";
-  const readableText = normalizeArticleText(articleText).slice(0, 520);
-  const basis = description
-    ? `${title}。${description}`
-    : `${title}。当前只能读取到标题，完整正文需打开原文查看。`;
+  const leadSummary = buildFallbackLeadSummary(payload, articleText, description);
+  const dataPoints = extractArticleDataPoints(payload, articleText);
   return ensureDetailedSummary(
     [
-      basis,
-      readableText ? `可读正文信息显示：${readableText}` : "",
-      "这条信息需要结合沪铝盘面、伦铝或美铝相关资产表现、美元指数、库存变化、现货升贴水和政策口径一起观察。重点不是只看标题方向，而是把文章中提到的时间、价格、涨跌幅、产量、库存、订单、政策或公司经营数据放回铝价供需逻辑里判断。如果文章没有给出明确数字，应把它视为情绪或事件线索，后续继续跟踪盘面成交量、持仓变化和官方公告。"
+      "文章总结：",
+      leadSummary,
+      "",
+      "主要数据与信息点：",
+      dataPoints.length
+        ? dataPoints.map((point) => `- ${point}`).join("\n")
+        : "- 当前可读内容没有提取到明确数字，需打开原文核对价格、涨跌幅、库存、产量、公司经营或政策表述。",
+      "",
+      "交易解读：",
+      "这条信息需要结合沪铝盘面、伦铝或美铝相关资产表现、美元指数、库存变化、现货升贴水和政策口径一起观察。重点不是只看标题方向，而是把文章中提到的时间、价格、涨跌幅、产量、库存、订单、政策或公司经营数据放回铝价供需逻辑里判断。",
+      "",
+      "后续关注：",
+      "- 继续跟踪盘面成交量、持仓变化、库存数据、现货升贴水、美元走势和官方公告。"
     ]
       .filter(Boolean)
-      .join(" "),
+      .join("\n"),
     payload,
     articleText
   );
 }
 
+function articleSentences(text) {
+  return normalizeArticleText(text)
+    .replace(/([。！？!?])\s*/g, "$1\n")
+    .split(/\n+/)
+    .map((line) => cleanChineseSentence(line).trim())
+    .filter(Boolean)
+    .filter((line) => line.length >= 14)
+    .filter((line) => !/扫码|登录|下载|声明|免责声明|仅供参考|访问TA|暂无简介/.test(line))
+    .map((line) => `${line}。`);
+}
+
+function buildFallbackLeadSummary(payload, articleText = "", description = "") {
+  const title = payload.titleZh || payload.title || payload.originalTitle || "这条新闻";
+  const sentences = articleSentences(articleText || description);
+  if (!sentences.length) {
+    return `${title}。当前只能读取到标题或摘要，完整正文需打开原文核对。`;
+  }
+
+  const lead = sentences.slice(0, 5).join("");
+  const context =
+    "从交易角度看，这类信息需要拆成宏观风险、供应扰动、需求韧性、库存变化和资金情绪几条线索观察，不能只按标题判断方向。";
+  return `${title}。${lead}${lead.length < 220 ? context : ""}`;
+}
+
 function normalizeSummaryText(value) {
   return normalizeArticleText(value)
     .replace(/^(一句话总结|摘要|总结|中文总结)\s*[:：]\s*/i, "")
-    .replace(/\n+/g, " ")
     .replace(/\s{2,}/g, " ")
     .trim();
+}
+
+function extractArticleDataPoints(payload, articleText = "") {
+  const sourceText = normalizeArticleText(
+    [
+      payload.titleZh,
+      payload.title,
+      payload.originalTitle,
+      payload.descriptionZh,
+      payload.description,
+      articleText
+    ]
+      .filter(Boolean)
+      .join("\n")
+  );
+  const candidates = sourceText
+    .split(/[\n。！？!?；;]+/)
+    .map((line) => cleanChineseSentence(line).trim())
+    .filter(Boolean)
+    .filter((line) => line.length >= 12 && line.length <= 180)
+    .filter((line) =>
+      /(\d|%|％|美元|美金|元|吨|万吨|手|股|库存|产量|价格|涨|跌|成交|持仓|公司|项目|公告|政策|关税|期权|Alcoa|AA|沪铝|伦铝|LME|SHFE)/i.test(
+        line
+      )
+    );
+
+  const unique = [];
+  const seen = new Set();
+  for (const line of candidates) {
+    const key = line.toLowerCase().replace(/\s+/g, " ").slice(0, 90);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    unique.push(line);
+    if (unique.length >= 8) break;
+  }
+  return unique;
 }
 
 function ensureDetailedSummary(summary, payload, articleText = "") {
@@ -823,7 +926,7 @@ function ensureDetailedSummary(summary, payload, articleText = "") {
     articleText || [payload.descriptionZh, payload.description].filter(Boolean).join("\n")
   ).slice(0, 700);
   const extra = sourceText
-    ? ` 文章可读内容还包括：${sourceText}。整理这条新闻时，应重点留意其中出现的时间、价格、涨跌幅、公司名称、项目进展、库存、产量、政策或市场预期等信息，并把这些信息放到沪铝、美铝和铝产业链供需逻辑里判断。`
+    ? `\n\n补充信息：文章可读内容还包括：${sourceText}。整理这条新闻时，应重点留意其中出现的时间、价格、涨跌幅、公司名称、项目进展、库存、产量、政策或市场预期等信息，并把这些信息放到沪铝、美铝和铝产业链供需逻辑里判断。`
     : ` ${title}目前可读信息有限，详情页需要打开原文继续核对。后续应重点关注原文中的时间、价格、涨跌幅、产量、库存、公司经营、项目进展、政策表述、成交量和持仓变化等信息，再判断它对沪铝、美铝和产业链情绪的影响。`;
   return normalizeSummaryText(`${text} ${extra}`);
 }
@@ -862,15 +965,17 @@ async function summarizeArticleWithOpenAI(payload, articleText) {
   const context = articleText || [descriptionZh, description].filter(Boolean).join("\n");
 
   const prompt = [
-    "请用中文总结下面这条有色金属/铝行业相关新闻。",
+    "请把下面这条有色金属/铝行业相关新闻整理成一份给期货交易者看的中文精读。",
     "要求：",
     "1. 不要编造正文没有的信息。",
-    "2. 用中文输出，适合期货交易者快速阅读。",
+    "2. 不是写短摘要，而是要像研究员读完文章后做信息整理，适合期货交易者快速判断。",
     "3. 若正文不足，就明确说明基于标题/摘要判断。",
-    "4. 输出一到两段自然流畅的中文摘要，总长度必须不少于 200 个中文字符，信息多时可以更长。",
-    "5. 摘要里必须尽量覆盖文章中的主要数据和信息点，例如时间、价格、涨跌幅、产量、库存、成交/持仓、公司名称、项目、政策、财报数据、订单或市场预期等；没有出现的数据不要编造。",
-    "6. 不要使用小标题、编号、项目符号或“ 一句话总结 ”这类标签。",
-    "7. 要自然说明这条新闻可能怎样影响沪铝、美铝或铝产业链情绪，并点出后续最该跟踪的变量。",
+    "4. 必须按下面四个栏目输出，栏目名必须保留：文章总结、主要数据与信息点、交易解读、后续关注。",
+    "5. 文章总结必须不少于 200 个中文字符，可以写 300-800 字；先讲清楚文章发生了什么，再讲为什么重要。",
+    "6. 主要数据与信息点必须列出原文出现的重要数字、价格、百分比、日期、公司名、项目名、地点、产量、库存、成交/持仓、政策或市场预期；如果原文没有明确数据，要写“原文未披露明确数字”。",
+    "7. 交易解读要说明这条新闻可能怎样影响沪铝、美铝或铝产业链情绪，不能泛泛而谈，要围绕供给、需求、库存、成本、宏观风险或资金情绪。",
+    "8. 后续关注列出 2-5 个需要继续跟踪的变量。",
+    "9. 不要输出免责声明，不要说自己是 AI，不要添加原文没有的数据。",
     "",
     `中文标题：${title}`,
     originalTitle ? `原标题：${originalTitle}` : "",
@@ -1824,7 +1929,7 @@ async function handleArticleSummary(req, res) {
 
     const cacheKey = `${ARTICLE_SUMMARY_PROMPT_VERSION}:${OPENAI_MODEL}:${originalUrl}:${payload.title || ""}:${payload.description || ""}`;
     const cached = articleSummaryCache.get(cacheKey);
-    if (cached && cached.expiresAt > Date.now()) {
+    if (!payload.noCache && cached && cached.expiresAt > Date.now()) {
       sendJson(res, 200, cached.value);
       return;
     }
@@ -1872,10 +1977,12 @@ async function handleArticleSummary(req, res) {
       fetchedAt: new Date().toISOString()
     };
 
-    articleSummaryCache.set(cacheKey, {
-      value: result,
-      expiresAt: Date.now() + ARTICLE_SUMMARY_CACHE_TTL_MS
-    });
+    if (!payload.noCache) {
+      articleSummaryCache.set(cacheKey, {
+        value: result,
+        expiresAt: Date.now() + ARTICLE_SUMMARY_CACHE_TTL_MS
+      });
+    }
     sendJson(res, 200, result);
   } catch (error) {
     sendJson(res, 500, {

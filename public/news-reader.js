@@ -47,7 +47,7 @@ function openOriginal(event) {
 function localFallbackSummary() {
   const basis = descriptionZh || description || titleZh || title;
   const text = basis
-    ? `${title}。${basis} 当前 ChatGPT 总结暂时不可用，页面先根据标题和可读摘要给出临时说明。阅读这条新闻时，建议重点核对文章里的时间、价格、涨跌幅、产量、库存、公司经营、项目进展和政策表述等具体信息，并结合沪铝盘面、美元指数、伦铝或美铝表现、成交量和持仓变化判断它对铝价情绪与供需预期的影响。完整信息请打开原文核对。`
+    ? `${title}。${basis} 当前先根据标题和可读摘要给出临时说明。阅读这条新闻时，建议重点核对文章里的时间、价格、涨跌幅、产量、库存、公司经营、项目进展和政策表述等具体信息，并结合沪铝盘面、美元指数、伦铝或美铝表现、成交量和持仓变化判断它对铝价情绪与供需预期的影响。完整信息请打开原文核对。`
     : `${title}。当前只能读取到标题，完整内容请打开原文查看。阅读时建议重点寻找文章里的关键数字、公司名称、发布时间、价格或涨跌幅信息，再结合沪铝盘面和产业链基本面判断影响。`;
   return text;
 }
@@ -65,7 +65,7 @@ function isAlcoaRequest() {
 
 async function loadAiSummary(targetUrl) {
   els.summary.hidden = false;
-  els.summaryText.textContent = "正在调用 ChatGPT 生成中文总结...";
+  els.summaryText.textContent = "正在生成中文总结...";
   els.summaryMeta.textContent = "";
   els.summaryMeta.hidden = true;
   els.translation.hidden = true;
@@ -98,34 +98,24 @@ async function loadAiSummary(targetUrl) {
 
     els.summaryText.textContent = payload.summary || localFallbackSummary();
     els.summaryMeta.textContent = payload.usedAi
-      ? `由 ${payload.model || "ChatGPT"} 生成 · ${payload.articleChars || 0} 字符正文`
-      : `ChatGPT 总结暂不可用：${payload.warning || "请检查服务端配置"}。已显示本地兜底摘要。`;
+      ? `已整理 · ${payload.articleChars || 0} 字符正文`
+      : `临时摘要 · ${payload.articleChars || 0} 字符正文`;
     els.summaryMeta.hidden = false;
 
     if (payload.translationZh) {
       els.translation.hidden = false;
       els.translationText.textContent = payload.translationZh;
       els.translationMeta.textContent = payload.usedTranslationAi
-        ? `由 ${payload.model || "ChatGPT"} 翻译 · ${payload.articleChars || 0} 字符正文`
+        ? `已翻译 · ${payload.articleChars || 0} 字符正文`
         : "已显示可用中文译文";
-    } else if (payload.needsTranslation || isAlcoaRequest()) {
-      els.translation.hidden = false;
-      els.translationText.textContent = "全文翻译暂不可用。请确认 Render 已配置 OPENAI_API_KEY，或稍后重新打开这条新闻。";
-      els.translationMeta.textContent = payload.translationWarning
-        ? `翻译失败：${payload.translationWarning}`
-        : "未返回译文";
     }
 
     els.embedNotice.hidden = false;
   } catch (error) {
     els.summaryText.textContent = localFallbackSummary();
-    els.summaryMeta.textContent = `ChatGPT 总结暂不可用：${error.message}`;
+    els.summaryMeta.textContent = `临时摘要 · ${error.message}`;
     els.summaryMeta.hidden = false;
-    if (isAlcoaRequest()) {
-      els.translation.hidden = false;
-      els.translationText.textContent = "全文翻译暂不可用。请确认服务端可以访问 OpenAI API 后重试。";
-      els.translationMeta.textContent = `翻译失败：${error.message}`;
-    }
+    els.translation.hidden = true;
     els.embedNotice.hidden = false;
   }
 }

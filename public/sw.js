@@ -1,5 +1,5 @@
-const STATIC_CACHE = "shfe-futures-static-v29";
-const DATA_CACHE = "shfe-futures-data-v29";
+const STATIC_CACHE = "shfe-futures-static-v31";
+const DATA_CACHE = "shfe-futures-data-v31";
 const STATIC_ASSETS = [
   "/",
   "/index.html",
@@ -8,6 +8,9 @@ const STATIC_ASSETS = [
   "/news-reader.html",
   "/news-reader.css",
   "/news-reader.js",
+  "/news-summary-lab.html",
+  "/news-summary-lab.css",
+  "/news-summary-lab.js",
   "/manifest.webmanifest",
   "/icons/icon.svg",
   "/icons/icon-192.png",
