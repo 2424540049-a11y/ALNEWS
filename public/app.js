@@ -478,6 +478,7 @@ function newsReaderHref(item) {
   if (item.description) params.set("description", item.description);
   if (item.descriptionZh) params.set("descriptionZh", item.descriptionZh);
   if (item.titleZh) params.set("titleZh", item.titleZh);
+  if (item.section) params.set("section", item.section);
   return `/news-reader.html?${params.toString()}`;
 }
 
@@ -508,7 +509,8 @@ function renderNewsSection(section) {
             time: item.time,
             description: item.description,
             descriptionZh: item.descriptionZh,
-            titleZh: item.titleZh
+            titleZh: item.titleZh,
+            section: section.id
           });
           return `
             <article>

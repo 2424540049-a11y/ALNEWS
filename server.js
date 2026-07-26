@@ -23,12 +23,18 @@ const KLINE_MIN_DATE = "2005-01-01";
 const KLINE_MAX_BARS = 30000;
 const NEWS_CACHE_TTL_MS = 5 * 60 * 1000;
 const TRANSLATE_ENDPOINT = "https://translate.googleapis.com/translate_a/single";
+const JINA_READER_PREFIX = "https://r.jina.ai/http://r.jina.ai/http://";
 const TRANSLATION_CACHE_TTL_MS = 12 * 60 * 60 * 1000;
 const OPENAI_RESPONSES_ENDPOINT = "https://api.openai.com/v1/responses";
 const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-5.5";
-const ARTICLE_SUMMARY_PROMPT_VERSION = "paragraph-v1";
+const ARTICLE_SUMMARY_PROMPT_VERSION = "detailed-v2";
 const ARTICLE_SUMMARY_CACHE_TTL_MS = 6 * 60 * 60 * 1000;
-const ARTICLE_TEXT_MAX_CHARS = 9000;
+const ARTICLE_TEXT_MAX_CHARS = 20000;
+const ARTICLE_TRANSLATION_TEXT_MAX_CHARS = 18000;
+const OPENAI_SUMMARY_MAX_OUTPUT_TOKENS = Number(process.env.OPENAI_SUMMARY_MAX_OUTPUT_TOKENS || 2200);
+const OPENAI_TRANSLATION_MAX_OUTPUT_TOKENS = Number(
+  process.env.OPENAI_TRANSLATION_MAX_OUTPUT_TOKENS || 9000
+);
 const REQUEST_BODY_MAX_BYTES = 512 * 1024;
 const ALLOWED_NEWS_HOSTS = new Set([
   "news.smm.cn",
@@ -726,6 +732,7 @@ function htmlToArticleText(html) {
 async function fetchArticleText(rawUrl) {
   if (!isAllowedNewsUrl(rawUrl)) return "";
   const url = new URL(rawUrl);
+  let directText = "";
 
   try {
     const html = url.hostname.endsWith("shfe.com.cn")
@@ -734,9 +741,22 @@ async function fetchArticleText(rawUrl) {
           Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
           Referer: `${url.protocol}//${url.hostname}/`
         });
-    return htmlToArticleText(html).slice(0, ARTICLE_TEXT_MAX_CHARS);
+    directText = htmlToArticleText(html).slice(0, ARTICLE_TEXT_MAX_CHARS);
   } catch (error) {
-    return "";
+    directText = "";
+  }
+
+  if (directText.length >= 1200) return directText;
+
+  try {
+    const readerText = normalizeArticleText(
+      await fetchText(`${JINA_READER_PREFIX}${url.toString()}`, {
+        Accept: "text/plain, text/markdown, */*"
+      })
+    ).slice(0, ARTICLE_TEXT_MAX_CHARS);
+    return readerText.length > directText.length ? readerText : directText;
+  } catch (error) {
+    return directText;
   }
 }
 
@@ -766,26 +786,67 @@ function extractOpenAIText(payload) {
   return chunks.join("\n").trim();
 }
 
-function fallbackArticleSummary(payload) {
+function fallbackArticleSummary(payload, articleText = "") {
   const title = payload.titleZh || payload.title || payload.originalTitle || "这条新闻";
   const description = payload.descriptionZh || payload.description || "";
+  const readableText = normalizeArticleText(articleText).slice(0, 520);
   const basis = description
     ? `${title}。${description}`
     : `${title}。当前只能读取到标题，完整正文需打开原文查看。`;
-  return normalizeSummaryParagraph(
-    `${basis} 这条信息需要结合沪铝盘面、美元指数、库存变化和现货升贴水一起观察，重点判断其对铝价情绪、供需预期和美铝相关资产的影响。`
+  return ensureDetailedSummary(
+    [
+      basis,
+      readableText ? `可读正文信息显示：${readableText}` : "",
+      "这条信息需要结合沪铝盘面、伦铝或美铝相关资产表现、美元指数、库存变化、现货升贴水和政策口径一起观察。重点不是只看标题方向，而是把文章中提到的时间、价格、涨跌幅、产量、库存、订单、政策或公司经营数据放回铝价供需逻辑里判断。如果文章没有给出明确数字，应把它视为情绪或事件线索，后续继续跟踪盘面成交量、持仓变化和官方公告。"
+    ]
+      .filter(Boolean)
+      .join(" "),
+    payload,
+    articleText
   );
 }
 
-function normalizeSummaryParagraph(value) {
-  const text = normalizeArticleText(value)
+function normalizeSummaryText(value) {
+  return normalizeArticleText(value)
     .replace(/^(一句话总结|摘要|总结|中文总结)\s*[:：]\s*/i, "")
     .replace(/\n+/g, " ")
     .replace(/\s{2,}/g, " ")
     .trim();
+}
 
-  if (text.length <= 300) return text;
-  return `${text.slice(0, 299).replace(/[，、；：:,.!?！？\s]+$/g, "")}。`;
+function ensureDetailedSummary(summary, payload, articleText = "") {
+  const text = normalizeSummaryText(summary);
+  if (text.length >= 200) return text;
+
+  const title = payload.titleZh || payload.title || payload.originalTitle || "这条新闻";
+  const sourceText = normalizeArticleText(
+    articleText || [payload.descriptionZh, payload.description].filter(Boolean).join("\n")
+  ).slice(0, 700);
+  const extra = sourceText
+    ? ` 文章可读内容还包括：${sourceText}。整理这条新闻时，应重点留意其中出现的时间、价格、涨跌幅、公司名称、项目进展、库存、产量、政策或市场预期等信息，并把这些信息放到沪铝、美铝和铝产业链供需逻辑里判断。`
+    : ` ${title}目前可读信息有限，详情页需要打开原文继续核对。后续应重点关注原文中的时间、价格、涨跌幅、产量、库存、公司经营、项目进展、政策表述、成交量和持仓变化等信息，再判断它对沪铝、美铝和产业链情绪的影响。`;
+  return normalizeSummaryText(`${text} ${extra}`);
+}
+
+function isAlcoaArticlePayload(payload) {
+  const section = String(payload.section || "").toLowerCase();
+  const source = String(payload.source || "").toLowerCase();
+  const combined = [
+    payload.title,
+    payload.titleZh,
+    payload.originalTitle,
+    payload.description,
+    payload.url
+  ]
+    .join(" ")
+    .toLowerCase();
+  return (
+    section === "alcoa" ||
+    source.includes("yahoo finance") ||
+    combined.includes("alcoa") ||
+    combined.includes("美铝") ||
+    /\baa\b/.test(combined)
+  );
 }
 
 async function summarizeArticleWithOpenAI(payload, articleText) {
@@ -806,9 +867,10 @@ async function summarizeArticleWithOpenAI(payload, articleText) {
     "1. 不要编造正文没有的信息。",
     "2. 用中文输出，适合期货交易者快速阅读。",
     "3. 若正文不足，就明确说明基于标题/摘要判断。",
-    "4. 只输出一段自然流畅的中文摘要，长度约 50-300 字。",
-    "5. 不要使用小标题、编号、项目符号或“ 一句话总结 ”这类标签。",
-    "6. 这一段里可以自然包含新闻要点、对沪铝/美铝的潜在影响，以及后续需要关注的因素。",
+    "4. 输出一到两段自然流畅的中文摘要，总长度必须不少于 200 个中文字符，信息多时可以更长。",
+    "5. 摘要里必须尽量覆盖文章中的主要数据和信息点，例如时间、价格、涨跌幅、产量、库存、成交/持仓、公司名称、项目、政策、财报数据、订单或市场预期等；没有出现的数据不要编造。",
+    "6. 不要使用小标题、编号、项目符号或“ 一句话总结 ”这类标签。",
+    "7. 要自然说明这条新闻可能怎样影响沪铝、美铝或铝产业链情绪，并点出后续最该跟踪的变量。",
     "",
     `中文标题：${title}`,
     originalTitle ? `原标题：${originalTitle}` : "",
@@ -841,7 +903,7 @@ async function summarizeArticleWithOpenAI(payload, articleText) {
           content: prompt
         }
       ],
-      max_output_tokens: 900
+      max_output_tokens: OPENAI_SUMMARY_MAX_OUTPUT_TOKENS
     })
   });
 
@@ -852,7 +914,59 @@ async function summarizeArticleWithOpenAI(payload, articleText) {
 
   const summary = extractOpenAIText(result);
   if (!summary) throw new Error("OpenAI API 未返回总结文本");
-  return normalizeSummaryParagraph(summary);
+  return ensureDetailedSummary(summary, payload, articleText);
+}
+
+async function translateArticleWithOpenAI(payload, articleText) {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) throw new Error("未配置 OPENAI_API_KEY");
+
+  const context = normalizeArticleText(articleText || payload.description || payload.descriptionZh || "");
+  if (!context) return "";
+
+  const title = payload.originalTitle || payload.title || payload.titleZh || "Alcoa news";
+  const prompt = [
+    "请把下面这篇美铝/铝行业英文新闻的可读正文完整翻译成中文。",
+    "要求：",
+    "1. 这是全文翻译，不是摘要，不要省略文章中的主要段落。",
+    "2. 保留所有数字、百分比、金额、日期、股票代码、公司名称、项目名称和地点信息。",
+    "3. 遇到明显的导航、广告、订阅提示、版权提示、按钮文字或无关网页噪音，可以忽略。",
+    "4. 只输出中文译文，不要添加小标题、点评或免责声明。",
+    "",
+    `标题：${title}`,
+    "",
+    `正文：\n${context.slice(0, ARTICLE_TRANSLATION_TEXT_MAX_CHARS)}`
+  ].join("\n");
+
+  const response = await fetch(OPENAI_RESPONSES_ENDPOINT, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      model: OPENAI_MODEL,
+      input: [
+        {
+          role: "system",
+          content:
+            "你是专业金融新闻译者，擅长把英文铝行业、上市公司和大宗商品新闻准确翻译成中文。"
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      max_output_tokens: OPENAI_TRANSLATION_MAX_OUTPUT_TOKENS
+    })
+  });
+
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(result?.error?.message || `OpenAI API HTTP ${response.status}`);
+  }
+
+  return normalizeArticleText(extractOpenAIText(result));
 }
 
 function cookieFromSetCookie(headers, name) {
@@ -1719,13 +1833,26 @@ async function handleArticleSummary(req, res) {
     let summary = "";
     let usedAi = true;
     let warning = "";
+    let translationZh = "";
+    let usedTranslationAi = false;
+    let translationWarning = "";
+    const needsTranslation = isAlcoaArticlePayload({ ...payload, url: originalUrl });
 
     try {
       summary = await summarizeArticleWithOpenAI(payload, articleText);
     } catch (error) {
       usedAi = false;
       warning = error.message;
-      summary = fallbackArticleSummary(payload);
+      summary = fallbackArticleSummary(payload, articleText);
+    }
+
+    if (needsTranslation) {
+      try {
+        translationZh = await translateArticleWithOpenAI(payload, articleText);
+        usedTranslationAi = Boolean(translationZh);
+      } catch (error) {
+        translationWarning = error.message;
+      }
     }
 
     const result = {
@@ -1734,10 +1861,14 @@ async function handleArticleSummary(req, res) {
       time: payload.time || "",
       originalUrl,
       summary,
+      translationZh,
       usedAi,
+      usedTranslationAi,
       model: OPENAI_MODEL,
       articleChars: articleText.length,
+      needsTranslation,
       warning,
+      translationWarning,
       fetchedAt: new Date().toISOString()
     };
 

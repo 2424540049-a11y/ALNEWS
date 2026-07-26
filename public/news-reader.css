@@ -156,6 +156,30 @@ body {
   font-size: 14px;
 }
 
+.article-translation {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.article-translation h2 {
+  margin-bottom: 8px;
+  color: #ffd21c;
+}
+
+.article-summary .translation-body {
+  color: #dedede;
+  font-size: 15px;
+  line-height: 1.65;
+  white-space: pre-line;
+}
+
+.article-summary .translation-meta {
+  margin-top: 8px;
+  color: #8f8f8f;
+  font-size: 13px;
+}
+
 .summary-original-link {
   display: block;
   margin-top: 14px;
