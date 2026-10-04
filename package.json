@@ -1,14 +1,14 @@
 {
   "name": "shfe-aluminum-app",
-  "version": "1.0.0",
+  "version": "2.2.0",
   "private": true,
-  "description": "Installable PWA for SHFE futures quotes.",
+  "description": "ALNEWS: aluminum charts, original strategies and a persistent news archive",
   "type": "commonjs",
   "scripts": {
     "start": "node server.js",
-    "icons": "powershell -ExecutionPolicy Bypass -File tools/make-icons.ps1"
+    "test": "node --test tests/*.test.js research/strategy-lab.test.cjs"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   }
 }

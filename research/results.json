@@ -1,0 +1,6583 @@
+{
+  "snapshotSha256": "054d314d0d18b439e0635412fcc6e5e3bec595a850d9101b4ee037f2a0b07312",
+  "symbol": "nf_AL0",
+  "interval": "1d",
+  "count": 5290,
+  "dataStart": "2005-01-04",
+  "dataEnd": "2026-09-30",
+  "train": {
+    "start": "2010-01-01",
+    "end": "2021-12-31"
+  },
+  "validation": {
+    "start": "2022-01-01",
+    "end": "2025-09-29"
+  },
+  "holdout": {
+    "start": "2025-09-30",
+    "end": "2026-09-30"
+  },
+  "ranking": "Training next-open closed return >= 0; validation next-open closed return / max(0.10, absolute daily mark-to-market drawdown). No final four-window return in selection.",
+  "numberOfCandidates": 40,
+  "selectedId": "candidate-34",
+  "retrospectiveSelectedId": "candidate-33",
+  "retrospectiveSelectionNote": "Chosen after examining the four ideal-price windows to meet the requested historical target; not selected by independent validation, which fails. Next-open performance is negative in all four windows.",
+  "baselines": [
+    {
+      "key": "al_update_1",
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.006047966631908208,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.04058159722222232,
+            "drawdown": 0,
+            "markToMarketReturn": 0.046875,
+            "markToMarketDrawdown": -0.028412600370599006,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.01837606837606831,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23400,
+              "date": "2026-07-15"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.09514633242511494,
+            "drawdown": 0,
+            "markToMarketReturn": 0.10176974090067858,
+            "markToMarketDrawdown": -0.028412600370599006,
+            "trades": 2,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": 0.03105590062111796,
+            "drawdown": 0,
+            "markToMarketReturn": 0.05000265435048035,
+            "markToMarketDrawdown": -0.05572695719244136,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": 1,
+              "price": 23400,
+              "date": "2026-07-15"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.09514633242511494,
+            "drawdown": 0,
+            "markToMarketReturn": 0.10176974090067858,
+            "markToMarketDrawdown": -0.028412600370599006,
+            "trades": 2,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": 0.03105590062111796,
+            "drawdown": 0,
+            "markToMarketReturn": 0.05000265435048035,
+            "markToMarketDrawdown": -0.05572695719244136,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": 1,
+              "price": 23400,
+              "date": "2026-07-15"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "al_best_1",
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.0012565431346677203,
+            "drawdown": -0.00663900414937757,
+            "markToMarketReturn": 0.016850054352796073,
+            "markToMarketDrawdown": -0.027655072222475763,
+            "trades": 3,
+            "winRate": 0.6666666666666666,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": -0.02915609208655534,
+            "drawdown": -0.02915609208655534,
+            "markToMarketReturn": -0.022279281072168478,
+            "markToMarketDrawdown": -0.05169118700388653,
+            "trades": 3,
+            "winRate": 0,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.012992715004785715,
+            "drawdown": -0.012610986952308334,
+            "markToMarketReturn": 0.03135764267689556,
+            "markToMarketDrawdown": -0.039324686020177135,
+            "trades": 5,
+            "winRate": 0.6,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": -0.049645017024400384,
+            "drawdown": -0.05146484571520471,
+            "markToMarketReturn": -0.04291333589498991,
+            "markToMarketDrawdown": -0.08403798948195051,
+            "trades": 5,
+            "winRate": 0.2,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.09574689907234046,
+            "drawdown": -0.012610986952308223,
+            "markToMarketReturn": 0.1156121086146491,
+            "markToMarketDrawdown": -0.039324686020177246,
+            "trades": 9,
+            "winRate": 0.6666666666666666,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": -0.08671080180446034,
+            "drawdown": -0.08671080180446034,
+            "markToMarketReturn": -0.08024166998390858,
+            "markToMarketDrawdown": -0.09100444709219557,
+            "trades": 9,
+            "winRate": 0.2222222222222222,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.3862707174222164,
+            "drawdown": -0.012610986952308445,
+            "markToMarketReturn": 0.41140294303679315,
+            "markToMarketDrawdown": -0.055326514989551434,
+            "trades": 15,
+            "winRate": 0.7333333333333333,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": -0.26392801350969497,
+            "drawdown": -0.30082869478268837,
+            "markToMarketReturn": -0.25871417027205534,
+            "markToMarketDrawdown": -0.36228767724659316,
+            "trades": 15,
+            "winRate": 0.26666666666666666,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "candidates": [
+    {
+      "id": "candidate-01",
+      "config": {
+        "family": "supertrend",
+        "period": 10,
+        "multiplier": 2
+      },
+      "train": {
+        "return": 1.4207054967146218,
+        "drawdown": -0.1792392630054359,
+        "markToMarketReturn": 1.4302452228100488,
+        "markToMarketDrawdown": -0.23132650201910498,
+        "trades": 119,
+        "winRate": 0.3949579831932773,
+        "openPosition": {
+          "side": 1,
+          "price": 20300,
+          "date": "2021-12-23"
+        }
+      },
+      "validation": {
+        "return": -0.2258431392674658,
+        "drawdown": -0.3834543838629477,
+        "markToMarketReturn": -0.22696510573229545,
+        "markToMarketDrawdown": -0.3958252947856926,
+        "trades": 36,
+        "winRate": 0.4166666666666667,
+        "openPosition": {
+          "side": -1,
+          "price": 20700,
+          "date": "2025-09-23"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.004166666666666652,
+            "drawdown": 0,
+            "markToMarketReturn": 0.015416666666666634,
+            "markToMarketDrawdown": -0.030944625407166138,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 24100,
+              "date": "2026-09-14"
+            }
+          },
+          "nextOpen": {
+            "return": -0.019611848825331957,
+            "drawdown": -0.019611848825331957,
+            "markToMarketReturn": -0.012870275791624142,
+            "markToMarketDrawdown": -0.03949511400651462,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": -1,
+              "price": 23995,
+              "date": "2026-09-15"
+            }
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.03729021990740744,
+            "drawdown": -0.004184100418409997,
+            "markToMarketReturn": 0.04891131365740731,
+            "markToMarketDrawdown": -0.030944625407166138,
+            "trades": 3,
+            "winRate": 0.6666666666666666,
+            "openPosition": {
+              "side": -1,
+              "price": 24100,
+              "date": "2026-09-14"
+            }
+          },
+          "nextOpen": {
+            "return": -0.04328361401395098,
+            "drawdown": -0.05359698025476445,
+            "markToMarketReturn": -0.03670481827785188,
+            "markToMarketDrawdown": -0.09370799555752118,
+            "trades": 3,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": -1,
+              "price": 23995,
+              "date": "2026-09-15"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.11223229858455741,
+            "drawdown": -0.004184100418409997,
+            "markToMarketReturn": 0.12469299238612708,
+            "markToMarketDrawdown": -0.03276770040959609,
+            "trades": 5,
+            "winRate": 0.6,
+            "openPosition": {
+              "side": -1,
+              "price": 24100,
+              "date": "2026-09-14"
+            }
+          },
+          "nextOpen": {
+            "return": -0.01013389233997819,
+            "drawdown": -0.05359698025476445,
+            "markToMarketReturn": -0.0033271447774066987,
+            "markToMarketDrawdown": -0.09570208331316998,
+            "trades": 5,
+            "winRate": 0.4,
+            "openPosition": {
+              "side": -1,
+              "price": 23995,
+              "date": "2026-09-15"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.36316754538993234,
+            "drawdown": -0.01760151267094312,
+            "markToMarketReturn": 0.3784395469357946,
+            "markToMarketDrawdown": -0.054424062951404006,
+            "trades": 11,
+            "winRate": 0.7272727272727273,
+            "openPosition": {
+              "side": -1,
+              "price": 24100,
+              "date": "2026-09-14"
+            }
+          },
+          "nextOpen": {
+            "return": -0.08261611296470384,
+            "drawdown": -0.14446646465455215,
+            "markToMarketReturn": -0.07630778450624065,
+            "markToMarketDrawdown": -0.23034723360521292,
+            "trades": 11,
+            "winRate": 0.36363636363636365,
+            "openPosition": {
+              "side": -1,
+              "price": 23995,
+              "date": "2026-09-15"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.5705626756110713
+    },
+    {
+      "id": "candidate-02",
+      "config": {
+        "family": "supertrend",
+        "period": 10,
+        "multiplier": 2.5
+      },
+      "train": {
+        "return": 0.4362173719022162,
+        "drawdown": -0.4478065966024378,
+        "markToMarketReturn": 0.4418773418407471,
+        "markToMarketDrawdown": -0.489363031167244,
+        "trades": 101,
+        "winRate": 0.3564356435643564,
+        "openPosition": {
+          "side": 1,
+          "price": 20300,
+          "date": "2021-12-23"
+        }
+      },
+      "validation": {
+        "return": -0.21879978954841783,
+        "drawdown": -0.31450972640375063,
+        "markToMarketReturn": -0.20047986360595915,
+        "markToMarketDrawdown": -0.36952096327080075,
+        "trades": 29,
+        "winRate": 0.3448275862068966,
+        "openPosition": {
+          "side": 1,
+          "price": 20255,
+          "date": "2025-05-15"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.0010416666666667185,
+            "drawdown": -0.0010416666666667185,
+            "markToMarketReturn": 0.004999999999999893,
+            "markToMarketDrawdown": -0.024837133550488666,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.026353421859039883,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24475,
+              "date": "2026-09-04"
+            }
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.027894869577749004,
+            "drawdown": -0.005221408647140935,
+            "markToMarketReturn": 0.03411154345006495,
+            "markToMarketDrawdown": -0.024837133550488555,
+            "trades": 3,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": -0.026433596248134683,
+            "drawdown": -0.03466497569224258,
+            "markToMarketReturn": -0.05209040239399598,
+            "markToMarketDrawdown": -0.08448755973445232,
+            "trades": 2,
+            "winRate": 0.5,
+            "openPosition": {
+              "side": 1,
+              "price": 24475,
+              "date": "2026-09-04"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.08114725438719894,
+            "drawdown": -0.009638554216867434,
+            "markToMarketReturn": 0.08768599690591183,
+            "markToMarketDrawdown": -0.04700604642090889,
+            "trades": 5,
+            "winRate": 0.4,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": -0.037499018826541164,
+            "drawdown": -0.046051342347638635,
+            "markToMarketReturn": -0.06286421322314517,
+            "markToMarketDrawdown": -0.09118131510408767,
+            "trades": 4,
+            "winRate": 0.5,
+            "openPosition": {
+              "side": 1,
+              "price": 24475,
+              "date": "2026-09-04"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.12692514624844642,
+            "drawdown": -0.08117149608141294,
+            "markToMarketReturn": 0.1337407519296152,
+            "markToMarketDrawdown": -0.14782821909870125,
+            "trades": 10,
+            "winRate": 0.3,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": -0.2001072644617239,
+            "drawdown": -0.2353472158615898,
+            "markToMarketReturn": -0.22118717516334552,
+            "markToMarketDrawdown": -0.31675518217354803,
+            "trades": 9,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": 1,
+              "price": 24475,
+              "date": "2026-09-04"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.5921173933184192
+    },
+    {
+      "id": "candidate-03",
+      "config": {
+        "family": "supertrend",
+        "period": 10,
+        "multiplier": 3
+      },
+      "train": {
+        "return": 0.7919550259457562,
+        "drawdown": -0.22227196288997542,
+        "markToMarketReturn": 0.804349971777397,
+        "markToMarketDrawdown": -0.28399085501297316,
+        "trades": 75,
+        "winRate": 0.4,
+        "openPosition": {
+          "side": 1,
+          "price": 20240,
+          "date": "2021-12-24"
+        }
+      },
+      "validation": {
+        "return": -0.24565671428871194,
+        "drawdown": -0.34013858875154857,
+        "markToMarketReturn": -0.22701254014854166,
+        "markToMarketDrawdown": -0.3792649630195003,
+        "trades": 21,
+        "winRate": 0.2857142857142857,
+        "openPosition": {
+          "side": 1,
+          "price": 20230,
+          "date": "2025-06-12"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.017723681400811486,
+            "markToMarketDrawdown": -0.029723127035830466,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23415,
+              "date": "2026-07-30"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.007610993657505283,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23650,
+              "date": "2026-07-31"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.03701418877236273,
+            "drawdown": 0,
+            "markToMarketReturn": 0.05539389786228499,
+            "markToMarketDrawdown": -0.04131759329779128,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": 1,
+              "price": 23415,
+              "date": "2026-07-30"
+            }
+          },
+          "nextOpen": {
+            "return": 0.020703933747411973,
+            "drawdown": 0,
+            "markToMarketReturn": 0.02847250491335429,
+            "markToMarketDrawdown": -0.05157445358254342,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": 1,
+              "price": 23650,
+              "date": "2026-07-31"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.0028242718446601645,
+            "drawdown": -0.03841650485436887,
+            "markToMarketReturn": 0.014849353061787252,
+            "markToMarketDrawdown": -0.12791637947358436,
+            "trades": 3,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": 1,
+              "price": 23415,
+              "date": "2026-07-30"
+            }
+          },
+          "nextOpen": {
+            "return": -0.10937114090698707,
+            "drawdown": -0.1274366350062368,
+            "markToMarketReturn": -0.10259257030923896,
+            "markToMarketDrawdown": -0.1550638304549079,
+            "trades": 3,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": 1,
+              "price": 23650,
+              "date": "2026-07-31"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.6477179234615491
+    },
+    {
+      "id": "candidate-04",
+      "config": {
+        "family": "supertrend",
+        "period": 10,
+        "multiplier": 3.5
+      },
+      "train": {
+        "return": 0.3358373761356157,
+        "drawdown": -0.20982077468317206,
+        "markToMarketReturn": 0.3309394146000415,
+        "markToMarketDrawdown": -0.2617363663290255,
+        "trades": 63,
+        "winRate": 0.3492063492063492,
+        "openPosition": {
+          "side": 1,
+          "price": 20455,
+          "date": "2021-12-31"
+        }
+      },
+      "validation": {
+        "return": -0.3999921747096121,
+        "drawdown": -0.4700456986255477,
+        "markToMarketReturn": -0.38908829969205594,
+        "markToMarketDrawdown": -0.5068417577080238,
+        "trades": 21,
+        "winRate": 0.23809523809523808,
+        "openPosition": {
+          "side": 1,
+          "price": 20360,
+          "date": "2025-06-13"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.00020977554017198585,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23835,
+              "date": "2026-08-07"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.0072901478858571345,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24005,
+              "date": "2026-08-10"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.02148594377510038,
+            "drawdown": -0.032128514056224855,
+            "markToMarketReturn": -0.02169121208981084,
+            "markToMarketDrawdown": -0.06621512542555064,
+            "trades": 2,
+            "winRate": 0.5,
+            "openPosition": {
+              "side": 1,
+              "price": 23835,
+              "date": "2026-08-07"
+            }
+          },
+          "nextOpen": {
+            "return": -0.07133058984910845,
+            "drawdown": -0.07133058984910845,
+            "markToMarketReturn": -0.07810072718618022,
+            "markToMarketDrawdown": -0.0873708961495091,
+            "trades": 2,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24005,
+              "date": "2026-08-10"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.02861104612625265,
+            "drawdown": -0.039176121963582555,
+            "markToMarketReturn": -0.02881481976876865,
+            "markToMarketDrawdown": -0.10310250659901499,
+            "trades": 3,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": 1,
+              "price": 23835,
+              "date": "2026-08-07"
+            }
+          },
+          "nextOpen": {
+            "return": -0.15375569644666987,
+            "drawdown": -0.15375569644666987,
+            "markToMarketReturn": -0.15992494256713785,
+            "markToMarketDrawdown": -0.17419980187041406,
+            "trades": 3,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24005,
+              "date": "2026-08-10"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.7891855172281119
+    },
+    {
+      "id": "candidate-05",
+      "config": {
+        "family": "supertrend",
+        "period": 14,
+        "multiplier": 2
+      },
+      "train": {
+        "return": 1.0812690484793817,
+        "drawdown": -0.20351611174684725,
+        "markToMarketReturn": 1.0894710939906305,
+        "markToMarketDrawdown": -0.2509114684871616,
+        "trades": 123,
+        "winRate": 0.3902439024390244,
+        "openPosition": {
+          "side": 1,
+          "price": 20300,
+          "date": "2021-12-23"
+        }
+      },
+      "validation": {
+        "return": -0.2343465203602969,
+        "drawdown": -0.37206580293678815,
+        "markToMarketReturn": -0.2354561630844123,
+        "markToMarketDrawdown": -0.3846652243159965,
+        "trades": 38,
+        "winRate": 0.42105263157894735,
+        "openPosition": {
+          "side": -1,
+          "price": 20700,
+          "date": "2025-09-23"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.004166666666666652,
+            "drawdown": 0,
+            "markToMarketReturn": 0.015416666666666634,
+            "markToMarketDrawdown": -0.030944625407166138,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 24100,
+              "date": "2026-09-14"
+            }
+          },
+          "nextOpen": {
+            "return": -0.019611848825331957,
+            "drawdown": -0.019611848825331957,
+            "markToMarketReturn": -0.012870275791624142,
+            "markToMarketDrawdown": -0.03949511400651462,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": -1,
+              "price": 23995,
+              "date": "2026-09-15"
+            }
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.03729021990740744,
+            "drawdown": -0.004184100418409997,
+            "markToMarketReturn": 0.04891131365740731,
+            "markToMarketDrawdown": -0.030944625407166138,
+            "trades": 3,
+            "winRate": 0.6666666666666666,
+            "openPosition": {
+              "side": -1,
+              "price": 24100,
+              "date": "2026-09-14"
+            }
+          },
+          "nextOpen": {
+            "return": -0.04328361401395098,
+            "drawdown": -0.05359698025476445,
+            "markToMarketReturn": -0.03670481827785188,
+            "markToMarketDrawdown": -0.09370799555752118,
+            "trades": 3,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": -1,
+              "price": 23995,
+              "date": "2026-09-15"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.09511460930454008,
+            "drawdown": -0.008452404910444744,
+            "markToMarketReturn": 0.10738352816396857,
+            "markToMarketDrawdown": -0.04876145894285144,
+            "trades": 5,
+            "winRate": 0.6,
+            "openPosition": {
+              "side": -1,
+              "price": 24100,
+              "date": "2026-09-14"
+            }
+          },
+          "nextOpen": {
+            "return": 0.0025863496977089895,
+            "drawdown": -0.05359698025476445,
+            "markToMarketReturn": 0.009480567147182706,
+            "markToMarketDrawdown": -0.0952594327834917,
+            "trades": 5,
+            "winRate": 0.4,
+            "openPosition": {
+              "side": -1,
+              "price": 23995,
+              "date": "2026-09-15"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.3421878646988714,
+            "drawdown": -0.025709068625148213,
+            "markToMarketReturn": 0.3572248241789002,
+            "markToMarketDrawdown": -0.07005972071264321,
+            "trades": 11,
+            "winRate": 0.7272727272727273,
+            "openPosition": {
+              "side": -1,
+              "price": 24100,
+              "date": "2026-09-14"
+            }
+          },
+          "nextOpen": {
+            "return": -0.0708273013322408,
+            "drawdown": -0.13871409980809735,
+            "markToMarketReturn": -0.06443790790526938,
+            "markToMarketDrawdown": -0.22154612763769632,
+            "trades": 11,
+            "winRate": 0.36363636363636365,
+            "openPosition": {
+              "side": -1,
+              "price": 23995,
+              "date": "2026-09-15"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.6092220079863131
+    },
+    {
+      "id": "candidate-06",
+      "config": {
+        "family": "supertrend",
+        "period": 14,
+        "multiplier": 2.5
+      },
+      "train": {
+        "return": 0.8680718638308129,
+        "drawdown": -0.3826431219348255,
+        "markToMarketReturn": 0.8809933095292475,
+        "markToMarketDrawdown": -0.422034562095677,
+        "trades": 95,
+        "winRate": 0.4,
+        "openPosition": {
+          "side": 1,
+          "price": 20240,
+          "date": "2021-12-24"
+        }
+      },
+      "validation": {
+        "return": -0.16723538801649518,
+        "drawdown": -0.2823005936851425,
+        "markToMarketReturn": -0.14770622530644018,
+        "markToMarketDrawdown": -0.3420359296711012,
+        "trades": 29,
+        "winRate": 0.3793103448275862,
+        "openPosition": {
+          "side": 1,
+          "price": 20255,
+          "date": "2025-05-15"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.0010416666666667185,
+            "drawdown": -0.0010416666666667185,
+            "markToMarketReturn": 0.004999999999999893,
+            "markToMarketDrawdown": -0.024837133550488666,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.026353421859039883,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24475,
+              "date": "2026-09-04"
+            }
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.027894869577749004,
+            "drawdown": -0.005221408647140935,
+            "markToMarketReturn": 0.03411154345006495,
+            "markToMarketDrawdown": -0.024837133550488555,
+            "trades": 3,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": -0.026433596248134683,
+            "drawdown": -0.03466497569224258,
+            "markToMarketReturn": -0.05209040239399598,
+            "markToMarketDrawdown": -0.08448755973445232,
+            "trades": 2,
+            "winRate": 0.5,
+            "openPosition": {
+              "side": 1,
+              "price": 24475,
+              "date": "2026-09-04"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.052250611467342445,
+            "drawdown": -0.02369477911646589,
+            "markToMarketReturn": 0.05861458805390196,
+            "markToMarketDrawdown": -0.07177686756387747,
+            "trades": 5,
+            "winRate": 0.4,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": -0.040933115488805516,
+            "drawdown": -0.04781501077797379,
+            "markToMarketReturn": -0.06620780968736406,
+            "markToMarketDrawdown": -0.09131549443833309,
+            "trades": 4,
+            "winRate": 0.5,
+            "openPosition": {
+              "side": 1,
+              "price": 24475,
+              "date": "2026-09-04"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.0988606211816987,
+            "drawdown": -0.09421245213865181,
+            "markToMarketReturn": 0.10550649355172359,
+            "markToMarketDrawdown": -0.16997840660882502,
+            "trades": 10,
+            "winRate": 0.3,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": -0.1958767006160177,
+            "drawdown": -0.23676091246332476,
+            "markToMarketReturn": -0.21706810115136677,
+            "markToMarketDrawdown": -0.3176165961065086,
+            "trades": 9,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": 1,
+              "price": 24475,
+              "date": "2026-09-04"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.4889409956939532
+    },
+    {
+      "id": "candidate-07",
+      "config": {
+        "family": "supertrend",
+        "period": 14,
+        "multiplier": 3
+      },
+      "train": {
+        "return": 0.6650330623296667,
+        "drawdown": -0.32498908164649654,
+        "markToMarketReturn": 0.6589280767674706,
+        "markToMarketDrawdown": -0.36960686284315836,
+        "trades": 77,
+        "winRate": 0.38961038961038963,
+        "openPosition": {
+          "side": 1,
+          "price": 20455,
+          "date": "2021-12-31"
+        }
+      },
+      "validation": {
+        "return": -0.22567261717967713,
+        "drawdown": -0.3226575098174931,
+        "markToMarketReturn": -0.2065345207184729,
+        "markToMarketDrawdown": -0.3628204217967309,
+        "trades": 21,
+        "winRate": 0.2857142857142857,
+        "openPosition": {
+          "side": 1,
+          "price": 20230,
+          "date": "2025-06-12"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.017723681400811486,
+            "markToMarketDrawdown": -0.029723127035830466,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23415,
+              "date": "2026-07-30"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.007610993657505283,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23650,
+              "date": "2026-07-31"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.012650602409638445,
+            "drawdown": -0.02349397590361446,
+            "markToMarketReturn": 0.03059849905708667,
+            "markToMarketDrawdown": -0.05324751316559384,
+            "trades": 2,
+            "winRate": 0.5,
+            "openPosition": {
+              "side": 1,
+              "price": 23415,
+              "date": "2026-07-30"
+            }
+          },
+          "nextOpen": {
+            "return": -0.03390162649421913,
+            "drawdown": -0.053497942386831254,
+            "markToMarketReturn": -0.02654865790094041,
+            "markToMarketDrawdown": -0.055446708463949834,
+            "trades": 2,
+            "winRate": 0.5,
+            "openPosition": {
+              "side": 1,
+              "price": 23650,
+              "date": "2026-07-31"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.11903276941801422,
+            "drawdown": -0.030604456661598056,
+            "markToMarketReturn": 0.1388661497002468,
+            "markToMarketDrawdown": -0.09414472888714487,
+            "trades": 5,
+            "winRate": 0.4,
+            "openPosition": {
+              "side": 1,
+              "price": 23415,
+              "date": "2026-07-30"
+            }
+          },
+          "nextOpen": {
+            "return": -0.09961289103732052,
+            "drawdown": -0.13750580583190875,
+            "markToMarketReturn": -0.0927600504617061,
+            "markToMarketDrawdown": -0.21314788217630987,
+            "trades": 5,
+            "winRate": 0.4,
+            "openPosition": {
+              "side": 1,
+              "price": 23650,
+              "date": "2026-07-31"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.6219953553389274
+    },
+    {
+      "id": "candidate-08",
+      "config": {
+        "family": "supertrend",
+        "period": 14,
+        "multiplier": 3.5
+      },
+      "train": {
+        "return": 0.32097176845593123,
+        "drawdown": -0.28074985843459765,
+        "markToMarketReturn": 0.4101245187864049,
+        "markToMarketDrawdown": -0.334878486664824,
+        "trades": 62,
+        "winRate": 0.3548387096774194,
+        "openPosition": {
+          "side": -1,
+          "price": 21855,
+          "date": "2021-10-25"
+        }
+      },
+      "validation": {
+        "return": -0.3451624299454237,
+        "drawdown": -0.44864849676303276,
+        "markToMarketReturn": -0.3332621401163376,
+        "markToMarketDrawdown": -0.48693021734856823,
+        "trades": 22,
+        "winRate": 0.2727272727272727,
+        "openPosition": {
+          "side": 1,
+          "price": 20360,
+          "date": "2025-06-13"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.012534523050775404,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23535,
+              "date": "2026-08-04"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.0012605042016806678,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23800,
+              "date": "2026-08-05"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.012534523050775404,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23535,
+              "date": "2026-08-04"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.0012605042016806678,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23800,
+              "date": "2026-08-05"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.0479368932038835,
+            "drawdown": 0,
+            "markToMarketReturn": 0.06107228234750561,
+            "markToMarketDrawdown": -0.0984661995834123,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": 1,
+              "price": 23535,
+              "date": "2026-08-04"
+            }
+          },
+          "nextOpen": {
+            "return": -0.015574994666097686,
+            "drawdown": -0.015574994666097686,
+            "markToMarketReturn": -0.014334122810634842,
+            "markToMarketDrawdown": -0.10040245710654516,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 23800,
+              "date": "2026-08-05"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.7088539951882668
+    },
+    {
+      "id": "candidate-09",
+      "config": {
+        "family": "supertrend",
+        "period": 20,
+        "multiplier": 2
+      },
+      "train": {
+        "return": 0.825907709617917,
+        "drawdown": -0.34895023211125675,
+        "markToMarketReturn": 0.8331034050252784,
+        "markToMarketDrawdown": -0.3799447891444703,
+        "trades": 133,
+        "winRate": 0.39849624060150374,
+        "openPosition": {
+          "side": 1,
+          "price": 20300,
+          "date": "2021-12-23"
+        }
+      },
+      "validation": {
+        "return": -0.2106740179453963,
+        "drawdown": -0.3419140196107018,
+        "markToMarketReturn": -0.2123911883196994,
+        "markToMarketDrawdown": -0.35511843276331034,
+        "trades": 38,
+        "winRate": 0.42105263157894735,
+        "openPosition": {
+          "side": -1,
+          "price": 20685,
+          "date": "2025-09-24"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.011249999999999982,
+            "drawdown": 0,
+            "markToMarketReturn": 0.029583333333333517,
+            "markToMarketDrawdown": -0.021376221498371373,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": -0.019407558733401387,
+            "drawdown": -0.019407558733401387,
+            "markToMarketReturn": -0.012461695607763001,
+            "markToMarketDrawdown": -0.024837133550488666,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.04460720486111125,
+            "drawdown": -0.004184100418409997,
+            "markToMarketReturn": 0.06354528356481515,
+            "markToMarketDrawdown": -0.02450072060942976,
+            "trades": 3,
+            "winRate": 0.6666666666666666,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": -0.04308425656740256,
+            "drawdown": -0.05339977187390488,
+            "markToMarketReturn": -0.03630610338475504,
+            "markToMarketDrawdown": -0.07987734182291795,
+            "trades": 3,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.10283948414195798,
+            "drawdown": -0.008452404910444744,
+            "markToMarketReturn": 0.12283327783880438,
+            "markToMarketDrawdown": -0.04876145894285144,
+            "trades": 5,
+            "winRate": 0.6,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": 0.0027952653779961256,
+            "drawdown": -0.05339977187390477,
+            "markToMarketReturn": 0.009898398507756978,
+            "markToMarketDrawdown": -0.0814524550726845,
+            "trades": 5,
+            "winRate": 0.4,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.3516555799270378,
+            "drawdown": -0.025709068625148213,
+            "markToMarketReturn": 0.37616025463523317,
+            "markToMarketDrawdown": -0.07005972071264321,
+            "trades": 11,
+            "winRate": 0.7272727272727273,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": -0.07063368334960529,
+            "drawdown": -0.13871409980809735,
+            "markToMarketReturn": -0.06405067193999836,
+            "markToMarketDrawdown": -0.22154612763769632,
+            "trades": 11,
+            "winRate": 0.36363636363636365,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.5932500217070187
+    },
+    {
+      "id": "candidate-10",
+      "config": {
+        "family": "supertrend",
+        "period": 20,
+        "multiplier": 2.5
+      },
+      "train": {
+        "return": 0.8959501707988144,
+        "drawdown": -0.3526942119815889,
+        "markToMarketReturn": 0.9090644506363559,
+        "markToMarketDrawdown": -0.3939965901042931,
+        "trades": 95,
+        "winRate": 0.4105263157894737,
+        "openPosition": {
+          "side": 1,
+          "price": 20240,
+          "date": "2021-12-24"
+        }
+      },
+      "validation": {
+        "return": -0.3052795188198314,
+        "drawdown": -0.3706847877398671,
+        "markToMarketReturn": -0.2889876289871689,
+        "markToMarketDrawdown": -0.38747423057854136,
+        "trades": 31,
+        "winRate": 0.3548387096774194,
+        "openPosition": {
+          "side": 1,
+          "price": 20255,
+          "date": "2025-05-15"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.0010416666666667185,
+            "drawdown": -0.0010416666666667185,
+            "markToMarketReturn": 0.004999999999999893,
+            "markToMarketDrawdown": -0.024837133550488666,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.026353421859039883,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24475,
+              "date": "2026-09-04"
+            }
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.012346879953883727,
+            "drawdown": -0.01283375491849359,
+            "markToMarketReturn": 0.01846952010376124,
+            "markToMarketDrawdown": -0.039324686020177135,
+            "trades": 3,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": -0.03965039437220208,
+            "drawdown": -0.04148936170212769,
+            "markToMarketReturn": -0.06495889266147403,
+            "markToMarketDrawdown": -0.09691623748712663,
+            "trades": 2,
+            "winRate": 0.5,
+            "openPosition": {
+              "side": 1,
+              "price": 24475,
+              "date": "2026-09-04"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.0477180360004652,
+            "drawdown": -0.01807228915662651,
+            "markToMarketReturn": 0.054054599721844454,
+            "markToMarketDrawdown": -0.06085430076067866,
+            "trades": 5,
+            "winRate": 0.4,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": -0.05056559663095417,
+            "drawdown": -0.05056559663095417,
+            "markToMarketReturn": -0.07558644199042452,
+            "markToMarketDrawdown": -0.10351912076722458,
+            "trades": 4,
+            "winRate": 0.5,
+            "openPosition": {
+              "side": 1,
+              "price": 24475,
+              "date": "2026-09-04"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.11917738817768586,
+            "drawdown": -0.07413411868583009,
+            "markToMarketReturn": 0.12594613567657076,
+            "markToMarketDrawdown": -0.14651123751500683,
+            "trades": 10,
+            "winRate": 0.3,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": -0.16194594493049497,
+            "drawdown": -0.19843308622921296,
+            "markToMarketReturn": -0.18403153698442065,
+            "markToMarketDrawdown": -0.286673987632443,
+            "trades": 9,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": 1,
+              "price": 24475,
+              "date": "2026-09-04"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.7878705078374263
+    },
+    {
+      "id": "candidate-11",
+      "config": {
+        "family": "supertrend",
+        "period": 20,
+        "multiplier": 3
+      },
+      "train": {
+        "return": 0.6927201177989091,
+        "drawdown": -0.26968319000611995,
+        "markToMarketReturn": 0.8069622671356007,
+        "markToMarketDrawdown": -0.31795665454804645,
+        "trades": 74,
+        "winRate": 0.3783783783783784,
+        "openPosition": {
+          "side": -1,
+          "price": 21855,
+          "date": "2021-10-25"
+        }
+      },
+      "validation": {
+        "return": -0.29259603034012716,
+        "drawdown": -0.41011865375656686,
+        "markToMarketReturn": -0.276006700022258,
+        "markToMarketDrawdown": -0.45534902491246654,
+        "trades": 24,
+        "winRate": 0.2916666666666667,
+        "openPosition": {
+          "side": 1,
+          "price": 20255,
+          "date": "2025-05-15"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.017723681400811486,
+            "markToMarketDrawdown": -0.029723127035830466,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23415,
+              "date": "2026-07-30"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.007610993657505283,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23650,
+              "date": "2026-07-31"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.004618473895582342,
+            "drawdown": -0.032128514056224855,
+            "markToMarketReturn": 0.013023351145345918,
+            "markToMarketDrawdown": -0.06260971328262133,
+            "trades": 2,
+            "winRate": 0.5,
+            "openPosition": {
+              "side": 1,
+              "price": 23415,
+              "date": "2026-07-30"
+            }
+          },
+          "nextOpen": {
+            "return": -0.05741720556535368,
+            "drawdown": -0.06525573192239864,
+            "markToMarketReturn": -0.050243213895238004,
+            "markToMarketDrawdown": -0.07797805642633227,
+            "trades": 2,
+            "winRate": 0.5,
+            "openPosition": {
+              "side": 1,
+              "price": 23650,
+              "date": "2026-07-31"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.02798646723545195,
+            "drawdown": -0.1020370257729949,
+            "markToMarketReturn": 0.046206171865078804,
+            "markToMarketDrawdown": -0.16178109312082634,
+            "trades": 7,
+            "winRate": 0.2857142857142857,
+            "openPosition": {
+              "side": 1,
+              "price": 23415,
+              "date": "2026-07-30"
+            }
+          },
+          "nextOpen": {
+            "return": -0.22726233617922642,
+            "drawdown": -0.25074080108048136,
+            "markToMarketReturn": -0.22138103472097104,
+            "markToMarketDrawdown": -0.32436433858136515,
+            "trades": 7,
+            "winRate": 0.2857142857142857,
+            "openPosition": {
+              "side": 1,
+              "price": 23650,
+              "date": "2026-07-31"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.6425752869381328
+    },
+    {
+      "id": "candidate-12",
+      "config": {
+        "family": "supertrend",
+        "period": 20,
+        "multiplier": 3.5
+      },
+      "train": {
+        "return": 0.5807105581977388,
+        "drawdown": -0.2999396759457904,
+        "markToMarketReturn": 0.687393151349954,
+        "markToMarketDrawdown": -0.35262413553726135,
+        "trades": 58,
+        "winRate": 0.41379310344827586,
+        "openPosition": {
+          "side": -1,
+          "price": 21855,
+          "date": "2021-10-25"
+        }
+      },
+      "validation": {
+        "return": -0.17256354885963365,
+        "drawdown": -0.3138400000566949,
+        "markToMarketReturn": -0.1575266388929375,
+        "markToMarketDrawdown": -0.36367544989471356,
+        "trades": 18,
+        "winRate": 0.3888888888888889,
+        "openPosition": {
+          "side": 1,
+          "price": 20360,
+          "date": "2025-06-13"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.012534523050775404,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23535,
+              "date": "2026-08-04"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.0012605042016806678,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23800,
+              "date": "2026-08-05"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.0034136546184737604,
+            "drawdown": -0.029116465863453844,
+            "markToMarketReturn": 0.009078079899798919,
+            "markToMarketDrawdown": -0.0704115467134776,
+            "trades": 2,
+            "winRate": 0.5,
+            "openPosition": {
+              "side": 1,
+              "price": 23535,
+              "date": "2026-08-04"
+            }
+          },
+          "nextOpen": {
+            "return": -0.08916323731138542,
+            "drawdown": -0.08916323731138542,
+            "markToMarketReturn": -0.08801512374497122,
+            "markToMarketDrawdown": -0.09718559837728191,
+            "trades": 2,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 23800,
+              "date": "2026-08-05"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.01067035130814531,
+            "drawdown": -0.036186006160564776,
+            "markToMarketReturn": 0.0017304239781983366,
+            "markToMarketDrawdown": -0.11056732135890657,
+            "trades": 3,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": 1,
+              "price": 23535,
+              "date": "2026-08-04"
+            }
+          },
+          "nextOpen": {
+            "return": -0.17000558706143098,
+            "drawdown": -0.17000558706143098,
+            "markToMarketReturn": -0.1689593756165504,
+            "markToMarketDrawdown": -0.18308071856491992,
+            "trades": 3,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 23800,
+              "date": "2026-08-05"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.47449875681625453
+    },
+    {
+      "id": "candidate-13",
+      "config": {
+        "family": "ema_atr",
+        "fast": 5,
+        "slow": 20,
+        "atrPeriod": 14,
+        "band": 0
+      },
+      "train": {
+        "return": 1.365038123594171,
+        "drawdown": -0.15270220587166128,
+        "markToMarketReturn": 1.4361625958478248,
+        "markToMarketDrawdown": -0.24125688694393788,
+        "trades": 145,
+        "winRate": 0.3103448275862069,
+        "openPosition": {
+          "side": 1,
+          "price": 19785,
+          "date": "2021-12-20"
+        }
+      },
+      "validation": {
+        "return": -0.3613307509620608,
+        "drawdown": -0.44450706933747874,
+        "markToMarketReturn": -0.36272016919782146,
+        "markToMarketDrawdown": -0.4671638014910412,
+        "trades": 66,
+        "winRate": 0.25757575757575757,
+        "openPosition": {
+          "side": -1,
+          "price": 20685,
+          "date": "2025-09-24"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.0181293778327154,
+            "markToMarketDrawdown": -0.002846685644571023,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.00708333333333333,
+            "markToMarketDrawdown": -0.0008333333333332416,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.046120689655172464,
+            "drawdown": 0,
+            "markToMarketReturn": 0.06508620689655187,
+            "markToMarketDrawdown": -0.028412600370599006,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": 0.031149301825993625,
+            "drawdown": 0,
+            "markToMarketReturn": 0.03845327604726112,
+            "markToMarketDrawdown": -0.028412600370599117,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.12698437193120293,
+            "drawdown": 0,
+            "markToMarketReturn": 0.14741589742150918,
+            "markToMarketDrawdown": -0.03533504210911742,
+            "trades": 3,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": 0.05674375431373191,
+            "drawdown": -0.025416997617156434,
+            "markToMarketReturn": 0.06422902257345409,
+            "markToMarketDrawdown": -0.05617320070216514,
+            "trades": 3,
+            "winRate": 0.6666666666666666,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.3677174309650879,
+            "drawdown": -0.006552006552006717,
+            "markToMarketReturn": 0.39251329703944493,
+            "markToMarketDrawdown": -0.10159906396255847,
+            "trades": 9,
+            "winRate": 0.8888888888888888,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": 0.0664008128447382,
+            "drawdown": -0.1112224206600827,
+            "markToMarketReturn": 0.07395448526905501,
+            "markToMarketDrawdown": -0.18660201043239721,
+            "trades": 9,
+            "winRate": 0.4444444444444444,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.773456226293231
+    },
+    {
+      "id": "candidate-14",
+      "config": {
+        "family": "ema_atr",
+        "fast": 5,
+        "slow": 20,
+        "atrPeriod": 14,
+        "band": 0.5
+      },
+      "train": {
+        "return": 1.3359100311376544,
+        "drawdown": -0.20909138751523793,
+        "markToMarketReturn": 1.3451155879106107,
+        "markToMarketDrawdown": -0.28528638443593457,
+        "trades": 65,
+        "winRate": 0.4461538461538462,
+        "openPosition": {
+          "side": 1,
+          "price": 20300,
+          "date": "2021-12-23"
+        }
+      },
+      "validation": {
+        "return": -0.19392052894848966,
+        "drawdown": -0.24568515463568963,
+        "markToMarketReturn": -0.16968807776905293,
+        "markToMarketDrawdown": -0.2867381961746863,
+        "trades": 25,
+        "winRate": 0.32,
+        "openPosition": {
+          "side": 1,
+          "price": 20125,
+          "date": "2025-05-19"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.008890770533446224,
+            "markToMarketDrawdown": -0.029723127035830577,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23620,
+              "date": "2026-07-31"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.009745762711864447,
+            "markToMarketDrawdown": -0.029723127035830577,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23600,
+              "date": "2026-08-03"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.00503930659141294,
+            "drawdown": -0.026405966539004178,
+            "markToMarketReturn": 0.0038066606234814504,
+            "markToMarketDrawdown": -0.05968402574605036,
+            "trades": 2,
+            "winRate": 0.5,
+            "openPosition": {
+              "side": 1,
+              "price": 23620,
+              "date": "2026-07-31"
+            }
+          },
+          "nextOpen": {
+            "return": -0.01686746987951815,
+            "drawdown": -0.0345381526104418,
+            "markToMarketReturn": -0.007286093526648996,
+            "markToMarketDrawdown": -0.06729081334113518,
+            "trades": 2,
+            "winRate": 0.5,
+            "openPosition": {
+              "side": 1,
+              "price": 23600,
+              "date": "2026-08-03"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.04401242131018257,
+            "drawdown": -0.06454213835660083,
+            "markToMarketReturn": -0.03551295511522656,
+            "markToMarketDrawdown": -0.0757714443862626,
+            "trades": 3,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": 1,
+              "price": 23620,
+              "date": "2026-07-31"
+            }
+          },
+          "nextOpen": {
+            "return": -0.06861128725428034,
+            "drawdown": -0.08535193405199748,
+            "markToMarketReturn": -0.059534193867351703,
+            "markToMarketDrawdown": -0.09029803424223215,
+            "trades": 3,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": 1,
+              "price": 23600,
+              "date": "2026-08-03"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.6762982104775104
+    },
+    {
+      "id": "candidate-15",
+      "config": {
+        "family": "ema_atr",
+        "fast": 5,
+        "slow": 20,
+        "atrPeriod": 14,
+        "band": 1
+      },
+      "train": {
+        "return": 0.5926703715068853,
+        "drawdown": -0.2767369939198743,
+        "markToMarketReturn": 0.6036868661714587,
+        "markToMarketDrawdown": -0.33756100664591837,
+        "trades": 41,
+        "winRate": 0.43902439024390244,
+        "openPosition": {
+          "side": 1,
+          "price": 20240,
+          "date": "2021-12-24"
+        }
+      },
+      "validation": {
+        "return": -0.29719655322953875,
+        "drawdown": -0.35316795541858603,
+        "markToMarketReturn": -0.28844368978990664,
+        "markToMarketDrawdown": -0.41190944087591574,
+        "trades": 13,
+        "winRate": 0.3076923076923077,
+        "openPosition": {
+          "side": 1,
+          "price": 20475,
+          "date": "2025-06-19"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.0037910699241785473,
+            "markToMarketDrawdown": -0.029723127035830577,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23740,
+              "date": "2026-08-06"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.0018848167539267102,
+            "markToMarketDrawdown": -0.029723127035830577,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23875,
+              "date": "2026-08-07"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.00657197371210505,
+            "drawdown": -0.00657197371210505,
+            "markToMarketReturn": -0.0028058185998089957,
+            "markToMarketDrawdown": -0.0610123617414462,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 23740,
+              "date": "2026-08-06"
+            }
+          },
+          "nextOpen": {
+            "return": -0.026219643240919854,
+            "drawdown": -0.026219643240919854,
+            "markToMarketReturn": -0.028055040771984063,
+            "markToMarketDrawdown": -0.07329023785583022,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 23875,
+              "date": "2026-08-07"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.00657197371210505,
+            "drawdown": -0.00657197371210505,
+            "markToMarketReturn": -0.0028058185998089957,
+            "markToMarketDrawdown": -0.0610123617414462,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 23740,
+              "date": "2026-08-06"
+            }
+          },
+          "nextOpen": {
+            "return": -0.026219643240919854,
+            "drawdown": -0.026219643240919854,
+            "markToMarketReturn": -0.028055040771984063,
+            "markToMarketDrawdown": -0.07329023785583022,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 23875,
+              "date": "2026-08-07"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.7215094477989076
+    },
+    {
+      "id": "candidate-16",
+      "config": {
+        "family": "ema_atr",
+        "fast": 10,
+        "slow": 40,
+        "atrPeriod": 14,
+        "band": 0
+      },
+      "train": {
+        "return": 0.6167846969239652,
+        "drawdown": -0.18347933121530402,
+        "markToMarketReturn": 0.625959640923287,
+        "markToMarketDrawdown": -0.2540584493263043,
+        "trades": 75,
+        "winRate": 0.36,
+        "openPosition": {
+          "side": 1,
+          "price": 20265,
+          "date": "2021-12-27"
+        }
+      },
+      "validation": {
+        "return": -0.30837300553064306,
+        "drawdown": -0.37591750073134067,
+        "markToMarketReturn": -0.291278912736047,
+        "markToMarketDrawdown": -0.420975832512549,
+        "trades": 37,
+        "winRate": 0.16216216216216217,
+        "openPosition": {
+          "side": 1,
+          "price": 20230,
+          "date": "2025-06-12"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.012534523050775404,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23535,
+              "date": "2026-08-04"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.0012605042016806678,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23800,
+              "date": "2026-08-05"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.053770216341104904,
+            "drawdown": 0,
+            "markToMarketReturn": 0.066978723408053,
+            "markToMarketDrawdown": -0.07177686756387747,
+            "trades": 2,
+            "winRate": 1,
+            "openPosition": {
+              "side": 1,
+              "price": 23535,
+              "date": "2026-08-04"
+            }
+          },
+          "nextOpen": {
+            "return": -0.024263748196975188,
+            "drawdown": -0.04374698517327591,
+            "markToMarketReturn": -0.023033828551845326,
+            "markToMarketDrawdown": -0.07294714257850565,
+            "trades": 3,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": 1,
+              "price": 23800,
+              "date": "2026-08-05"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.06298494652772302,
+            "drawdown": 0,
+            "markToMarketReturn": 0.076308955842602,
+            "markToMarketDrawdown": -0.07177686756387713,
+            "trades": 3,
+            "winRate": 1,
+            "openPosition": {
+              "side": 1,
+              "price": 23535,
+              "date": "2026-08-04"
+            }
+          },
+          "nextOpen": {
+            "return": -0.024263748196975188,
+            "drawdown": -0.04374698517327591,
+            "markToMarketReturn": -0.023033828551845326,
+            "markToMarketDrawdown": -0.07294714257850565,
+            "trades": 3,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": 1,
+              "price": 23800,
+              "date": "2026-08-05"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.7325194980675065
+    },
+    {
+      "id": "candidate-17",
+      "config": {
+        "family": "ema_atr",
+        "fast": 10,
+        "slow": 40,
+        "atrPeriod": 14,
+        "band": 0.5
+      },
+      "train": {
+        "return": 0.2759309805103236,
+        "drawdown": -0.18765292515326115,
+        "markToMarketReturn": 0.22852998225217913,
+        "markToMarketDrawdown": -0.2511795117778566,
+        "trades": 46,
+        "winRate": 0.391304347826087,
+        "openPosition": {
+          "side": -1,
+          "price": 19650,
+          "date": "2021-11-01"
+        }
+      },
+      "validation": {
+        "return": -0.27464858307535467,
+        "drawdown": -0.34796298851325447,
+        "markToMarketReturn": -0.2632760963817786,
+        "markToMarketDrawdown": -0.3974967716784634,
+        "trades": 18,
+        "winRate": 0.2777777777777778,
+        "openPosition": {
+          "side": 1,
+          "price": 20410,
+          "date": "2025-06-17"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.00020977554017198585,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23835,
+              "date": "2026-08-07"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.0072901478858571345,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24005,
+              "date": "2026-08-10"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.0109958506224066,
+            "drawdown": 0,
+            "markToMarketReturn": 0.010783768421730677,
+            "markToMarketDrawdown": -0.06621512542555075,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": 1,
+              "price": 23835,
+              "date": "2026-08-07"
+            }
+          },
+          "nextOpen": {
+            "return": -0.0064989517819706855,
+            "drawdown": -0.0064989517819706855,
+            "markToMarketReturn": -0.013741721348234148,
+            "markToMarketDrawdown": -0.08052527713128577,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24005,
+              "date": "2026-08-10"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.0109958506224066,
+            "drawdown": 0,
+            "markToMarketReturn": 0.010783768421730677,
+            "markToMarketDrawdown": -0.06621512542555075,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": 1,
+              "price": 23835,
+              "date": "2026-08-07"
+            }
+          },
+          "nextOpen": {
+            "return": -0.0064989517819706855,
+            "drawdown": -0.0064989517819706855,
+            "markToMarketReturn": -0.013741721348234148,
+            "markToMarketDrawdown": -0.08052527713128577,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24005,
+              "date": "2026-08-10"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.690945443193483
+    },
+    {
+      "id": "candidate-18",
+      "config": {
+        "family": "ema_atr",
+        "fast": 10,
+        "slow": 40,
+        "atrPeriod": 14,
+        "band": 1
+      },
+      "train": {
+        "return": 0.13226938775225272,
+        "drawdown": -0.30570685276021015,
+        "markToMarketReturn": 0.09792350136947459,
+        "markToMarketDrawdown": -0.3618910698047392,
+        "trades": 32,
+        "winRate": 0.46875,
+        "openPosition": {
+          "side": -1,
+          "price": 19780,
+          "date": "2021-11-05"
+        }
+      },
+      "validation": {
+        "return": -0.31118292432176764,
+        "drawdown": -0.35115891532095067,
+        "markToMarketReturn": -0.3071723445507154,
+        "markToMarketDrawdown": -0.4116414943458424,
+        "trades": 12,
+        "winRate": 0.16666666666666666,
+        "openPosition": {
+          "side": 1,
+          "price": 20610,
+          "date": "2025-07-02"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.01569599339116068,
+            "markToMarketDrawdown": -0.029723127035830577,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24210,
+              "date": "2026-08-12"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.019341563786008265,
+            "markToMarketDrawdown": -0.029723127035830577,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24300,
+              "date": "2026-08-13"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.026499894000423962,
+            "drawdown": -0.026499894000423962,
+            "markToMarketReturn": -0.04177994523048756,
+            "markToMarketDrawdown": -0.09771155614182347,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24210,
+              "date": "2026-08-12"
+            }
+          },
+          "nextOpen": {
+            "return": -0.044487427466150864,
+            "drawdown": -0.044487427466150864,
+            "markToMarketReturn": -0.06296853483614717,
+            "markToMarketDrawdown": -0.10657882634289906,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24300,
+              "date": "2026-08-13"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.026499894000423962,
+            "drawdown": -0.026499894000423962,
+            "markToMarketReturn": -0.04177994523048756,
+            "markToMarketDrawdown": -0.09771155614182347,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24210,
+              "date": "2026-08-12"
+            }
+          },
+          "nextOpen": {
+            "return": -0.044487427466150864,
+            "drawdown": -0.044487427466150864,
+            "markToMarketReturn": -0.06296853483614717,
+            "markToMarketDrawdown": -0.10657882634289906,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24300,
+              "date": "2026-08-13"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.7559561623307245
+    },
+    {
+      "id": "candidate-19",
+      "config": {
+        "family": "ema_atr",
+        "fast": 20,
+        "slow": 60,
+        "atrPeriod": 14,
+        "band": 0
+      },
+      "train": {
+        "return": 0.6274696857164088,
+        "drawdown": -0.20847462586638643,
+        "markToMarketReturn": 0.5781025567260223,
+        "markToMarketDrawdown": -0.2853296188452189,
+        "trades": 44,
+        "winRate": 0.45454545454545453,
+        "openPosition": {
+          "side": -1,
+          "price": 19780,
+          "date": "2021-11-05"
+        }
+      },
+      "validation": {
+        "return": -0.17052446519789677,
+        "drawdown": -0.29950235003704695,
+        "markToMarketReturn": -0.15751945926273392,
+        "markToMarketDrawdown": -0.34864574259361947,
+        "trades": 20,
+        "winRate": 0.25,
+        "openPosition": {
+          "side": 1,
+          "price": 20410,
+          "date": "2025-06-17"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.01569599339116068,
+            "markToMarketDrawdown": -0.029723127035830577,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24210,
+              "date": "2026-08-12"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.019341563786008265,
+            "markToMarketDrawdown": -0.029723127035830577,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24300,
+              "date": "2026-08-13"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.004564315352697079,
+            "drawdown": -0.004564315352697079,
+            "markToMarketReturn": -0.020188667280246597,
+            "markToMarketDrawdown": -0.09482816106263381,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24210,
+              "date": "2026-08-12"
+            }
+          },
+          "nextOpen": {
+            "return": -0.018867924528301883,
+            "drawdown": -0.018867924528301883,
+            "markToMarketReturn": -0.03784455314853641,
+            "markToMarketDrawdown": -0.10299600824669897,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24300,
+              "date": "2026-08-13"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.004564315352697079,
+            "drawdown": -0.004564315352697079,
+            "markToMarketReturn": -0.020188667280246597,
+            "markToMarketDrawdown": -0.09482816106263381,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24210,
+              "date": "2026-08-12"
+            }
+          },
+          "nextOpen": {
+            "return": -0.018867924528301883,
+            "drawdown": -0.018867924528301883,
+            "markToMarketReturn": -0.03784455314853641,
+            "markToMarketDrawdown": -0.10299600824669897,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24300,
+              "date": "2026-08-13"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.48910525603824634
+    },
+    {
+      "id": "candidate-20",
+      "config": {
+        "family": "ema_atr",
+        "fast": 20,
+        "slow": 60,
+        "atrPeriod": 14,
+        "band": 0.5
+      },
+      "train": {
+        "return": 0.14891031836529267,
+        "drawdown": -0.312052067253347,
+        "markToMarketReturn": 0.058614905675562046,
+        "markToMarketDrawdown": -0.373058052127233,
+        "trades": 30,
+        "winRate": 0.4666666666666667,
+        "openPosition": {
+          "side": -1,
+          "price": 18895,
+          "date": "2021-11-11"
+        }
+      },
+      "validation": {
+        "return": -0.303910816513832,
+        "drawdown": -0.33004121900365035,
+        "markToMarketReturn": -0.2986668882785778,
+        "markToMarketDrawdown": -0.3912100057418717,
+        "trades": 12,
+        "winRate": 0.08333333333333333,
+        "openPosition": {
+          "side": 1,
+          "price": 20575,
+          "date": "2025-06-30"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.018129377832715288,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24270,
+              "date": "2026-09-04"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.016914191419141966,
+            "markToMarketDrawdown": -0.029723127035830577,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24240,
+              "date": "2026-09-07"
+            }
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.018129377832715288,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24270,
+              "date": "2026-09-04"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.016914191419141966,
+            "markToMarketDrawdown": -0.029723127035830577,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24240,
+              "date": "2026-09-07"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.029043883824464656,
+            "drawdown": -0.029043883824464656,
+            "markToMarketReturn": -0.04664671411359678,
+            "markToMarketDrawdown": -0.09335333678907987,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24270,
+              "date": "2026-09-04"
+            }
+          },
+          "nextOpen": {
+            "return": -0.04190844616376532,
+            "drawdown": -0.04190844616376532,
+            "markToMarketReturn": -0.058113790102414575,
+            "markToMarketDrawdown": -0.09300568405350462,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24240,
+              "date": "2026-09-07"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.029043883824464656,
+            "drawdown": -0.029043883824464656,
+            "markToMarketReturn": -0.04664671411359678,
+            "markToMarketDrawdown": -0.09335333678907987,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24270,
+              "date": "2026-09-04"
+            }
+          },
+          "nextOpen": {
+            "return": -0.04190844616376532,
+            "drawdown": -0.04190844616376532,
+            "markToMarketReturn": -0.058113790102414575,
+            "markToMarketDrawdown": -0.09300568405350462,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24240,
+              "date": "2026-09-07"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.7768482708858897
+    },
+    {
+      "id": "candidate-21",
+      "config": {
+        "family": "ema_atr",
+        "fast": 20,
+        "slow": 60,
+        "atrPeriod": 14,
+        "band": 1
+      },
+      "train": {
+        "return": 1.5150923845930993,
+        "drawdown": -0.03671164104173208,
+        "markToMarketReturn": 1.2891375607366067,
+        "markToMarketDrawdown": -0.31342376999392574,
+        "trades": 10,
+        "winRate": 0.7,
+        "openPosition": {
+          "side": -1,
+          "price": 18700,
+          "date": "2021-11-18"
+        }
+      },
+      "validation": {
+        "return": -0.3078885102675806,
+        "drawdown": -0.3078885102675806,
+        "markToMarketReturn": -0.30905508393195014,
+        "markToMarketDrawdown": -0.385261331635112,
+        "trades": 8,
+        "winRate": 0.25,
+        "openPosition": {
+          "side": 1,
+          "price": 20765,
+          "date": "2025-07-28"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.03676310637372193,
+            "markToMarketDrawdown": -0.09279661016949137,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": -1,
+              "price": 22985,
+              "date": "2026-06-30"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.027598102630444155,
+            "markToMarketDrawdown": -0.09121199500208244,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": -1,
+              "price": 23190,
+              "date": "2026-06-29"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.03676310637372193,
+            "markToMarketDrawdown": -0.09279661016949137,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": -1,
+              "price": 22985,
+              "date": "2026-06-30"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.027598102630444155,
+            "markToMarketDrawdown": -0.09121199500208244,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": -1,
+              "price": 23190,
+              "date": "2026-06-29"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.03676310637372193,
+            "markToMarketDrawdown": -0.09279661016949137,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": -1,
+              "price": 22985,
+              "date": "2026-06-30"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.7991679542840479
+    },
+    {
+      "id": "candidate-22",
+      "config": {
+        "family": "ema_atr",
+        "fast": 20,
+        "slow": 120,
+        "atrPeriod": 14,
+        "band": 0
+      },
+      "train": {
+        "return": 0.8604897318117906,
+        "drawdown": -0.21639720164297982,
+        "markToMarketReturn": 0.7573968259061139,
+        "markToMarketDrawdown": -0.32726489280321225,
+        "trades": 26,
+        "winRate": 0.4230769230769231,
+        "openPosition": {
+          "side": -1,
+          "price": 19310,
+          "date": "2021-11-16"
+        }
+      },
+      "validation": {
+        "return": -0.3330422428727625,
+        "drawdown": -0.35788726806884896,
+        "markToMarketReturn": -0.3247358092675149,
+        "markToMarketDrawdown": -0.42888249537333456,
+        "trades": 20,
+        "winRate": 0.1,
+        "openPosition": {
+          "side": 1,
+          "price": 20475,
+          "date": "2025-06-19"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.01569599339116068,
+            "markToMarketDrawdown": -0.029723127035830577,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24210,
+              "date": "2026-08-12"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.019341563786008265,
+            "markToMarketDrawdown": -0.029723127035830577,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24300,
+              "date": "2026-08-13"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.04691891891891897,
+            "drawdown": -0.04691891891891897,
+            "markToMarketReturn": -0.06187847326880791,
+            "markToMarketDrawdown": -0.10049732346158713,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24210,
+              "date": "2026-08-12"
+            }
+          },
+          "nextOpen": {
+            "return": -0.05652173913043468,
+            "drawdown": -0.05652173913043468,
+            "markToMarketReturn": -0.07477008409375552,
+            "markToMarketDrawdown": -0.10831857389905075,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24300,
+              "date": "2026-08-13"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.04691891891891897,
+            "drawdown": -0.04691891891891897,
+            "markToMarketReturn": -0.06187847326880791,
+            "markToMarketDrawdown": -0.10049732346158713,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24210,
+              "date": "2026-08-12"
+            }
+          },
+          "nextOpen": {
+            "return": -0.05652173913043468,
+            "drawdown": -0.05652173913043468,
+            "markToMarketReturn": -0.07477008409375552,
+            "markToMarketDrawdown": -0.10831857389905075,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24300,
+              "date": "2026-08-13"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.7765349401421832
+    },
+    {
+      "id": "candidate-23",
+      "config": {
+        "family": "ema_atr",
+        "fast": 20,
+        "slow": 120,
+        "atrPeriod": 14,
+        "band": 0.5
+      },
+      "train": {
+        "return": 0.7178007536712312,
+        "drawdown": -0.2930685618588188,
+        "markToMarketReturn": 0.5406743430761733,
+        "markToMarketDrawdown": -0.39624305262397574,
+        "trades": 18,
+        "winRate": 0.3888888888888889,
+        "openPosition": {
+          "side": -1,
+          "price": 18475,
+          "date": "2021-11-19"
+        }
+      },
+      "validation": {
+        "return": -0.31729629043752694,
+        "drawdown": -0.31729629043752694,
+        "markToMarketReturn": -0.3114839260895127,
+        "markToMarketDrawdown": -0.39226707923979465,
+        "trades": 10,
+        "winRate": 0.1,
+        "openPosition": {
+          "side": 1,
+          "price": 20555,
+          "date": "2025-07-01"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.006255212677231059,
+            "markToMarketDrawdown": -0.029723127035830577,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23980,
+              "date": "2026-09-01"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.011613438407299892,
+            "markToMarketDrawdown": -0.029723127035830577,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24110,
+              "date": "2026-09-02"
+            }
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.05383432212700501,
+            "drawdown": -0.05383432212700501,
+            "markToMarketReturn": -0.059752789669997086,
+            "markToMarketDrawdown": -0.08275713050993938,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 23980,
+              "date": "2026-09-01"
+            }
+          },
+          "nextOpen": {
+            "return": -0.07394209354120274,
+            "drawdown": -0.07394209354120274,
+            "markToMarketReturn": -0.08469680999945506,
+            "markToMarketDrawdown": -0.08673081708834507,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24110,
+              "date": "2026-09-02"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.05383432212700501,
+            "drawdown": -0.05383432212700501,
+            "markToMarketReturn": -0.059752789669997086,
+            "markToMarketDrawdown": -0.08275713050993938,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 23980,
+              "date": "2026-09-01"
+            }
+          },
+          "nextOpen": {
+            "return": -0.07394209354120274,
+            "drawdown": -0.07394209354120274,
+            "markToMarketReturn": -0.08469680999945506,
+            "markToMarketDrawdown": -0.08673081708834507,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24110,
+              "date": "2026-09-02"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.05383432212700501,
+            "drawdown": -0.05383432212700501,
+            "markToMarketReturn": -0.059752789669997086,
+            "markToMarketDrawdown": -0.08275713050993938,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 23980,
+              "date": "2026-09-01"
+            }
+          },
+          "nextOpen": {
+            "return": -0.07394209354120274,
+            "drawdown": -0.07394209354120274,
+            "markToMarketReturn": -0.08469680999945506,
+            "markToMarketDrawdown": -0.08673081708834507,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24110,
+              "date": "2026-09-02"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.8088782037290524
+    },
+    {
+      "id": "candidate-24",
+      "config": {
+        "family": "ema_atr",
+        "fast": 20,
+        "slow": 120,
+        "atrPeriod": 14,
+        "band": 1
+      },
+      "train": {
+        "return": 1.0074730872053106,
+        "drawdown": -0.08899143045484514,
+        "markToMarketReturn": 0.875181450705379,
+        "markToMarketDrawdown": -0.2794087872038874,
+        "trades": 10,
+        "winRate": 0.6,
+        "openPosition": {
+          "side": -1,
+          "price": 19120,
+          "date": "2021-12-02"
+        }
+      },
+      "validation": {
+        "return": -0.28451900685497367,
+        "drawdown": -0.29224949114872445,
+        "markToMarketReturn": -0.2798290367615248,
+        "markToMarketDrawdown": -0.3829937614326002,
+        "trades": 8,
+        "winRate": 0.125,
+        "openPosition": {
+          "side": 1,
+          "price": 20595,
+          "date": "2025-07-07"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.020752003287446086,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24335,
+              "date": "2026-09-08"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.026154474867184252,
+            "markToMarketDrawdown": -0.029723127035830466,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24470,
+              "date": "2026-09-09"
+            }
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.06429040017493981,
+            "drawdown": -0.06429040017493981,
+            "markToMarketReturn": -0.08370824886660433,
+            "markToMarketDrawdown": -0.08470900438335127,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24335,
+              "date": "2026-09-08"
+            }
+          },
+          "nextOpen": {
+            "return": -0.07868635662331935,
+            "drawdown": -0.07868635662331935,
+            "markToMarketReturn": -0.1027828311538087,
+            "markToMarketDrawdown": -0.1027828311538087,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24470,
+              "date": "2026-09-09"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.06429040017493981,
+            "drawdown": -0.06429040017493981,
+            "markToMarketReturn": -0.08370824886660433,
+            "markToMarketDrawdown": -0.08470900438335127,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24335,
+              "date": "2026-09-08"
+            }
+          },
+          "nextOpen": {
+            "return": -0.07868635662331935,
+            "drawdown": -0.07868635662331935,
+            "markToMarketReturn": -0.1027828311538087,
+            "markToMarketDrawdown": -0.1027828311538087,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24470,
+              "date": "2026-09-09"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.06429040017493981,
+            "drawdown": -0.06429040017493981,
+            "markToMarketReturn": -0.08370824886660433,
+            "markToMarketDrawdown": -0.08470900438335127,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24335,
+              "date": "2026-09-08"
+            }
+          },
+          "nextOpen": {
+            "return": -0.07868635662331935,
+            "drawdown": -0.07868635662331935,
+            "markToMarketReturn": -0.1027828311538087,
+            "markToMarketDrawdown": -0.1027828311538087,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24470,
+              "date": "2026-09-09"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.7428815701611466
+    },
+    {
+      "id": "candidate-25",
+      "config": {
+        "family": "donchian",
+        "period": 10
+      },
+      "train": {
+        "return": 1.8357924246083832,
+        "drawdown": -0.19715096513701313,
+        "markToMarketReturn": 1.921074026460392,
+        "markToMarketDrawdown": -0.23386359861987638,
+        "trades": 97,
+        "winRate": 0.41237113402061853,
+        "openPosition": {
+          "side": 1,
+          "price": 19785,
+          "date": "2021-12-20"
+        }
+      },
+      "validation": {
+        "return": -0.28159008295698496,
+        "drawdown": -0.39074227114729077,
+        "markToMarketReturn": -0.2831529761775282,
+        "markToMarketDrawdown": -0.43485538160838544,
+        "trades": 38,
+        "winRate": 0.34210526315789475,
+        "openPosition": {
+          "side": -1,
+          "price": 20685,
+          "date": "2025-09-24"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.0002085070892410279,
+            "drawdown": -0.0002085070892410279,
+            "markToMarketReturn": 0.005838198498749003,
+            "markToMarketDrawdown": -0.024837133550488555,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.011613438407299892,
+            "markToMarketDrawdown": -0.029723127035830577,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24110,
+              "date": "2026-09-02"
+            }
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.01801685866694469,
+            "drawdown": -0.011167435763642208,
+            "markToMarketReturn": 0.024173790658882366,
+            "markToMarketDrawdown": -0.03788346716079882,
+            "trades": 3,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": -0.02179487179487183,
+            "drawdown": -0.025957446808510642,
+            "markToMarketReturn": -0.033155196800987,
+            "markToMarketDrawdown": -0.06838919518810371,
+            "trades": 2,
+            "winRate": 0.5,
+            "openPosition": {
+              "side": 1,
+              "price": 24110,
+              "date": "2026-09-02"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.09052763338475356,
+            "drawdown": -0.01116743576364232,
+            "markToMarketReturn": 0.09712310812263847,
+            "markToMarketDrawdown": -0.03788346716079871,
+            "trades": 7,
+            "winRate": 0.42857142857142855,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": -0.0653893807418301,
+            "drawdown": -0.07334395327226872,
+            "markToMarketReturn": -0.07624342360339331,
+            "markToMarketDrawdown": -0.07642441039343961,
+            "trades": 6,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": 1,
+              "price": 24110,
+              "date": "2026-09-02"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.422216596010925,
+            "drawdown": -0.01116743576364232,
+            "markToMarketReturn": 0.4308181145269452,
+            "markToMarketDrawdown": -0.055326514989551545,
+            "trades": 13,
+            "winRate": 0.6153846153846154,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": -0.20702796461987094,
+            "drawdown": -0.25319188044183516,
+            "markToMarketReturn": -0.21623709651146927,
+            "markToMarketDrawdown": -0.3195519914826539,
+            "trades": 12,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": 1,
+              "price": 24110,
+              "date": "2026-09-02"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.647548805571813
+    },
+    {
+      "id": "candidate-26",
+      "config": {
+        "family": "donchian",
+        "period": 20
+      },
+      "train": {
+        "return": 0.7968489866867234,
+        "drawdown": -0.2406981639305117,
+        "markToMarketReturn": 0.8508861434761399,
+        "markToMarketDrawdown": -0.2537670708163392,
+        "trades": 59,
+        "winRate": 0.423728813559322,
+        "openPosition": {
+          "side": 1,
+          "price": 19785,
+          "date": "2021-12-20"
+        }
+      },
+      "validation": {
+        "return": -0.22203053388942362,
+        "drawdown": -0.3677600258293242,
+        "markToMarketReturn": -0.20378637213170836,
+        "markToMarketDrawdown": -0.41364556927582763,
+        "trades": 17,
+        "winRate": 0.35294117647058826,
+        "openPosition": {
+          "side": 1,
+          "price": 20255,
+          "date": "2025-05-15"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.006047966631908208,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.02391629297458886,
+            "drawdown": 0,
+            "markToMarketReturn": 0.030108904548366233,
+            "markToMarketDrawdown": -0.028412600370599117,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.007610993657505283,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23650,
+              "date": "2026-07-31"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.025355532743830178,
+            "drawdown": -0.029116465863453844,
+            "markToMarketReturn": 0.03155684879170728,
+            "markToMarketDrawdown": -0.0704115467134776,
+            "trades": 3,
+            "winRate": 0.6666666666666666,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": -0.08328434254360184,
+            "drawdown": -0.08328434254360184,
+            "markToMarketReturn": -0.0763072254889654,
+            "markToMarketDrawdown": -0.08559542902967121,
+            "trades": 2,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 23650,
+              "date": "2026-07-31"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.01788935168016126,
+            "drawdown": -0.036186006160564776,
+            "markToMarketReturn": 0.024045512514097478,
+            "markToMarketDrawdown": -0.11056732135890657,
+            "trades": 4,
+            "winRate": 0.5,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": -0.16464848026535595,
+            "drawdown": -0.16464848026535595,
+            "markToMarketReturn": -0.1582906251468682,
+            "markToMarketDrawdown": -0.17259325536302283,
+            "trades": 3,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 23650,
+              "date": "2026-07-31"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.5367651689782007
+    },
+    {
+      "id": "candidate-27",
+      "config": {
+        "family": "donchian",
+        "period": 40
+      },
+      "train": {
+        "return": -0.00799776859935819,
+        "drawdown": -0.3832703293120625,
+        "markToMarketReturn": -0.011635029286478527,
+        "markToMarketDrawdown": -0.4607407313077879,
+        "trades": 35,
+        "winRate": 0.45714285714285713,
+        "openPosition": {
+          "side": 1,
+          "price": 20455,
+          "date": "2021-12-31"
+        }
+      },
+      "validation": {
+        "return": -0.30846962549693846,
+        "drawdown": -0.36354323803415023,
+        "markToMarketReturn": -0.29590252144162743,
+        "markToMarketDrawdown": -0.4163020466654208,
+        "trades": 13,
+        "winRate": 0.23076923076923078,
+        "openPosition": {
+          "side": 1,
+          "price": 20360,
+          "date": "2025-06-13"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.01569599339116068,
+            "markToMarketDrawdown": -0.029723127035830577,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24210,
+              "date": "2026-08-12"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.019341563786008265,
+            "markToMarketDrawdown": -0.029723127035830577,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24300,
+              "date": "2026-08-13"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.0014477766287486205,
+            "drawdown": -0.0014477766287486205,
+            "markToMarketReturn": -0.017121045727512607,
+            "markToMarketDrawdown": -0.09442732136912102,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24210,
+              "date": "2026-08-12"
+            }
+          },
+          "nextOpen": {
+            "return": -0.03316326530612246,
+            "drawdown": -0.03316326530612246,
+            "markToMarketReturn": -0.05186339968086007,
+            "markToMarketDrawdown": -0.10497530363764662,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24300,
+              "date": "2026-08-13"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.0014477766287486205,
+            "drawdown": -0.0014477766287486205,
+            "markToMarketReturn": -0.017121045727512607,
+            "markToMarketDrawdown": -0.09442732136912102,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24210,
+              "date": "2026-08-12"
+            }
+          },
+          "nextOpen": {
+            "return": -0.03316326530612246,
+            "drawdown": -0.03316326530612246,
+            "markToMarketReturn": -0.05186339968086007,
+            "markToMarketDrawdown": -0.10497530363764662,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24300,
+              "date": "2026-08-13"
+            }
+          }
+        }
+      ],
+      "validationScore": -1000000000
+    },
+    {
+      "id": "candidate-28",
+      "config": {
+        "family": "donchian",
+        "period": 60
+      },
+      "train": {
+        "return": 0.8155935076370218,
+        "drawdown": -0.18511034747170807,
+        "markToMarketReturn": 0.6508928924138613,
+        "markToMarketDrawdown": -0.3146385908078557,
+        "trades": 18,
+        "winRate": 0.5555555555555556,
+        "openPosition": {
+          "side": -1,
+          "price": 18685,
+          "date": "2021-11-08"
+        }
+      },
+      "validation": {
+        "return": -0.3538197527528938,
+        "drawdown": -0.3538197527528938,
+        "markToMarketReturn": -0.36394508426246386,
+        "markToMarketDrawdown": -0.46057400489762057,
+        "trades": 10,
+        "winRate": 0.2,
+        "openPosition": {
+          "side": 1,
+          "price": 21060,
+          "date": "2025-03-13"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.02396067990989148,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24415,
+              "date": "2026-09-09"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.030906872712484712,
+            "markToMarketDrawdown": -0.030906872712484712,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24590,
+              "date": "2026-09-10"
+            }
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.02396067990989148,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24415,
+              "date": "2026-09-09"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.030906872712484712,
+            "markToMarketDrawdown": -0.030906872712484712,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24590,
+              "date": "2026-09-10"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.009927611168562667,
+            "drawdown": -0.009927611168562667,
+            "markToMarketReturn": -0.03365041876497432,
+            "markToMarketDrawdown": -0.10078902515947863,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24415,
+              "date": "2026-09-09"
+            }
+          },
+          "nextOpen": {
+            "return": -0.04549319727891166,
+            "drawdown": -0.04549319727891166,
+            "markToMarketReturn": -0.07499401753381307,
+            "markToMarketDrawdown": -0.11811346949312052,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24590,
+              "date": "2026-09-10"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.009927611168562667,
+            "drawdown": -0.009927611168562667,
+            "markToMarketReturn": -0.03365041876497432,
+            "markToMarketDrawdown": -0.10078902515947863,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24415,
+              "date": "2026-09-09"
+            }
+          },
+          "nextOpen": {
+            "return": -0.04549319727891166,
+            "drawdown": -0.04549319727891166,
+            "markToMarketReturn": -0.07499401753381307,
+            "markToMarketDrawdown": -0.11811346949312052,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24590,
+              "date": "2026-09-10"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.768214768941515
+    },
+    {
+      "id": "candidate-29",
+      "config": {
+        "family": "bollinger_close",
+        "period": 10,
+        "multiplier": 0
+      },
+      "train": {
+        "return": 0.23994263333327015,
+        "drawdown": -0.30333195270047253,
+        "markToMarketReturn": 0.34236551752095856,
+        "markToMarketDrawdown": -0.3272484576319594,
+        "trades": 497,
+        "winRate": 0.323943661971831,
+        "openPosition": {
+          "side": 1,
+          "price": 18825,
+          "date": "2021-12-13"
+        }
+      },
+      "validation": {
+        "return": -0.2648009674302615,
+        "drawdown": -0.3202846252968504,
+        "markToMarketReturn": -0.26021919014195527,
+        "markToMarketDrawdown": -0.34786747252045236,
+        "trades": 164,
+        "winRate": 0.3353658536585366,
+        "openPosition": {
+          "side": -1,
+          "price": 20860,
+          "date": "2025-09-19"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.0078392810493082,
+            "drawdown": 0,
+            "markToMarketReturn": 0.03118132629599235,
+            "markToMarketDrawdown": -0.0077251473876802645,
+            "trades": 2,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 24395,
+              "date": "2026-09-21"
+            }
+          },
+          "nextOpen": {
+            "return": -0.011986124399465892,
+            "drawdown": -0.011986124399465892,
+            "markToMarketReturn": 0.005925952455261729,
+            "markToMarketDrawdown": -0.016673712520162698,
+            "trades": 2,
+            "winRate": 0,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-22"
+            }
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.21175580254685333,
+            "drawdown": 0,
+            "markToMarketReturn": 0.23982065306699973,
+            "markToMarketDrawdown": -0.008029647930821504,
+            "trades": 11,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 24395,
+              "date": "2026-09-21"
+            }
+          },
+          "nextOpen": {
+            "return": 0.026345459327872245,
+            "drawdown": -0.01198612439946567,
+            "markToMarketReturn": 0.044952463946918986,
+            "markToMarketDrawdown": -0.032488610059028034,
+            "trades": 11,
+            "winRate": 0.5454545454545454,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-22"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.595063816065639,
+            "drawdown": 0,
+            "markToMarketReturn": 0.6320062655871428,
+            "markToMarketDrawdown": -0.01989467524868349,
+            "trades": 25,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 24395,
+              "date": "2026-09-21"
+            }
+          },
+          "nextOpen": {
+            "return": -0.07019269072184475,
+            "drawdown": -0.13158157649811786,
+            "markToMarketReturn": -0.053335862700320646,
+            "markToMarketDrawdown": -0.15207672556067442,
+            "trades": 25,
+            "winRate": 0.36,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-22"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 1.6982530838371437,
+            "drawdown": 0,
+            "markToMarketReturn": 1.7607459304191475,
+            "markToMarketDrawdown": -0.04212168486739465,
+            "trades": 41,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 24395,
+              "date": "2026-09-21"
+            }
+          },
+          "nextOpen": {
+            "return": -0.025200688569611773,
+            "drawdown": -0.13327859594140157,
+            "markToMarketReturn": -0.007528183541619438,
+            "markToMarketDrawdown": -0.15789137414996213,
+            "trades": 41,
+            "winRate": 0.36585365853658536,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-22"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.7612122096718684
+    },
+    {
+      "id": "candidate-30",
+      "config": {
+        "family": "bollinger_close",
+        "period": 10,
+        "multiplier": 0.5
+      },
+      "train": {
+        "return": 0.12913128169391364,
+        "drawdown": -0.35194623732134467,
+        "markToMarketReturn": 0.19852580838135214,
+        "markToMarketDrawdown": -0.3837954187491085,
+        "trades": 325,
+        "winRate": 0.32,
+        "openPosition": {
+          "side": 1,
+          "price": 19200,
+          "date": "2021-12-14"
+        }
+      },
+      "validation": {
+        "return": -0.382207334776271,
+        "drawdown": -0.4045779717399538,
+        "markToMarketReturn": -0.37835723667084986,
+        "markToMarketDrawdown": -0.42221821216500466,
+        "trades": 112,
+        "winRate": 0.30357142857142855,
+        "openPosition": {
+          "side": -1,
+          "price": 20860,
+          "date": "2025-09-19"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.006229539600387302,
+            "drawdown": -0.00663900414937757,
+            "markToMarketReturn": 0.011786900555188717,
+            "markToMarketDrawdown": -0.011761165892158365,
+            "trades": 2,
+            "winRate": 0.5,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": -0.024897115260530178,
+            "drawdown": -0.02733538044429218,
+            "markToMarketReturn": -0.017990136493625575,
+            "markToMarketDrawdown": -0.05169118700388664,
+            "trades": 3,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.07370012750468824,
+            "drawdown": -0.006639004149377681,
+            "markToMarketReturn": 0.09316564279525541,
+            "markToMarketDrawdown": -0.027655072222475985,
+            "trades": 7,
+            "winRate": 0.8571428571428571,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": -0.03343949099128096,
+            "drawdown": -0.036439233532652326,
+            "markToMarketReturn": -0.02659302071913583,
+            "markToMarketDrawdown": -0.06339121055126051,
+            "trades": 7,
+            "winRate": 0.2857142857142857,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.2937182311786788,
+            "drawdown": -0.00663900414937757,
+            "markToMarketReturn": 0.31717253780078924,
+            "markToMarketDrawdown": -0.028671737858396606,
+            "trades": 15,
+            "winRate": 0.9333333333333333,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": -0.10051615637425937,
+            "drawdown": -0.11153835694902225,
+            "markToMarketReturn": -0.09414481248191042,
+            "markToMarketDrawdown": -0.1391558471845863,
+            "trades": 15,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.9762598863184666,
+            "drawdown": -0.00663900414937757,
+            "markToMarketReturn": 1.0120882484931735,
+            "markToMarketDrawdown": -0.04212168486739465,
+            "trades": 25,
+            "winRate": 0.96,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": -0.042972519698041944,
+            "drawdown": -0.11932630429518754,
+            "markToMarketReturn": -0.03619357504590304,
+            "markToMarketDrawdown": -0.15438546066619985,
+            "trades": 25,
+            "winRate": 0.4,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.9052364956415068
+    },
+    {
+      "id": "candidate-31",
+      "config": {
+        "family": "bollinger_close",
+        "period": 10,
+        "multiplier": 1
+      },
+      "train": {
+        "return": 1.3981130567915212,
+        "drawdown": -0.20918882788589332,
+        "markToMarketReturn": 1.5454970884068335,
+        "markToMarketDrawdown": -0.27144789242838885,
+        "trades": 211,
+        "winRate": 0.38388625592417064,
+        "openPosition": {
+          "side": 1,
+          "price": 19200,
+          "date": "2021-12-14"
+        }
+      },
+      "validation": {
+        "return": -0.4664543151452799,
+        "drawdown": -0.47773319896679145,
+        "markToMarketReturn": -0.4672275697610113,
+        "markToMarketDrawdown": -0.499938933013082,
+        "trades": 82,
+        "winRate": 0.3048780487804878,
+        "openPosition": {
+          "side": -1,
+          "price": 20700,
+          "date": "2025-09-23"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.010694065841895473,
+            "drawdown": 0,
+            "markToMarketReturn": 0.022017194380373084,
+            "markToMarketDrawdown": -0.03094462540716625,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 24100,
+              "date": "2026-09-14"
+            }
+          },
+          "nextOpen": {
+            "return": -0.0037367656217562883,
+            "drawdown": -0.0037367656217562883,
+            "markToMarketReturn": 0.003113971351463629,
+            "markToMarketDrawdown": -0.03949511400651473,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": -1,
+              "price": 23995,
+              "date": "2026-09-15"
+            }
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.05541309273071526,
+            "drawdown": 0,
+            "markToMarketReturn": 0.06723722281525024,
+            "markToMarketDrawdown": -0.030944625407166026,
+            "trades": 3,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 24100,
+              "date": "2026-09-14"
+            }
+          },
+          "nextOpen": {
+            "return": 0.002739485089261473,
+            "drawdown": -0.02184681384761311,
+            "markToMarketReturn": 0.009634755563932451,
+            "markToMarketDrawdown": -0.06330348357459725,
+            "trades": 3,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": -1,
+              "price": 23995,
+              "date": "2026-09-15"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.23476101787885773,
+            "drawdown": -0.00041109969167507643,
+            "markToMarketReturn": 0.2485944400708615,
+            "markToMarketDrawdown": -0.030944625407166138,
+            "trades": 11,
+            "winRate": 0.9090909090909091,
+            "openPosition": {
+              "side": -1,
+              "price": 24100,
+              "date": "2026-09-14"
+            }
+          },
+          "nextOpen": {
+            "return": -0.10066055611828173,
+            "drawdown": -0.1197715346546423,
+            "markToMarketReturn": -0.0944763090567905,
+            "markToMarketDrawdown": -0.15582536296018645,
+            "trades": 11,
+            "winRate": 0.2727272727272727,
+            "openPosition": {
+              "side": -1,
+              "price": 23995,
+              "date": "2026-09-15"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.7702750240965737,
+            "drawdown": -0.00041109969167518745,
+            "markToMarketReturn": 0.7901079807980704,
+            "markToMarketDrawdown": -0.04212168486739476,
+            "trades": 21,
+            "winRate": 0.9523809523809523,
+            "openPosition": {
+              "side": -1,
+              "price": 24100,
+              "date": "2026-09-14"
+            }
+          },
+          "nextOpen": {
+            "return": -0.15702853891436475,
+            "drawdown": -0.21502296232619977,
+            "markToMarketReturn": -0.15123190248681195,
+            "markToMarketDrawdown": -0.23683672584776383,
+            "trades": 21,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": -1,
+              "price": 23995,
+              "date": "2026-09-15"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.9330225840464281
+    },
+    {
+      "id": "candidate-32",
+      "config": {
+        "family": "bollinger_close",
+        "period": 20,
+        "multiplier": 0
+      },
+      "train": {
+        "return": 0.6235116632420472,
+        "drawdown": -0.20284529597722478,
+        "markToMarketReturn": 0.7219447149036127,
+        "markToMarketDrawdown": -0.22762207415517266,
+        "trades": 323,
+        "winRate": 0.29102167182662536,
+        "openPosition": {
+          "side": 1,
+          "price": 19215,
+          "date": "2021-12-17"
+        }
+      },
+      "validation": {
+        "return": -0.21373150466702817,
+        "drawdown": -0.2885163905290532,
+        "markToMarketReturn": -0.2088314613116452,
+        "markToMarketDrawdown": -0.3339909796268974,
+        "trades": 106,
+        "winRate": 0.29245283018867924,
+        "openPosition": {
+          "side": -1,
+          "price": 20860,
+          "date": "2025-09-19"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.020301754799423755,
+            "drawdown": 0,
+            "markToMarketReturn": 0.03900553568040199,
+            "markToMarketDrawdown": -0.007377049180327777,
+            "trades": 2,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 24275,
+              "date": "2026-09-23"
+            }
+          },
+          "nextOpen": {
+            "return": 0.006427280877749242,
+            "drawdown": -0.0033340279224838287,
+            "markToMarketReturn": 0.023858186360992795,
+            "markToMarketDrawdown": -0.027483713355048844,
+            "trades": 3,
+            "winRate": 0.6666666666666666,
+            "openPosition": {
+              "side": -1,
+              "price": 24250,
+              "date": "2026-09-24"
+            }
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.07261474806792134,
+            "drawdown": 0,
+            "markToMarketReturn": 0.09227751069985657,
+            "markToMarketDrawdown": -0.016471072678608034,
+            "trades": 5,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 24275,
+              "date": "2026-09-23"
+            }
+          },
+          "nextOpen": {
+            "return": 0.005352038056298802,
+            "drawdown": -0.012662526569947818,
+            "markToMarketReturn": 0.022764320777274083,
+            "markToMarketDrawdown": -0.03948240333663955,
+            "trades": 5,
+            "winRate": 0.6,
+            "openPosition": {
+              "side": -1,
+              "price": 24250,
+              "date": "2026-09-24"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.35767535023262975,
+            "drawdown": 0,
+            "markToMarketReturn": 0.3825637346138253,
+            "markToMarketDrawdown": -0.030037058708796582,
+            "trades": 13,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 24275,
+              "date": "2026-09-23"
+            }
+          },
+          "nextOpen": {
+            "return": -0.018753498517850464,
+            "drawdown": -0.06558149939246471,
+            "markToMarketReturn": -0.0017587137499120997,
+            "markToMarketDrawdown": -0.09751811356209517,
+            "trades": 13,
+            "winRate": 0.46153846153846156,
+            "openPosition": {
+              "side": -1,
+              "price": 24250,
+              "date": "2026-09-24"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 1.0038633492183293,
+            "drawdown": 0,
+            "markToMarketReturn": 1.04059740443572,
+            "markToMarketDrawdown": -0.04212168486739465,
+            "trades": 23,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 24275,
+              "date": "2026-09-23"
+            }
+          },
+          "nextOpen": {
+            "return": -0.1637811087167288,
+            "drawdown": -0.2621926344707294,
+            "markToMarketReturn": -0.14929814235223493,
+            "markToMarketDrawdown": -0.32703334385621907,
+            "trades": 23,
+            "winRate": 0.34782608695652173,
+            "openPosition": {
+              "side": -1,
+              "price": 24250,
+              "date": "2026-09-24"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.6399319673417182
+    },
+    {
+      "id": "candidate-33",
+      "config": {
+        "family": "bollinger_close",
+        "period": 20,
+        "multiplier": 0.5
+      },
+      "train": {
+        "return": 1.3497621985804344,
+        "drawdown": -0.19036805520655997,
+        "markToMarketReturn": 1.4941746670348572,
+        "markToMarketDrawdown": -0.2362721552620557,
+        "trades": 169,
+        "winRate": 0.33136094674556216,
+        "openPosition": {
+          "side": 1,
+          "price": 19200,
+          "date": "2021-12-14"
+        }
+      },
+      "validation": {
+        "return": -0.3162216190280449,
+        "drawdown": -0.418206318507925,
+        "markToMarketReturn": -0.31770917170601154,
+        "markToMarketDrawdown": -0.42664059495162154,
+        "trades": 54,
+        "winRate": 0.2777777777777778,
+        "openPosition": {
+          "side": -1,
+          "price": 20685,
+          "date": "2025-09-24"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.01782344306982586,
+            "drawdown": 0,
+            "markToMarketReturn": 0.036275948836234084,
+            "markToMarketDrawdown": -0.021376221498371373,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": -0.0035291675316586613,
+            "drawdown": -0.0035291675316586613,
+            "markToMarketReturn": 0.0035291675316586613,
+            "markToMarketDrawdown": -0.024837133550488666,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.05008938081471537,
+            "drawdown": -0.005269814502529724,
+            "markToMarketReturn": 0.06912684795762747,
+            "markToMarketDrawdown": -0.03150092649783831,
+            "trades": 3,
+            "winRate": 0.6666666666666666,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": -0.015770296292584307,
+            "drawdown": -0.028334930807998204,
+            "markToMarketReturn": -0.008798669224656774,
+            "markToMarketDrawdown": -0.06170236674217888,
+            "trades": 3,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.16223958036980668,
+            "drawdown": -0.005269814502529613,
+            "markToMarketReturn": 0.18331026085446744,
+            "markToMarketDrawdown": -0.0362781954887218,
+            "trades": 7,
+            "winRate": 0.8571428571428571,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": -0.03181518980724907,
+            "drawdown": -0.05712739245176668,
+            "markToMarketReturn": -0.024957214068383804,
+            "markToMarketDrawdown": -0.07577216129661435,
+            "trades": 7,
+            "winRate": 0.2857142857142857,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.4791574352245276,
+            "drawdown": -0.006552006552006717,
+            "markToMarketReturn": 0.5059736392417833,
+            "markToMarketDrawdown": -0.04777887462981234,
+            "trades": 13,
+            "winRate": 0.8461538461538461,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": -0.08581262476407958,
+            "drawdown": -0.15434488530715262,
+            "markToMarketReturn": -0.07933713085615846,
+            "markToMarketDrawdown": -0.22866357619310917,
+            "trades": 13,
+            "winRate": 0.3076923076923077,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.7411897104257098
+    },
+    {
+      "id": "candidate-34",
+      "config": {
+        "family": "bollinger_close",
+        "period": 20,
+        "multiplier": 1
+      },
+      "train": {
+        "return": 1.175426097815195,
+        "drawdown": -0.1565951799099985,
+        "markToMarketReturn": 1.3091241600767538,
+        "markToMarketDrawdown": -0.20746843686465877,
+        "trades": 117,
+        "winRate": 0.39316239316239315,
+        "openPosition": {
+          "side": 1,
+          "price": 19200,
+          "date": "2021-12-14"
+        }
+      },
+      "validation": {
+        "return": -0.11823577173402477,
+        "drawdown": -0.3310917528624481,
+        "markToMarketReturn": -0.12035743734582938,
+        "markToMarketDrawdown": -0.37910216017654264,
+        "trades": 39,
+        "winRate": 0.3333333333333333,
+        "openPosition": {
+          "side": 1,
+          "price": 20780,
+          "date": "2025-09-11"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.0181293778327154,
+            "markToMarketDrawdown": -0.002846685644571023,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.00708333333333333,
+            "markToMarketDrawdown": -0.0008333333333332416,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.046120689655172464,
+            "drawdown": 0,
+            "markToMarketReturn": 0.06508620689655187,
+            "markToMarketDrawdown": -0.028412600370599006,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": 0.031149301825993625,
+            "drawdown": 0,
+            "markToMarketReturn": 0.03845327604726112,
+            "markToMarketDrawdown": -0.028412600370599117,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.1310139845815721,
+            "drawdown": -0.00020124773596297274,
+            "markToMarketReturn": 0.1515185644421364,
+            "markToMarketDrawdown": -0.0362781954887218,
+            "trades": 5,
+            "winRate": 0.8,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": 0.02600139527867329,
+            "drawdown": -0.043451560916014764,
+            "markToMarketReturn": 0.03326890516189729,
+            "markToMarketDrawdown": -0.07577216129661457,
+            "trades": 5,
+            "winRate": 0.4,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.13261277481003986,
+            "drawdown": -0.02769778083172747,
+            "markToMarketReturn": 0.15314633974273129,
+            "markToMarketDrawdown": -0.07333952241309716,
+            "trades": 8,
+            "winRate": 0.75,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": -0.1311921801423136,
+            "drawdown": -0.19000425557598188,
+            "markToMarketReturn": -0.125038124751655,
+            "markToMarketDrawdown": -0.19749580130374245,
+            "trades": 8,
+            "winRate": 0.25,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.3118836666057614
+    },
+    {
+      "id": "candidate-35",
+      "config": {
+        "family": "bollinger_close",
+        "period": 40,
+        "multiplier": 0
+      },
+      "train": {
+        "return": 0.56724899765662,
+        "drawdown": -0.3662091747156019,
+        "markToMarketReturn": 0.6143813278868799,
+        "markToMarketDrawdown": -0.4175659969696618,
+        "trades": 199,
+        "winRate": 0.2864321608040201,
+        "openPosition": {
+          "side": 1,
+          "price": 19785,
+          "date": "2021-12-20"
+        }
+      },
+      "validation": {
+        "return": -0.33817393228079395,
+        "drawdown": -0.465601788099511,
+        "markToMarketReturn": -0.3400839642222636,
+        "markToMarketDrawdown": -0.5012150260466142,
+        "trades": 77,
+        "winRate": 0.2077922077922078,
+        "openPosition": {
+          "side": 1,
+          "price": 20790,
+          "date": "2025-09-26"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.0181293778327154,
+            "markToMarketDrawdown": -0.002846685644571023,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.00708333333333333,
+            "markToMarketDrawdown": -0.0008333333333332416,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.04928664072632949,
+            "drawdown": 0,
+            "markToMarketReturn": 0.06830955469087785,
+            "markToMarketDrawdown": -0.028412600370599228,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": 0.023235983798763682,
+            "drawdown": 0,
+            "markToMarketReturn": 0.03048390535067158,
+            "markToMarketDrawdown": -0.028412600370599006,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.25237422365933937,
+            "drawdown": 0,
+            "markToMarketReturn": 0.2750789891480132,
+            "markToMarketDrawdown": -0.03570120834859025,
+            "trades": 9,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": -0.05110474019021183,
+            "drawdown": -0.1084109993756629,
+            "markToMarketReturn": -0.04438339876655917,
+            "markToMarketDrawdown": -0.14195569066254776,
+            "trades": 9,
+            "winRate": 0.2222222222222222,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.9694277948971417,
+            "drawdown": 0,
+            "markToMarketReturn": 1.0051322955050837,
+            "markToMarketDrawdown": -0.04212168486739465,
+            "trades": 19,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 24270,
+              "date": "2026-09-28"
+            }
+          },
+          "nextOpen": {
+            "return": -0.1850699724134034,
+            "drawdown": -0.2987737735175978,
+            "markToMarketReturn": -0.17929755138466497,
+            "markToMarketDrawdown": -0.35684861351102437,
+            "trades": 20,
+            "winRate": 0.2,
+            "openPosition": {
+              "side": -1,
+              "price": 24000,
+              "date": "2026-09-29"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.6747082882733507
+    },
+    {
+      "id": "candidate-36",
+      "config": {
+        "family": "bollinger_close",
+        "period": 40,
+        "multiplier": 0.5
+      },
+      "train": {
+        "return": 1.3624954517363426,
+        "drawdown": -0.1363005619926454,
+        "markToMarketReturn": 1.433543457487322,
+        "markToMarketDrawdown": -0.24847596969714214,
+        "trades": 83,
+        "winRate": 0.39759036144578314,
+        "openPosition": {
+          "side": 1,
+          "price": 19785,
+          "date": "2021-12-20"
+        }
+      },
+      "validation": {
+        "return": -0.22106499343636643,
+        "drawdown": -0.3230701607069618,
+        "markToMarketReturn": -0.2218157741655844,
+        "markToMarketDrawdown": -0.3629520221746224,
+        "trades": 35,
+        "winRate": 0.2571428571428571,
+        "openPosition": {
+          "side": 1,
+          "price": 20750,
+          "date": "2025-08-26"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.006047966631908208,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.015029635901778082,
+            "drawdown": 0,
+            "markToMarketReturn": 0.02116850127010994,
+            "markToMarketDrawdown": -0.028412600370599117,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.009745762711864447,
+            "markToMarketDrawdown": -0.029723127035830577,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23600,
+              "date": "2026-08-03"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.11596364321001085,
+            "drawdown": 0,
+            "markToMarketReturn": 0.12271295408656768,
+            "markToMarketDrawdown": -0.046965666558748786,
+            "trades": 5,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": -0.013080551793925643,
+            "drawdown": -0.04295072094618946,
+            "markToMarketReturn": -0.0034622690359850106,
+            "markToMarketDrawdown": -0.10012511476782415,
+            "trades": 4,
+            "winRate": 0.5,
+            "openPosition": {
+              "side": 1,
+              "price": 23600,
+              "date": "2026-08-03"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.31616112555115494,
+            "drawdown": 0,
+            "markToMarketReturn": 0.324121224120703,
+            "markToMarketDrawdown": -0.10159906396255836,
+            "trades": 8,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": 0.06979749411697145,
+            "drawdown": -0.06791727177980711,
+            "markToMarketReturn": 0.08022348664438272,
+            "markToMarketDrawdown": -0.15409592469652478,
+            "trades": 7,
+            "winRate": 0.42857142857142855,
+            "openPosition": {
+              "side": 1,
+              "price": 23600,
+              "date": "2026-08-03"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.6090749739093844
+    },
+    {
+      "id": "candidate-37",
+      "config": {
+        "family": "bollinger_close",
+        "period": 40,
+        "multiplier": 1
+      },
+      "train": {
+        "return": 0.7658589115700556,
+        "drawdown": -0.22822847287027304,
+        "markToMarketReturn": 0.7728179614678687,
+        "markToMarketDrawdown": -0.2864104880733157,
+        "trades": 59,
+        "winRate": 0.4067796610169492,
+        "openPosition": {
+          "side": 1,
+          "price": 20300,
+          "date": "2021-12-23"
+        }
+      },
+      "validation": {
+        "return": -0.26909677257524967,
+        "drawdown": -0.40521613116848587,
+        "markToMarketReturn": -0.25103193749307584,
+        "markToMarketDrawdown": -0.4478963114370126,
+        "trades": 23,
+        "winRate": 0.2608695652173913,
+        "openPosition": {
+          "side": 1,
+          "price": 20230,
+          "date": "2025-06-12"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0.006047966631908208,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.009898904802021935,
+            "drawdown": 0,
+            "markToMarketReturn": 0.0160067396798651,
+            "markToMarketDrawdown": -0.028412600370599228,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.0018848167539267102,
+            "markToMarketDrawdown": -0.029723127035830577,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23875,
+              "date": "2026-08-07"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.01679379692316041,
+            "drawdown": -0.01987951807228916,
+            "markToMarketReturn": 0.022943331878482853,
+            "markToMarketDrawdown": -0.06436512580456388,
+            "trades": 3,
+            "winRate": 0.6666666666666666,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": -0.027042915931804745,
+            "drawdown": -0.045659416029786404,
+            "markToMarketReturn": -0.028876761744708213,
+            "markToMarketDrawdown": -0.06821653479895728,
+            "trades": 2,
+            "winRate": 0.5,
+            "openPosition": {
+              "side": 1,
+              "price": 23875,
+              "date": "2026-08-07"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": -0.01348294144676021,
+            "drawdown": -0.04906424706269252,
+            "markToMarketReturn": -0.007516519194821991,
+            "markToMarketDrawdown": -0.08897739719207398,
+            "trades": 4,
+            "winRate": 0.5,
+            "openPosition": {
+              "side": -1,
+              "price": 23975,
+              "date": "2026-09-30"
+            }
+          },
+          "nextOpen": {
+            "return": -0.09496633500826368,
+            "drawdown": -0.11228319264657494,
+            "markToMarketReturn": -0.09667215762290782,
+            "markToMarketDrawdown": -0.13773462925418645,
+            "trades": 3,
+            "winRate": 0.3333333333333333,
+            "openPosition": {
+              "side": 1,
+              "price": 23875,
+              "date": "2026-08-07"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.6008014928988594
+    },
+    {
+      "id": "candidate-38",
+      "config": {
+        "family": "bollinger_close",
+        "period": 60,
+        "multiplier": 0
+      },
+      "train": {
+        "return": 0.5559400391058145,
+        "drawdown": -0.18748575111646704,
+        "markToMarketReturn": 0.5502350524065753,
+        "markToMarketDrawdown": -0.246673793756099,
+        "trades": 149,
+        "winRate": 0.28187919463087246,
+        "openPosition": {
+          "side": 1,
+          "price": 20455,
+          "date": "2021-12-31"
+        }
+      },
+      "validation": {
+        "return": -0.36070802642464295,
+        "drawdown": -0.43982854843143426,
+        "markToMarketReturn": -0.34490743389930045,
+        "markToMarketDrawdown": -0.4799520958401555,
+        "trades": 71,
+        "winRate": 0.14084507042253522,
+        "openPosition": {
+          "side": 1,
+          "price": 20230,
+          "date": "2025-06-12"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.018695559804546402,
+            "drawdown": 0,
+            "markToMarketReturn": 0.034541452808111606,
+            "markToMarketDrawdown": -0.02972312703583091,
+            "trades": 2,
+            "winRate": 1,
+            "openPosition": {
+              "side": 1,
+              "price": 23465,
+              "date": "2026-08-21"
+            }
+          },
+          "nextOpen": {
+            "return": -0.025210084033613356,
+            "drawdown": -0.025210084033613356,
+            "markToMarketReturn": -0.02398135724878181,
+            "markToMarketDrawdown": -0.0464840661403535,
+            "trades": 2,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 23800,
+              "date": "2026-08-24"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.19846846557961073,
+            "drawdown": 0,
+            "markToMarketReturn": 0.2171107408805506,
+            "markToMarketDrawdown": -0.0465031124130354,
+            "trades": 10,
+            "winRate": 1,
+            "openPosition": {
+              "side": 1,
+              "price": 23465,
+              "date": "2026-08-21"
+            }
+          },
+          "nextOpen": {
+            "return": -0.053699736506533924,
+            "drawdown": -0.06145039344371006,
+            "markToMarketReturn": -0.052506921048348865,
+            "markToMarketDrawdown": -0.09417577819669798,
+            "trades": 10,
+            "winRate": 0.3,
+            "openPosition": {
+              "side": 1,
+              "price": 23800,
+              "date": "2026-08-24"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.4134668402436319,
+            "drawdown": 0,
+            "markToMarketReturn": 0.4354534329003088,
+            "markToMarketDrawdown": -0.10159906396255836,
+            "trades": 13,
+            "winRate": 1,
+            "openPosition": {
+              "side": 1,
+              "price": 23465,
+              "date": "2026-08-21"
+            }
+          },
+          "nextOpen": {
+            "return": 0.025767252238964478,
+            "drawdown": -0.08297440583664017,
+            "markToMarketReturn": 0.02706023617035802,
+            "markToMarketDrawdown": -0.1485034049657744,
+            "trades": 13,
+            "winRate": 0.3076923076923077,
+            "openPosition": {
+              "side": 1,
+              "price": 23800,
+              "date": "2026-08-24"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.7515500599976004
+    },
+    {
+      "id": "candidate-39",
+      "config": {
+        "family": "bollinger_close",
+        "period": 60,
+        "multiplier": 0.5
+      },
+      "train": {
+        "return": 0.5791902440148273,
+        "drawdown": -0.1938831365992758,
+        "markToMarketReturn": 0.5491856293785458,
+        "markToMarketDrawdown": -0.2661546936266159,
+        "trades": 58,
+        "winRate": 0.4482758620689655,
+        "openPosition": {
+          "side": -1,
+          "price": 20000,
+          "date": "2021-10-28"
+        }
+      },
+      "validation": {
+        "return": -0.22214001314891185,
+        "drawdown": -0.32712202664147005,
+        "markToMarketReturn": -0.20800405071595995,
+        "markToMarketDrawdown": -0.3735516925263971,
+        "trades": 24,
+        "winRate": 0.25,
+        "openPosition": {
+          "side": 1,
+          "price": 20360,
+          "date": "2025-06-13"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.00020977554017198585,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 23835,
+              "date": "2026-08-07"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.0072901478858571345,
+            "markToMarketDrawdown": -0.029723127035830688,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24005,
+              "date": "2026-08-10"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.023355869698832077,
+            "drawdown": 0,
+            "markToMarketReturn": 0.02314119466847786,
+            "markToMarketDrawdown": -0.06491977751733047,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": 1,
+              "price": 23835,
+              "date": "2026-08-07"
+            }
+          },
+          "nextOpen": {
+            "return": 0.01416837782340874,
+            "drawdown": 0,
+            "markToMarketReturn": 0.00677494036791626,
+            "markToMarketDrawdown": -0.07811564925113312,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": 1,
+              "price": 24005,
+              "date": "2026-08-10"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.023355869698832077,
+            "drawdown": 0,
+            "markToMarketReturn": 0.02314119466847786,
+            "markToMarketDrawdown": -0.06491977751733047,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": 1,
+              "price": 23835,
+              "date": "2026-08-07"
+            }
+          },
+          "nextOpen": {
+            "return": 0.01416837782340874,
+            "drawdown": 0,
+            "markToMarketReturn": 0.00677494036791626,
+            "markToMarketDrawdown": -0.07811564925113312,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": 1,
+              "price": 24005,
+              "date": "2026-08-10"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.5946700753690584
+    },
+    {
+      "id": "candidate-40",
+      "config": {
+        "family": "bollinger_close",
+        "period": 60,
+        "multiplier": 1
+      },
+      "train": {
+        "return": 0.3855151481582353,
+        "drawdown": -0.3035925361715881,
+        "markToMarketReturn": 0.36621443962667777,
+        "markToMarketDrawdown": -0.36133056694945154,
+        "trades": 42,
+        "winRate": 0.5476190476190477,
+        "openPosition": {
+          "side": -1,
+          "price": 20100,
+          "date": "2021-10-29"
+        }
+      },
+      "validation": {
+        "return": -0.20534729055099876,
+        "drawdown": -0.2736217158460358,
+        "markToMarketReturn": -0.19545051688020543,
+        "markToMarketDrawdown": -0.3271265030480014,
+        "trades": 18,
+        "winRate": 0.2777777777777778,
+        "openPosition": {
+          "side": 1,
+          "price": 20475,
+          "date": "2025-06-19"
+        }
+      },
+      "windows": [
+        {
+          "months": 1,
+          "start": "2026-08-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": 0,
+            "markToMarketDrawdown": 0,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": null
+          }
+        },
+        {
+          "months": 3,
+          "start": "2026-06-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.01569599339116068,
+            "markToMarketDrawdown": -0.029723127035830577,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24210,
+              "date": "2026-08-12"
+            }
+          },
+          "nextOpen": {
+            "return": 0,
+            "drawdown": 0,
+            "markToMarketReturn": -0.019341563786008265,
+            "markToMarketDrawdown": -0.029723127035830577,
+            "trades": 0,
+            "winRate": null,
+            "openPosition": {
+              "side": 1,
+              "price": 24300,
+              "date": "2026-08-13"
+            }
+          }
+        },
+        {
+          "months": 6,
+          "start": "2026-03-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.004318322023442178,
+            "drawdown": 0,
+            "markToMarketReturn": -0.011445451721659339,
+            "markToMarketDrawdown": -0.09369133939416263,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": 1,
+              "price": 24210,
+              "date": "2026-08-12"
+            }
+          },
+          "nextOpen": {
+            "return": -0.006211180124223503,
+            "drawdown": -0.006211180124223503,
+            "markToMarketReturn": -0.025432609973672693,
+            "markToMarketDrawdown": -0.10128408392966814,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24300,
+              "date": "2026-08-13"
+            }
+          }
+        },
+        {
+          "months": 12,
+          "start": "2025-09-30",
+          "end": "2026-09-30",
+          "ideal": {
+            "return": 0.004318322023442178,
+            "drawdown": 0,
+            "markToMarketReturn": -0.011445451721659339,
+            "markToMarketDrawdown": -0.09369133939416263,
+            "trades": 1,
+            "winRate": 1,
+            "openPosition": {
+              "side": 1,
+              "price": 24210,
+              "date": "2026-08-12"
+            }
+          },
+          "nextOpen": {
+            "return": -0.006211180124223503,
+            "drawdown": -0.006211180124223503,
+            "markToMarketReturn": -0.025432609973672693,
+            "markToMarketDrawdown": -0.10128408392966814,
+            "trades": 1,
+            "winRate": 0,
+            "openPosition": {
+              "side": 1,
+              "price": 24300,
+              "date": "2026-08-13"
+            }
+          }
+        }
+      ],
+      "validationScore": -0.6277305220997849
+    }
+  ]
+}

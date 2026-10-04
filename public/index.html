@@ -1,339 +1,59 @@
 <!doctype html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#1f1f1f" />
-    <meta name="description" content="沪铝、螺纹钢期货行情，可安装到手机和电脑的 PWA 应用。" />
-    <link rel="manifest" href="/manifest.webmanifest" />
-    <link rel="icon" href="/icons/icon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
-    <link rel="stylesheet" href="/styles.css?v=25" />
-    <title>期货行情</title>
-  </head>
-  <body>
-    <div class="app-shell" id="appShell" data-active-view="market">
-      <header class="topbar market-topbar">
-        <button class="icon-button folder-button" id="installButton" type="button" aria-label="安装到手机桌面">□</button>
-        <a class="brand" href="/" aria-label="期货行情首页">
-          <span id="brandMark" class="brand-mark">AL</span>
-          <span>
-            <span id="brandTitle" class="brand-title">自选</span>
-            <span id="brandSubtitle" class="brand-subtitle">SHFE Aluminum Futures</span>
-          </span>
-        </a>
-        <div class="top-actions">
-          <button class="icon-button" id="refreshButton" type="button" aria-label="刷新行情">⌕</button>
-          <button class="icon-button" id="openMenuButton" type="button" aria-label="打开操作菜单">☰</button>
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f7fa"><meta name="description" content="铝市场行情、策略研究与新闻档案。手机和电脑上的轻量研究工作台。">
+  <meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="/manifest.webmanifest"><link rel="icon" href="/icons/icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <link rel="stylesheet" href="/styles.css?v=43"><title>ALNEWS · 铝市场研究</title>
+</head>
+<body>
+<div class="app-shell" id="appShell" data-active-view="chart">
+  <aside class="sidebar">
+    <a class="brand" href="/" aria-label="ALNEWS 首页"><span class="brand-mark" id="brandMark">AL</span><span><strong class="brand-title" id="brandTitle">ALNEWS</strong><small class="brand-subtitle" id="brandSubtitle">铝市场研究</small></span></a>
+    <p class="nav-label">工作台</p>
+    <nav class="bottom-nav" aria-label="主导航">
+      <button class="active" type="button" data-nav="chart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 3v18M12 3v18M19 3v18"/><path fill="currentColor" d="M3 7h4v7H3zM10 5h4v6h-4zM17 12h4v6h-4z"/></svg><span>K 线研究</span></button>
+      <button type="button" data-nav="news"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span>新闻快讯</span></button>
+    </nav>
+    <a class="sidebar-install" href="/install.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg><span>安装应用<small>手机与电脑，随时打开</small></span><span>↗</span></a>
+  </aside>
+  <div class="workspace">
+    <header class="workspace-header"><div><span class="eyebrow">ALUMINUM / MARKET DESK</span><h1 id="pageTitle">K 线研究<span class="heading-dot"></span></h1></div><div class="header-actions"><span class="connection"><i></i><span id="dataStatus">连接中</span></span><button id="refreshButton" class="icon-button" aria-label="刷新行情" title="刷新行情">↻</button><a id="installButton" class="button secondary" href="/install.html">安装应用 <span>↗</span></a></div></header>
+    <main>
+      <section class="app-view active" id="chartView" data-view="chart">
+        <div class="market-workspace">
+          <aside class="watchlist" id="marketView">
+            <div class="section-heading"><h2>关注市场</h2><span class="count-badge">03</span></div>
+            <p class="section-caption">沪铝与美铝</p>
+            <div class="table-wrap"><table><thead><tr><th>品种</th><th>最新价</th><th>涨跌</th><th>成交量</th></tr></thead><tbody id="contractsBody"><tr><td colspan="4" class="empty-cell">正在连接行情…</td></tr></tbody></table></div>
+            <div class="watchlist-footer"><span>行情刷新</span><select id="refreshInterval" aria-label="行情刷新频率"><option value="15000">每 15 秒</option><option value="30000">每 30 秒</option><option value="60000">每分钟</option></select></div>
+            <small id="fetchStamp" class="muted">等待数据</small>
+            <div class="watchlist-help"><span>行情与策略</span><p>选择品种查看走势，切换策略对照历史信号。</p></div>
+          </aside>
+          <div class="research-column">
+            <section class="chart-panel" id="klinePanel">
+              <div class="quote-hero">
+                <div class="hero-main"><div class="eyebrow-row"><span class="contract-badge" id="contractBadge">AL0</span><span id="marketState" class="market-state">沪铝连续</span></div><h2 id="contractName">铝主连</h2><div class="price-row"><strong id="lastPrice">—</strong><span id="priceUnit" class="price-unit">元/吨</span><div id="changeLine" class="change-line neutral"><span>涨跌 —</span><span>涨跌幅 —</span></div></div></div>
+                <div class="hero-side"><span>行情时间</span><strong id="quoteTime">—</strong><span id="klineStatus">等待 K 线</span></div>
+              </div>
+              <div class="chart-toolbar"><div class="toolbar-group"><label class="inline-control"><span>周期</span><select id="klineInterval" aria-label="K线周期"><option value="1d">日线</option><option value="1h">小时线</option></select></label><label class="inline-control"><span>均线</span><select id="maPeriod" aria-label="均线周期"><option value="0">不显示</option><option value="5">MA 5</option><option value="10">MA 10</option><option value="20">MA 20</option><option value="30">MA 30</option></select></label></div><div class="toolbar-group"><button id="chartResetView" class="text-button" title="回到最近90根">重置视图</button><button id="quickThemeButton" class="icon-button" aria-label="切换图表主题" title="切换图表主题">◐</button><button id="chartFullScreen" class="icon-button" aria-label="全屏图表" title="全屏图表">⛶</button></div></div>
+              <div class="chart-wrap" id="chartWrap"><button class="chart-exit" data-chart-exit type="button">退出全屏 ×</button><div id="chartLegend" class="chart-legend">拖动查看历史 · 滚轮或双指缩放</div><div id="klineChart" class="chart-empty">正在加载 K 线…</div></div>
+              <div class="chart-foot"><div class="range-buttons" aria-label="图表日期范围"><button data-range-days="30">1 月</button><button data-range-days="90">3 月</button><button class="active" data-range-days="180">6 月</button><button data-range-days="365">1 年</button><button data-range-days="all">全部</button></div><span class="chart-credit"><a href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer">TradingView</a> 图表技术</span></div>
+              <details class="range-settings"><summary>自定义时间与图表设置</summary><div class="control-row"><label>开始日期<input id="klineStart" type="date" aria-label="K线开始日期"></label><label>结束日期<input id="klineEnd" type="date" aria-label="K线结束日期"></label><label>图表主题<select id="klineTheme" aria-label="K线图主题"><option value="light">浅色</option><option value="dark">深色</option></select></label><span id="klineSubtitle" class="muted"></span></div></details>
+              <div class="stats-grid" aria-label="行情指标"><article><span>今开</span><strong id="openPrice">—</strong></article><article><span>最高 / 最低</span><strong><em id="highPrice">—</em> / <em id="lowPrice">—</em></strong></article><article><span>成交量</span><strong id="volume">—</strong></article><article><span id="openInterestLabel">持仓量</span><strong id="openInterest">—</strong></article></div>
+            </section>
+            <section class="strategy-panel"><div class="section-heading"><div><span class="eyebrow">STRATEGY LAB</span><h2>策略与回测</h2></div><span class="soft-badge" id="strategyCount">3 种策略</span></div><div class="strategy-main"><label>策略<select id="strategySelect" aria-label="策略选择"><option value="none">不叠加策略</option><option value="al_update_1">铝更新1</option><option value="al_best_1">铝-1Best</option><option value="al_channel_20">铝双轨20（研究）</option></select></label></div><div class="backtest-periods" aria-label="快速回测区间"><span>快速回测</span><button data-backtest-months="1">近 1 个月</button><button data-backtest-months="3">近 3 个月</button><button data-backtest-months="6">近 6 个月</button><button data-backtest-months="12">近 12 个月</button></div><details class="backtest-settings"><summary>回测参数</summary><div class="control-row"><label>回测开始<input id="backtestStart" type="datetime-local" aria-label="回测开始时间"></label><label>回测结束<input id="backtestEnd" type="datetime-local" aria-label="回测结束时间"></label><label>交易方向<select id="backtestDirection" aria-label="回测交易方向"><option value="both">双向</option><option value="long">只做多</option><option value="short">只做空</option></select></label></div></details><p id="backtestRangeLabel" class="backtest-assumption"></p><div id="backtestMeta" class="backtest-meta"></div><div id="backtestTrades" class="backtest-trades"></div><details class="strategy-comparison-details" open><summary>三个策略 · 四周期对比</summary><div id="strategyComparison" class="strategy-comparison"></div></details></section>
+            <p class="data-note">行情：新浪财经 / Yahoo Finance。公开行情可能延迟；历史回测不代表未来收益。</p>
+          </div>
         </div>
-      </header>
-
-      <main>
-        <section class="app-view active" id="marketView" data-view="market">
-          <section class="quote-hero" aria-live="polite">
-            <div class="hero-main">
-              <div class="eyebrow-row">
-                <span id="contractBadge" class="contract-badge">AL0</span>
-                <span id="marketState" class="market-state">等待行情</span>
-              </div>
-              <h1 id="contractName">沪铝连续</h1>
-              <div class="price-row">
-                <span id="lastPrice" class="last-price">--</span>
-                <span class="price-unit">元/吨</span>
-              </div>
-              <div id="changeLine" class="change-line neutral">
-                <span>涨跌 --</span>
-                <span>涨跌幅 --</span>
-              </div>
-            </div>
-
-            <div class="hero-side">
-              <div class="metric">
-                <span>品类</span>
-                <select id="productSelect" aria-label="品类选择">
-                  <option value="al">铝品种</option>
-                </select>
-              </div>
-              <div class="metric">
-                <span>更新时间</span>
-                <strong id="quoteTime">--</strong>
-              </div>
-              <div class="metric">
-                <span>刷新</span>
-                <select id="refreshInterval" aria-label="刷新频率">
-                  <option value="15000">15秒</option>
-                  <option value="30000">30秒</option>
-                  <option value="60000">1分钟</option>
-                </select>
-              </div>
-              <div class="metric">
-                <span>数据</span>
-                <strong id="dataStatus">未连接</strong>
-              </div>
-            </div>
-          </section>
-
-          <section class="contract-panel">
-            <div class="section-heading market-heading">
-              <div>
-                <h2>自选</h2>
-                <p id="fetchStamp">--</p>
-              </div>
-            </div>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>名称</th>
-                    <th>最新</th>
-                    <th>涨跌</th>
-                    <th>成交量</th>
-                  </tr>
-                </thead>
-                <tbody id="contractsBody">
-                  <tr>
-                    <td colspan="4" class="empty-cell">正在获取行情...</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-        </section>
-
-        <section class="app-view" id="chartView" data-view="chart">
-          <header class="chart-topbar">
-            <button class="back-button" id="chartBackButton" type="button" aria-label="返回行情">‹</button>
-            <div class="chart-title-stack">
-              <h1 id="klineTitle">K线图</h1>
-              <p id="klineSubtitle">点击行情列表中的合约后显示</p>
-            </div>
-            <div class="chart-tools">
-              <button class="icon-button" type="button" id="quickZoomButton" aria-label="放大或缩小K线">↯</button>
-              <button class="icon-button" type="button" id="quickThemeButton" aria-label="切换图表主题">◐</button>
-              <button class="icon-button" type="button" id="quickMenuButton" aria-label="图表操作菜单">⋯</button>
-            </div>
-          </header>
-
-          <section class="chart-panel" id="klinePanel" aria-live="polite">
-            <div class="section-heading chart-heading">
-              <div class="chart-actions">
-                <div class="control-row primary-controls">
-                <label>
-                  <span>周期</span>
-                  <select id="klineInterval" aria-label="K线周期">
-                    <option value="1d">Day</option>
-                    <option value="1h">Hour</option>
-                  </select>
-                </label>
-                <label>
-                  <span>开始</span>
-                  <input id="klineStart" type="date" min="2005-01-01" aria-label="K线开始日期" />
-                </label>
-                <label>
-                  <span>结束</span>
-                  <input id="klineEnd" type="date" min="2005-01-01" aria-label="K线结束日期" />
-                </label>
-                <label>
-                  <span>均线</span>
-                  <select id="maPeriod" aria-label="均线周期">
-                    <option value="0">空</option>
-                    <option value="5">MA5</option>
-                    <option value="10">MA10</option>
-                    <option value="20">MA20</option>
-                    <option value="30">MA30</option>
-                  </select>
-                </label>
-                <span id="klineStatus" class="fetch-stamp">等待加载</span>
-                </div>
-                <div class="control-row strategy-controls">
-                <label>
-                  <span>图表</span>
-                  <select id="klineTheme" aria-label="K线图主题">
-                    <option value="dark">黑底</option>
-                    <option value="light">白底</option>
-                  </select>
-                </label>
-                <div class="chart-control zoom-control" aria-label="K线缩放">
-                  <span>缩放</span>
-                  <button id="zoomOutButton" type="button" aria-label="缩小K线">-</button>
-                  <strong id="zoomValue">1x</strong>
-                  <button id="zoomInButton" type="button" aria-label="放大K线">+</button>
-                  <button id="zoomResetButton" type="button">重置</button>
-                </div>
-                <label>
-                  <span>策略</span>
-                  <select id="strategySelect" aria-label="策略选择">
-                    <option value="none">空</option>
-                    <option value="al_update_1">铝更新1</option>
-                    <option value="al_best_1">铝-1Best</option>
-                    <option value="al_volume_price">铝：量价</option>
-                    <option value="al_research_trend">铝研究版</option>
-                    <option value="al_research_stable_5">铝稳健5%候选</option>
-                    <option value="al_research_defensive">铝防守候选</option>
-                  </select>
-                </label>
-                <label>
-                  <span>回测开始</span>
-                  <input id="backtestStart" type="datetime-local" aria-label="回测开始时间" />
-                </label>
-                <label>
-                  <span>回测结束</span>
-                  <input id="backtestEnd" type="datetime-local" aria-label="回测结束时间" />
-                </label>
-                <label>
-                  <span>成交价</span>
-                  <select id="backtestPriceMode" aria-label="回测成交价假设">
-                    <option value="ideal">理想</option>
-                    <option value="average">平均</option>
-                  </select>
-                </label>
-                <label>
-                  <span>方向</span>
-                  <select id="backtestDirection" aria-label="回测交易方向">
-                    <option value="both">双边</option>
-                    <option value="long">单边做多</option>
-                    <option value="short">单边做空</option>
-                  </select>
-                </label>
-                </div>
-              </div>
-            </div>
-
-            <div class="chart-wrap" id="chartWrap">
-              <div id="klineChart" class="chart-empty">正在等待合约行情...</div>
-            </div>
-
-            <div class="stats-grid chart-quote-board" aria-label="行情指标">
-              <article class="stat-tile">
-                <span id="bidLabel">买盘</span>
-                <strong id="bidPrice">--</strong>
-              </article>
-              <article class="stat-tile">
-                <span id="askLabel">卖盘</span>
-                <strong id="askPrice">--</strong>
-              </article>
-              <article class="stat-tile">
-                <span>高低价</span>
-                <strong><em id="highPrice">--</em><em id="lowPrice">--</em></strong>
-              </article>
-              <article class="stat-tile">
-                <span id="openInterestLabel">持仓量</span>
-                <strong id="openInterest">--</strong>
-              </article>
-              <article class="stat-tile compact-only">
-                <span>今开</span>
-                <strong id="openPrice">--</strong>
-              </article>
-              <article class="stat-tile compact-only">
-                <span>昨结</span>
-                <strong id="previousSettlement">--</strong>
-              </article>
-              <article class="stat-tile compact-only">
-                <span>成交量</span>
-                <strong id="volume">--</strong>
-              </article>
-            </div>
-
-            <div id="backtestMeta" class="backtest-meta"></div>
-            <div id="backtestTrades" class="backtest-trades"></div>
-            <div id="klineMeta" class="chart-meta"></div>
-          </section>
-        </section>
-
-        <section class="app-view news-view" id="newsView" data-view="news">
-          <header class="simple-topbar">
-            <h1>期市快讯</h1>
-          </header>
-          <section class="news-panel" id="newsPanel" aria-live="polite">
-            <div class="news-overview">
-              <span class="date-chip">今日总结</span>
-              <p id="newsOverallSummary">正在加载最新快讯...</p>
-              <small id="newsFetchTime">--</small>
-            </div>
-            <div id="newsSections" class="news-sections">
-              <div class="news-loading">正在获取沪铝和美铝相关新闻...</div>
-            </div>
-          </section>
-        </section>
-
-        <section class="app-view discover-view" id="discoverView" data-view="discover">
-          <header class="simple-topbar">
-            <h1>发现</h1>
-          </header>
-          <section class="placeholder-panel">
-            <h2>行情工具</h2>
-            <p>这里后续可以放品种筛选、套利监控、资金流、预警条件和研究模型。</p>
-          </section>
-        </section>
-
-        <section class="app-view profile-view" id="profileView" data-view="profile">
-          <header class="simple-topbar">
-            <h1>我</h1>
-          </header>
-          <section class="source-panel">
-            <div>
-              <h2>合约规格</h2>
-              <p id="productSpecText">交易品种：铝；交易单位：5 吨/手；报价单位：元/吨；最小变动价位：5 元/吨。</p>
-            </div>
-            <div>
-              <h2>数据来源</h2>
-              <p>
-                行情来自新浪财经公开期货行情接口；K 线来自新浪财经期货 K 线接口；合约规格参考上海期货交易所铝期货说明。
-                行情可能延迟或短暂不可用，请以交易所及券商终端为准。
-              </p>
-            </div>
-          </section>
-        </section>
-      </main>
-
-      <section class="ticker-strip" aria-live="polite">
-        <span id="tickerName">文华商品</span>
-        <strong id="tickerPrice">--</strong>
-        <strong id="tickerChange">--</strong>
-        <strong id="tickerPct">--</strong>
       </section>
-
-      <nav class="bottom-nav" aria-label="底部导航">
-        <button class="active" type="button" data-nav="market">
-          <span class="nav-icon">▰</span>
-          <span>行情</span>
-        </button>
-        <button type="button" data-nav="news">
-          <span class="nav-icon">▤</span>
-          <span>快讯</span>
-        </button>
-        <button type="button" data-nav="discover">
-          <span class="nav-icon">◎</span>
-          <span>发现</span>
-        </button>
-        <button type="button" data-nav="profile">
-          <span class="nav-icon">♙</span>
-          <span>我</span>
-        </button>
-      </nav>
-    </div>
-
-    <aside class="side-menu" id="sideMenu" aria-hidden="true">
-      <div class="side-menu-backdrop" id="sideMenuBackdrop"></div>
-      <div class="side-menu-panel" role="dialog" aria-label="操作菜单">
-        <header>
-          <h2>操作菜单</h2>
-          <button id="closeMenuButton" type="button" aria-label="关闭操作菜单">×</button>
-        </header>
-        <p class="menu-tip">关联报价里长按可调用期权链 <button type="button" id="dismissTipButton">知道了</button></p>
-        <button type="button"><span>☆</span>加入自选</button>
-        <button type="button"><span>☁</span>价格预警</button>
-        <button type="button"><span>◷</span>切换周期 <em id="menuIntervalLabel">日线</em></button>
-        <button type="button"><span>⌁</span>切换指标</button>
-        <button type="button"><span>▥</span>区间统计</button>
-        <button type="button"><span>✎</span>画线分析</button>
-        <button type="button"><span>◉</span>画线预警</button>
-        <button type="button"><span>▱</span>画线条件单</button>
-        <button type="button"><span>◌</span>关联报价</button>
-      </div>
-    </aside>
-
-    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
-    <script src="/app.js?v=28" type="module"></script>
-  </body>
-</html>
+      <section class="app-view news-view" id="newsView" data-view="news"><div class="news-intro"><div><span class="eyebrow">MARKET BRIEFING</span><h2>市场动态，保持关注。</h2><p>国内、国外各五条。更多消息，随时回看。</p></div><span class="soft-badge">国内产业 · 海外市场</span></div><div id="news-feed-root"></div></section>
+    </main>
+    <footer class="workspace-footer"><span>ALNEWS <span class="muted">/ 铝市场研究</span></span><span>行情 · 策略 · 资讯</span></footer>
+  </div>
+</div>
+<div hidden aria-hidden="true"><select id="productSelect"><option value="al">铝品种</option></select><span id="productSpecText"></span><span id="bidLabel"></span><span id="bidPrice"></span><span id="askLabel"></span><span id="askPrice"></span><span id="previousSettlement"></span><h2 id="klineTitle"></h2><div id="klineMeta"></div><button id="zoomOutButton"></button><button id="zoomInButton"></button><button id="zoomResetButton"></button><span id="zoomValue"></span><span id="newsOverallSummary"></span><span id="newsFetchTime"></span><div id="newsSections"></div></div>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="/vendor/lightweight-charts.standalone.production.js"></script><script src="/chart-engine.js?v=43"></script><script src="/news-feed.js?v=43" defer></script><script src="/app.js?v=43" type="module"></script>
+</body></html>
