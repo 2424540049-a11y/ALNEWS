@@ -1,0 +1,26 @@
+# Production option: this provisions a PAID always-on service and persistent disk.
+# Review Render's displayed price before applying. This file is not auto-selected.
+services:
+  - type: web
+    name: shfe-aluminum-app
+    runtime: node
+    plan: starter
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    disk:
+      name: alnews-news
+      mountPath: /var/data/alnews
+      sizeGB: 1
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: HOST
+        value: 0.0.0.0
+      - key: NEWS_DATA_DIR
+        value: /var/data/alnews
+      - key: NEWS_STORAGE_PERSISTENT
+        value: "true"
+      - key: NEWS_POLL_INTERVAL_MS
+        value: "60000"
