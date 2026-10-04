@@ -1,8 +1,8 @@
 const KLINE_INTERVAL_LABELS = {
-  "1h": "Hour",
+  "1h": "小时线",
   "3h": "3小时",
   "5h": "5小时",
-  "1d": "Day",
+  "1d": "日线",
   "1w": "周线",
   "1mo": "月线"
 };
@@ -32,18 +32,10 @@ const PRODUCT_CONFIGS = {
 };
 
 const STRATEGY_SUFFIXES = {
-  none: "空",
+  none: "不叠加策略",
   al_update_1: "更新1",
   al_best_1: "-1Best",
-  al_volume_price: "：量价",
-  al_research_trend: "研究版",
-  al_research_stable_5: "稳健5%候选",
-  al_research_defensive: "防守候选"
-};
-
-const BACKTEST_PRICE_MODE_LABELS = {
-  ideal: "理想",
-  average: "平均"
+  al_channel_20: "双轨20（研究）"
 };
 
 const BACKTEST_DIRECTION_LABELS = {
@@ -57,6 +49,7 @@ const KLINE_ZOOM_LEVELS = [0.01, 0.02, 0.05, 0.1, 0.2, 0.35, 0.5, 0.75, 1, 1.5, 
 const KLINE_DEFAULT_ZOOM = 0.01;
 const KLINE_MAX_CHART_WIDTH = 90000;
 const APP_STATE_VERSION = "2026-06-27-watchlist-three-symbols-v1";
+const NEWS_REFRESH_MS = 5 * 60 * 1000;
 
 const STRATEGY_CONFIGS = {
   al_update_1: {
@@ -75,46 +68,7 @@ const STRATEGY_CONFIGS = {
     sellThreshold: "mid",
     lines: ["up", "mid"]
   },
-  al_volume_price: {
-    period: 24,
-    deviationPeriod: 24,
-    deviationMultiple: 1.3,
-    buyThreshold: "up",
-    sellThreshold: "mid",
-    lines: ["up", "mid", "low"],
-    positionLabels: true
-  },
-  al_research_trend: {
-    type: "researchTrend",
-    fastPeriod: 20,
-    slowPeriod: 60,
-    volPeriod: 20,
-    targetVol: 0.15,
-    maxExposure: 1.5,
-    costRate: 0.0003
-  },
-  al_research_stable_5: {
-    type: "researchTrend",
-    fastPeriod: 10,
-    slowPeriod: 40,
-    volPeriod: 40,
-    targetVol: 0.15,
-    maxExposure: 3,
-    costRate: 0.0003,
-    trailWindow: 20,
-    trailThreshold: 0.05
-  },
-  al_research_defensive: {
-    type: "researchTrend",
-    fastPeriod: 20,
-    slowPeriod: 40,
-    volPeriod: 20,
-    targetVol: 0.1,
-    maxExposure: 1,
-    costRate: 0.0003,
-    trailWindow: 20,
-    trailThreshold: 0.02
-  }
+  al_channel_20: { type: "closeChannel" }
 };
 
 if (localStorage.getItem("appStateVersion") !== APP_STATE_VERSION) {
@@ -133,11 +87,11 @@ if (localStorage.getItem("appStateVersion") !== APP_STATE_VERSION) {
 }
 
 const savedStrategy = localStorage.getItem("strategy") || "none";
-const savedTheme = localStorage.getItem("klineTheme") || "dark";
+const savedTheme = localStorage.getItem("klineTheme") || "light";
 const savedProduct = PRODUCT_CONFIGS[localStorage.getItem("product")] ? localStorage.getItem("product") : "al";
-const savedBacktestPriceMode = localStorage.getItem("backtestPriceMode") || "ideal";
+localStorage.removeItem("backtestPriceMode");
 const savedBacktestDirection = localStorage.getItem("backtestDirection") || "both";
-const savedKlineStart = localStorage.getItem("klineStart") || daysAgoDateValue(30);
+const savedKlineStart = localStorage.getItem("klineStart") || daysAgoDateValue(180);
 const savedKlineEnd = localStorage.getItem("klineEnd") || todayDateValue();
 const savedKlineZoom = Number(localStorage.getItem("klineZoom") || KLINE_DEFAULT_ZOOM);
 
@@ -226,9 +180,7 @@ const state = {
   klineZoom: normalizeZoom(savedKlineZoom),
   backtestStart: localStorage.getItem("backtestStart") || "",
   backtestEnd: localStorage.getItem("backtestEnd") || "",
-  backtestPriceMode: BACKTEST_PRICE_MODE_LABELS[savedBacktestPriceMode]
-    ? savedBacktestPriceMode
-    : "ideal",
+  backtestPriceMode: "ideal",
   backtestDirection: BACKTEST_DIRECTION_LABELS[savedBacktestDirection]
     ? savedBacktestDirection
     : "both",
@@ -237,6 +189,7 @@ const state = {
   klineSymbol: null,
   klineIntervalLoaded: null,
   newsPayload: null,
+  newsFetchedAtMs: 0,
   newsExpanded: new Set(),
   newsLoading: false,
   timer: null,
@@ -304,7 +257,6 @@ const els = {
   strategySelect: document.querySelector("#strategySelect"),
   backtestStart: document.querySelector("#backtestStart"),
   backtestEnd: document.querySelector("#backtestEnd"),
-  backtestPriceMode: document.querySelector("#backtestPriceMode"),
   backtestDirection: document.querySelector("#backtestDirection"),
   chartWrap: document.querySelector("#chartWrap"),
   klineChart: document.querySelector("#klineChart"),
@@ -427,20 +379,25 @@ function setText(id, value) {
   els[id].textContent = value;
 }
 
-function showView(viewName = "market") {
-  const allowedViews = new Set(["market", "chart", "news", "discover", "profile"]);
-  const nextView = allowedViews.has(viewName) ? viewName : "market";
+function showView(viewName = "chart") {
+  const nextView = viewName === "news" ? "news" : "chart";
+  const previousView = els.appShell?.dataset.activeView;
+  showView.positions ||= {};
+  if (previousView) showView.positions[previousView] = window.scrollY;
   els.appShell?.setAttribute("data-active-view", nextView);
-  els.appViews?.forEach((view) => {
-    view.classList.toggle("active", view.dataset.view === nextView);
+  els.appViews?.forEach(view => view.classList.toggle("active", view.dataset.view === nextView));
+  els.navButtons?.forEach(button => {
+    const active = button.dataset.nav === nextView;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-current", active ? "page" : "false");
   });
-  els.navButtons?.forEach((button) => {
-    const isActive =
-      button.dataset.nav === nextView || (nextView === "chart" && button.dataset.nav === "market");
-    button.classList.toggle("active", isActive);
-  });
-  if (nextView !== "chart") closeSideMenu();
-  if (nextView === "news") fetchNews();
+  els.refreshButton.setAttribute("aria-label", nextView === "news" ? "刷新快讯" : "刷新行情");
+  document.querySelector("#pageTitle").innerHTML = `${nextView === "news" ? "新闻快讯" : "K 线研究"}<span class="heading-dot"></span>`;
+  if (nextView === "news") window.ALNewsFeed?.activate();
+  else window.ALNewsFeed?.deactivate();
+  history.replaceState(null, "", nextView === "news" ? "#news" : "#chart");
+  if (nextView === "chart" && !state.klinePayload) fetchKline(state.selectedSymbol);
+  if (previousView !== nextView) requestAnimationFrame(() => window.scrollTo(0, showView.positions[nextView] || 0));
 }
 
 function openSideMenu() {
@@ -451,143 +408,6 @@ function openSideMenu() {
 function closeSideMenu() {
   els.sideMenu?.classList.remove("open");
   els.sideMenu?.setAttribute("aria-hidden", "true");
-}
-
-function newsTimeLabel(value) {
-  const text = String(value || "").trim();
-  if (!text) return "--";
-  if (/小时前|分钟前|刚刚|昨天|前天|\d{2}-\d{2}|\d{4}-\d{2}-\d{2}/.test(text)) return text;
-  const date = new Date(text);
-  if (Number.isNaN(date.getTime())) return text;
-  return new Intl.DateTimeFormat("zh-CN", {
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false
-  }).format(date);
-}
-
-function newsReaderHref(item) {
-  const params = new URLSearchParams();
-  params.set("url", item.url || "");
-  params.set("title", item.title || "新闻详情");
-  if (item.originalTitle) params.set("originalTitle", item.originalTitle);
-  if (item.source) params.set("source", item.source);
-  if (item.time) params.set("time", newsTimeLabel(item.time));
-  if (item.description) params.set("description", item.description);
-  if (item.descriptionZh) params.set("descriptionZh", item.descriptionZh);
-  if (item.titleZh) params.set("titleZh", item.titleZh);
-  if (item.section) params.set("section", item.section);
-  return `/news-reader.html?${params.toString()}`;
-}
-
-function renderNewsSection(section) {
-  const expanded = state.newsExpanded.has(section.id);
-  const items = section.items || [];
-  const visibleItems = items.slice(0, expanded ? 10 : 5);
-  const moreButton =
-    items.length > 5
-      ? `<button type="button" class="news-more-button" data-news-more="${escapeHtml(section.id)}">${
-          expanded ? "收起" : "更多 ›"
-        }</button>`
-      : section.moreUrl
-      ? `<a class="news-more-link" href="${escapeHtml(
-          newsReaderHref({ url: section.moreUrl, title: `${section.title}更多新闻`, source: section.sourceLabel })
-        )}" target="_blank" rel="noopener">更多 ›</a>`
-      : "";
-
-  const itemHtml = visibleItems.length
-    ? visibleItems
-        .map((item) => {
-          const displayTitle = section.id === "alcoa" && item.titleZh ? item.titleZh : item.title;
-          const readerHref = newsReaderHref({
-            url: item.url,
-            title: displayTitle,
-            originalTitle: item.title,
-            source: item.source || section.sourceLabel,
-            time: item.time,
-            description: item.description,
-            descriptionZh: item.descriptionZh,
-            titleZh: item.titleZh,
-            section: section.id
-          });
-          return `
-            <article>
-              <time>${escapeHtml(newsTimeLabel(item.time))}</time>
-              <div>
-                <a href="${escapeHtml(readerHref)}" target="_blank" rel="noopener">${escapeHtml(displayTitle)}</a>
-                <span class="news-meta">${escapeHtml(item.source || section.sourceLabel || "")}</span>
-              </div>
-            </article>
-          `;
-        })
-        .join("")
-    : `<div class="news-loading">暂无可用链接，稍后刷新重试。</div>`;
-
-  return `
-    <div class="news-section" data-news-section="${escapeHtml(section.id)}">
-      <div class="news-section-title">
-        <h2>${escapeHtml(section.title)}</h2>
-        ${moreButton}
-      </div>
-      <div class="section-summary">
-        <strong>今日总结</strong>
-        <span>${escapeHtml(section.summary || "")}</span>
-        ${section.summaryZh ? `<span class="summary-translation">${escapeHtml(section.summaryZh)}</span>` : ""}
-      </div>
-      ${itemHtml}
-    </div>
-  `;
-}
-
-function renderNews(payload) {
-  state.newsPayload = payload;
-  els.newsOverallSummary.textContent = payload?.summary || "暂无可用新闻，稍后刷新重试。";
-  els.newsFetchTime.textContent = payload?.fetchedAt ? `更新 ${localTime(payload.fetchedAt)}` : "--";
-  els.newsSections.innerHTML = (payload?.sections || []).map(renderNewsSection).join("");
-  els.newsSections.querySelectorAll("a[href]").forEach((link) => {
-    link.addEventListener("click", (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      const popup = window.open(link.href, "_blank", "noopener,noreferrer");
-      if (popup) popup.opener = null;
-      else window.location.assign(link.href);
-    });
-  });
-  els.newsSections.querySelectorAll("[data-news-more]").forEach((button) => {
-    button.addEventListener("click", () => {
-      const sectionId = button.dataset.newsMore;
-      if (state.newsExpanded.has(sectionId)) {
-        state.newsExpanded.delete(sectionId);
-      } else {
-        state.newsExpanded.add(sectionId);
-      }
-      renderNews(state.newsPayload);
-    });
-  });
-}
-
-async function fetchNews(force = false) {
-  if (state.newsLoading || (state.newsPayload && !force)) return;
-  state.newsLoading = true;
-  els.newsOverallSummary.textContent = "正在加载最新沪铝和美铝新闻...";
-  els.newsFetchTime.textContent = "--";
-  els.newsSections.innerHTML = "<div class=\"news-loading\">正在获取最新可点击链接...</div>";
-
-  try {
-    const response = await fetch(`/api/news?t=${Date.now()}`, { cache: "no-store" });
-    if (!response.ok) {
-      const payload = await response.json().catch(() => ({}));
-      throw new Error(payload.detail || payload.error || `HTTP ${response.status}`);
-    }
-    renderNews(await response.json());
-  } catch (error) {
-    els.newsOverallSummary.textContent = `新闻获取失败：${error.message}`;
-    els.newsSections.innerHTML = "<div class=\"news-loading\">暂时没有可展示的新闻链接。</div>";
-  } finally {
-    state.newsLoading = false;
-  }
 }
 
 function intervalLabel(interval = state.klineInterval) {
@@ -610,13 +430,13 @@ function updateStrategyOptions() {
 
 function updateProductUi() {
   const product = productConfig(state.product);
-  document.title = product.title;
+  document.title = "ALNEWS · 铝市场研究";
   document.querySelector("meta[name='description']")?.setAttribute("content", product.description);
   els.productSelect.value = state.product;
   els.strategySelect.value = state.strategy;
   els.brandMark.textContent = product.mark;
-  els.brandTitle.textContent = "自选";
-  els.brandSubtitle.textContent = product.subtitle;
+  els.brandTitle.textContent = "ALNEWS";
+  els.brandSubtitle.textContent = "铝市场研究";
   els.productSpecText.textContent = product.spec;
   if (els.menuIntervalLabel) els.menuIntervalLabel.textContent = intervalLabel();
   updateStrategyOptions();
@@ -641,6 +461,7 @@ function renderPrimary(quote) {
   setText("contractBadge", quote.code);
   setText("contractName", quote.name || quote.code);
   setText("lastPrice", formatPrice(quote.last));
+  document.querySelector("#priceUnit").textContent = isUsSymbol(quote.symbol) ? "美元 / 股" : "元 / 吨";
   setText("quoteTime", quote.timestamp || "--");
   setText("openPrice", formatPrice(quote.open));
   setText("highPrice", formatPrice(quote.high));
@@ -669,7 +490,7 @@ function renderPrimary(quote) {
     <span>涨跌幅 ${formatPct(quote.changePct)}</span>
   `;
 
-  const phase = quote.time >= "09:00:00" && quote.time <= "15:00:00" ? "日盘行情" : "最新行情";
+  const phase = "最近报价";
   setText("marketState", quote.isMain ? `${phase} · 主力` : phase);
   updateTicker(quote);
 }
@@ -678,7 +499,7 @@ function quoteRow(quote) {
   const cls = trendClass(quote.change);
   const active = quote.symbol === state.selectedSymbol ? " class=\"active\"" : "";
   return `
-    <tr data-symbol="${escapeHtml(quote.symbol)}"${active}>
+    <tr data-symbol="${escapeHtml(quote.symbol)}" tabindex="0" role="button" aria-label="查看${escapeHtml(quote.name || quote.code)}K线"${active}>
       <td>
         <strong>${escapeHtml(quote.name || quote.code)}</strong>
         ${quote.isMain ? "<span class=\"contract-badge\">M</span>" : ""}
@@ -698,6 +519,7 @@ function renderTable(quotes) {
 
   els.contractsBody.innerHTML = quotes.map(quoteRow).join("");
   els.contractsBody.querySelectorAll("tr[data-symbol]").forEach((row) => {
+    row.addEventListener("keydown", event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); row.click(); } });
     row.addEventListener("click", () => {
       state.selectedSymbol = row.dataset.symbol;
       localStorage.setItem(selectedSymbolStorageKey(state.product), state.selectedSymbol);
@@ -748,7 +570,7 @@ function showToast(message, duration = 3200) {
 
 function scheduleNext() {
   window.clearTimeout(state.timer);
-  state.timer = window.setTimeout(fetchQuotes, state.refreshMs);
+  if (!document.hidden) state.timer = window.setTimeout(fetchQuotes, state.refreshMs);
 }
 
 function normalizeKlineRange() {
@@ -815,39 +637,64 @@ async function fetchQuotes() {
   }
 }
 
+let activeKlineRequest = null;
+
 async function fetchKline(symbol = state.selectedSymbol) {
   const quote = findSelectedQuote();
   const interval = state.klineInterval;
   const productAtRequest = state.product;
   const label = intervalLabel(interval);
   const { startDate, endDate } = normalizeKlineRange();
+  const cacheKey = `${klineCacheKey(symbol, interval, startDate, endDate, productAtRequest)}:history-v3`;
+  // Input/change events and quote refresh can request the same chart together.
+  // Abort superseded requests, and reject old results even after an A → B → A switch.
+  if (activeKlineRequest?.key === cacheKey) return;
+  activeKlineRequest?.controller.abort();
+  const request = { key: cacheKey, controller: new AbortController() };
+  activeKlineRequest = request;
+  const timeout = window.setTimeout(() => request.controller.abort(new Error("K 线请求超时，请重试")), 45000);
   state.klineSymbol = symbol;
   state.klineIntervalLoaded = interval;
   els.klineTitle.textContent = `${quote?.name || symbol.replace(/^nf_/, "")} ${label} K线`;
   els.klineSubtitle.textContent = `正在加载${label}数据...`;
   els.klineStatus.textContent = "加载中";
-  els.klineChart.className = "chart-empty";
-  resetChartWidth();
-  els.klineChart.textContent = "正在加载 K 线...";
-  els.klineMeta.innerHTML = "";
-  els.backtestMeta.innerHTML = "";
-
-  const cacheKey = klineCacheKey(symbol, interval, startDate, endDate, productAtRequest);
+  const keepChart = window.ALChart?.isActive() &&
+    state.klinePayload?.symbol === symbol &&
+    state.klinePayload?.interval === interval &&
+    state.klinePayload?.requestedStart === startDate &&
+    state.klinePayload?.requestedEnd === endDate;
+  if (!keepChart) {
+    state.klinePayload = null;
+    window.ALChart?.clear();
+    els.klineChart.className = "chart-empty";
+    resetChartWidth();
+    els.klineChart.textContent = "正在加载 K 线...";
+    els.klineMeta.innerHTML = "";
+    els.backtestMeta.innerHTML = "";
+    const comparison = document.querySelector("#strategyComparison");
+    if (comparison) comparison.innerHTML = "<p class=\"muted\">正在加载历史，重新计算对照…</p>";
+  }
 
   try {
     const response = await fetch(
       `/api/kline?product=${encodeURIComponent(productAtRequest)}&symbol=${encodeURIComponent(symbol)}&interval=${encodeURIComponent(
         interval
-      )}&start=${encodeURIComponent(startDate)}&end=${encodeURIComponent(endDate)}&t=${Date.now()}`,
-      { cache: "no-store" }
+      )}&start=${encodeURIComponent(KLINE_MIN_DATE)}&end=${encodeURIComponent(endDate)}&t=${Date.now()}`,
+      { cache: "no-store", signal: request.controller.signal }
     );
     if (!response.ok) {
       const errorPayload = await response.json().catch(() => ({}));
       throw new Error(errorPayload.detail || errorPayload.error || `HTTP ${response.status}`);
     }
     const payload = await response.json();
+    payload.historyStart = payload.requestedStart;
+    payload.requestedStart = startDate;
+    payload.requestedEnd = endDate;
+    payload.hasIndicatorHistory = true;
+    if (window.ALChart) payload.candles = window.ALChart.normalizeCandles(payload.candles, interval);
     if (!payload.candles?.length) throw new Error("没有返回可用K线");
     if (
+      activeKlineRequest !== request ||
       productAtRequest !== state.product ||
       interval !== state.klineInterval ||
       startDate !== state.klineStart ||
@@ -856,10 +703,12 @@ async function fetchKline(symbol = state.selectedSymbol) {
     ) {
       return;
     }
-    localStorage.setItem(cacheKey, JSON.stringify(payload));
+    // A full local cache must not hide a successfully fetched live chart.
+    try { localStorage.setItem(cacheKey, JSON.stringify(payload)); } catch (_) { /* Best-effort offline cache. */ }
     renderKline(payload, false);
   } catch (error) {
     if (
+      activeKlineRequest !== request ||
       productAtRequest !== state.product ||
       interval !== state.klineInterval ||
       startDate !== state.klineStart ||
@@ -868,17 +717,27 @@ async function fetchKline(symbol = state.selectedSymbol) {
     ) {
       return;
     }
-    const cached = localStorage.getItem(cacheKey);
-    if (cached) {
-      renderKline(JSON.parse(cached), true);
+    let cached = null;
+    try { cached = JSON.parse(localStorage.getItem(cacheKey) || "null"); } catch (_) { /* Ignore damaged cache. */ }
+    if (cached?.candles?.length) {
+      renderKline(cached, true);
       showToast(`K线源暂时不可用，已显示缓存：${error.message}`);
     } else {
       els.klineStatus.textContent = "加载失败";
       els.klineSubtitle.textContent = "K 线数据暂时不可用";
-      els.klineChart.className = "chart-empty";
-      resetChartWidth();
-      els.klineChart.textContent = `K 线获取失败：${error.message}`;
+      if (keepChart) {
+        els.klineStatus.textContent = "刷新失败 · 保留上次数据";
+        showToast(`K 线刷新失败：${error.message}`);
+      } else {
+        window.ALChart?.clear();
+        els.klineChart.className = "chart-empty";
+        resetChartWidth();
+        els.klineChart.textContent = `K 线获取失败：${error.message}`;
+      }
     }
+  } finally {
+    window.clearTimeout(timeout);
+    if (activeKlineRequest === request) activeKlineRequest = null;
   }
 }
 
@@ -983,194 +842,77 @@ function alternatingSignals(candles, rawBuy, rawSell) {
   return signals;
 }
 
-function positionChangeSignals(candles) {
+/**
+ * 铝双轨20（研究） — fixed MA20 ± 0.5 population standard deviation.
+ * Close-confirmed signals; the current close is available before decision.
+ * No date-specific rules, future bars, leverage, stop/target optimization, or exits
+ * based on unavailable intrabar ordering. Initial state is flat; thereafter keep
+ * the last direction until the opposite band is crossed. A touch is not a cross.
+ * The application's ideal LOW/HIGH fills remain a hindsight simulation, distinct
+ * from this causal signal rule. See REPORT.md for failed next-open validation.
+ */
+function computeChannel20Strategy(candles) {
+  const period = 20;
+  const multiplier = 0.5;
+  const mid = [];
+  const upper = [];
+  const lower = [];
   const signals = [];
-
-  for (let index = 1; index < candles.length; index += 1) {
-    const current = candles[index];
-    const previous = candles[index - 1];
-    if (!isFiniteNumber(current.openInterest) || !isFiniteNumber(previous.openInterest)) continue;
-
-    const openInterestChange = current.openInterest - previous.openInterest;
-    if (current.close > previous.close && openInterestChange > 0) {
-      signals.push(
-        strategySignal(index, "多增", current.low * 0.998, "position-long-add", 16)
-      );
-    }
-    if (current.close < previous.close && openInterestChange < 0) {
-      signals.push(
-        strategySignal(index, "多减", current.high * 1.002, "position-long-reduce", -8)
-      );
-    }
-    if (current.close < previous.close && openInterestChange > 0) {
-      signals.push(
-        strategySignal(index, "空增", current.high * 1.004, "position-short-add", -8)
-      );
-    }
-    if (current.close > previous.close && openInterestChange < 0) {
-      signals.push(
-        strategySignal(index, "空减", current.low * 0.996, "position-short-reduce", 16)
-      );
-    }
-  }
-
-  return signals;
-}
-
-function rollingAnnualizedVol(candles, period) {
-  const returns = candles.map((item, index) => {
-    if (index === 0) return null;
-    const previous = candles[index - 1].close;
-    return previous > 0 ? item.close / previous - 1 : null;
-  });
-  const values = [];
-  const factor = annualizationFactor();
+  let rollingSum = 0;
+  let position = 0;
 
   for (let index = 0; index < candles.length; index += 1) {
-    if (index < period) {
-      values.push(null);
-      continue;
-    }
-
-    const windowValues = returns.slice(index - period + 1, index + 1);
-    const vol = standardDeviation(windowValues);
-    values.push(isFiniteNumber(vol) ? vol * Math.sqrt(factor) : null);
-  }
-
-  return values;
-}
-
-function rollingStrategyReturn(candles, rawExposure, costRate, period) {
-  const positionSeries = rawExposure.map((value, index) => (index > 0 ? rawExposure[index - 1] : 0));
-  const dailyReturns = [];
-  let previousPosition = 0;
-
-  for (let index = 0; index < candles.length; index += 1) {
-    const position = isFiniteNumber(positionSeries[index]) ? positionSeries[index] : 0;
-    if (index === 0) {
-      dailyReturns.push(0);
-      previousPosition = position;
-      continue;
-    }
-
-    const previousClose = candles[index - 1].close;
-    const priceReturn = previousClose > 0 ? candles[index].close / previousClose - 1 : 0;
-    const turnover = Math.abs(position - previousPosition);
-    dailyReturns.push(position * priceReturn - turnover * costRate);
-    previousPosition = position;
-  }
-
-  return dailyReturns.map((item, index) => {
-    if (index < period) return null;
-    let equity = 1;
-    for (let cursor = index - period + 1; cursor <= index; cursor += 1) {
-      equity *= 1 + dailyReturns[cursor];
-    }
-    return equity - 1;
-  });
-}
-
-function computeResearchTrendStrategy(candles, strategyKey, config) {
-  const fast = movingAverage(candles, config.fastPeriod);
-  const slow = movingAverage(candles, config.slowPeriod);
-  const vol = rollingAnnualizedVol(candles, config.volPeriod);
-  const baseExposure = candles.map((item, index) => {
-    if (!isFiniteNumber(fast[index]) || !isFiniteNumber(slow[index]) || !isFiniteNumber(vol[index])) {
-      return 0;
-    }
-    if (vol[index] <= 0) return 0;
-
-    const direction = fast[index] >= slow[index] ? 1 : -1;
-    const size = clamp(config.targetVol / vol[index], 0, config.maxExposure);
-    return direction * size;
-  });
-  const trailReturn =
-    config.trailWindow && isFiniteNumber(config.trailThreshold)
-      ? rollingStrategyReturn(candles, baseExposure, config.costRate || 0, config.trailWindow)
-      : null;
-  const rawExposure = trailReturn
-    ? baseExposure.map((value, index) =>
-        isFiniteNumber(trailReturn[index]) && trailReturn[index] > config.trailThreshold ? value : 0
-      )
-    : baseExposure;
-  const positionSeries = rawExposure.map((value, index) => (index > 0 ? rawExposure[index - 1] : 0));
-  const signals = [];
-
-  for (let index = 1; index < candles.length; index += 1) {
-    const previousSign = Math.sign(positionSeries[index - 1]);
-    const currentSign = Math.sign(positionSeries[index]);
-    if (previousSign === currentSign) continue;
-
     const candle = candles[index];
-    if (currentSign > 0) {
-      signals.push(
-        strategySignal(
-          index,
-          previousSign < 0 ? "平空开多" : "开多",
-          candle.open,
-          "strategy-buy",
-          16,
-          "buy"
-        )
-      );
-    } else if (currentSign < 0) {
-      signals.push(
-        strategySignal(
-          index,
-          previousSign > 0 ? "平多开空" : "开空",
-          candle.open,
-          "strategy-sell",
-          -8,
-          "sell"
-        )
-      );
-    } else if (previousSign > 0) {
-      signals.push(strategySignal(index, "平多", candle.open, "strategy-sell", -8, "sell"));
-    } else if (previousSign < 0) {
-      signals.push(strategySignal(index, "平空", candle.open, "strategy-buy", 16, "buy"));
+    rollingSum += candle.close;
+    if (index >= period) rollingSum -= candles[index - period].close;
+    if (index < period - 1) {
+      mid.push(null);
+      upper.push(null);
+      lower.push(null);
+      continue;
+    }
+    const mean = rollingSum / period;
+    let varianceSum = 0;
+    for (let cursor = index - period + 1; cursor <= index; cursor += 1) {
+      varianceSum += (candles[cursor].close - mean) ** 2;
+    }
+    const width = multiplier * Math.sqrt(varianceSum / period);
+    const upperBand = mean + width;
+    const lowerBand = mean - width;
+    mid.push(mean);
+    upper.push(upperBand);
+    lower.push(lowerBand);
+    const direction = candle.close > upperBand ? 1 : candle.close < lowerBand ? -1 : position;
+    if (direction !== position && direction !== 0) {
+      const buy = direction > 0;
+      signals.push({
+        index,
+        label: buy ? '升高' : '降低',
+        price: buy ? candle.low : candle.high,
+        className: buy ? 'strategy-buy' : 'strategy-sell',
+        dy: buy ? 16 : -8,
+        type: buy ? 'buy' : 'sell'
+      });
+      position = direction;
     }
   }
-
-  const filterText = config.trailWindow
-    ? ` + ${config.trailWindow}日策略收益>${Math.round(config.trailThreshold * 100)}%过滤`
-    : "";
-
   return {
-    key: strategyKey,
-    label: strategyLabel(strategyKey, state.product),
-    description: `MA${config.fastPeriod}/MA${config.slowPeriod} 趋势 + ${Math.round(
-      config.targetVol * 100
-    )}%目标波动率仓位，上限${config.maxExposure}倍${filterText}`,
+    key: 'al_channel_20',
+    label: '铝双轨20（研究）',
+    description: 'MA20 ± 0.5σ；收盘突破上轨做多、跌破下轨做空，轨内保持方向。固定规则研究候选。',
     lines: [
-      {
-        name: "fast",
-        label: `MA${config.fastPeriod}`,
-        className: "strategy-line-up",
-        values: fast
-      },
-      {
-        name: "slow",
-        label: `MA${config.slowPeriod}`,
-        className: "strategy-line-mid",
-        values: slow
-      }
+      { name: 'up', label: '上轨', className: 'strategy-line-up', values: upper },
+      { name: 'mid', label: '中轨', className: 'strategy-line-mid', values: mid },
+      { name: 'low', label: '下轨', className: 'strategy-line-low', values: lower }
     ],
-    signals,
-    positionSeries,
-    volSeries: vol,
-    trailReturnSeries: trailReturn,
-    costRate: config.costRate,
-    usesPositionSeries: true
+    signals
   };
 }
 
 function computeStrategy(candles, strategyKey) {
   const config = STRATEGY_CONFIGS[strategyKey];
   if (!config || !candles.length) return null;
-
-  if (config.type === "researchTrend") {
-    return computeResearchTrendStrategy(candles, strategyKey, config);
-  }
+  if (config.type === "closeChannel") return computeChannel20Strategy(candles);
 
   const lineValues = lineValuesForStrategy(config, candles);
   const rawBuy = candles.map((item, index) => {
@@ -1199,10 +941,6 @@ function computeStrategy(candles, strategyKey) {
     values: lineValues[name]
   }));
   const signals = alternatingSignals(candles, rawBuy, rawSell);
-
-  if (config.positionLabels) {
-    signals.push(...positionChangeSignals(candles));
-  }
 
   return {
     key: strategyKey,
@@ -1264,14 +1002,8 @@ function annualizationFactor(interval = state.klineInterval) {
   return 252;
 }
 
-function backtestPrice(candle, signalType, mode) {
-  if (mode === "average") {
-    return (candle.open + candle.high + candle.low + candle.close) / 4;
-  }
-  if (mode === "ideal") {
-    return signalType === "buy" ? candle.low : candle.high;
-  }
-  return signalType === "buy" ? candle.high : candle.low;
+function backtestPrice(candle, signalType) {
+  return signalType === "buy" ? candle.low : candle.high;
 }
 
 function syncBacktestRangeControls(candles) {
@@ -1290,7 +1022,8 @@ function syncBacktestRangeControls(candles) {
   els.backtestEnd.max = lastValue;
 
   if (!state.backtestStart || startTs < firstTs || startTs > lastTs) {
-    state.backtestStart = firstValue;
+    const requested = `${state.klineStart}T00:00`;
+    state.backtestStart = requested >= firstValue && requested <= lastValue ? requested : firstValue;
   }
   if (!state.backtestEnd || endTs < firstTs || endTs > lastTs) {
     state.backtestEnd = lastValue;
@@ -1321,147 +1054,17 @@ function closeBacktestPosition(position, signal, candle, mode) {
   };
 }
 
-function directionFilteredPosition(position) {
-  if (state.backtestDirection === "long") return Math.max(position, 0);
-  if (state.backtestDirection === "short") return Math.min(position, 0);
-  return position;
-}
-
-function computePositionSeriesBacktest(candles, strategy, startTs, endTs) {
-  const factor = annualizationFactor();
-  const costRate = strategy.costRate || 0;
-  const dailyReturns = [];
-  const trades = [];
-  let equity = 1;
-  let peak = 1;
-  let maxDrawdown = 0;
-  let previousPosition = 0;
-  let latestPosition = 0;
-  let exposureSum = 0;
-  let activeTrade = null;
-
-  const closeActiveTrade = (candle) => {
-    if (!activeTrade) return;
-    const exitPrice = candle.open || candle.close;
-    const rawReturn =
-      activeTrade.side === "long"
-        ? (exitPrice - activeTrade.entryPrice) / activeTrade.entryPrice
-        : (activeTrade.entryPrice - exitPrice) / activeTrade.entryPrice;
-    const averageExposure =
-      activeTrade.bars > 0 ? activeTrade.exposureSum / activeTrade.bars : Math.abs(activeTrade.entryPosition);
-    trades.push({
-      side: activeTrade.side,
-      entryDate: activeTrade.entryDate,
-      exitDate: candle.date,
-      entryPrice: activeTrade.entryPrice,
-      exitPrice,
-      returnRate: rawReturn * averageExposure
-    });
-    activeTrade = null;
-  };
-
-  const openActiveTrade = (position, candle) => {
-    if (position === 0) return;
-    activeTrade = {
-      side: position > 0 ? "long" : "short",
-      entryDate: candle.date,
-      entryPrice: candle.open || candle.close,
-      entryPosition: position,
-      exposureSum: 0,
-      bars: 0
-    };
-  };
-
-  for (let index = 1; index < candles.length; index += 1) {
-    const candle = candles[index];
-    const ts = candleTimestamp(candle.date);
-    if (!Number.isFinite(ts) || (startTs !== null && ts < startTs) || (endTs !== null && ts > endTs)) {
-      continue;
-    }
-
-    const position = directionFilteredPosition(strategy.positionSeries[index] || 0);
-    const previousSign = Math.sign(previousPosition);
-    const currentSign = Math.sign(position);
-    if (previousSign !== currentSign) {
-      closeActiveTrade(candle);
-      openActiveTrade(position, candle);
-    }
-
-    const previousClose = candles[index - 1].close;
-    const priceReturn = previousClose > 0 ? candle.close / previousClose - 1 : 0;
-    const turnover = Math.abs(position - previousPosition);
-    const strategyReturn = position * priceReturn - turnover * costRate;
-
-    dailyReturns.push(strategyReturn);
-    equity *= 1 + strategyReturn;
-    peak = Math.max(peak, equity);
-    maxDrawdown = Math.min(maxDrawdown, equity / peak - 1);
-    exposureSum += Math.abs(position);
-    latestPosition = position;
-
-    if (activeTrade) {
-      activeTrade.exposureSum += Math.abs(position);
-      activeTrade.bars += 1;
-    }
-
-    previousPosition = position;
-  }
-
-  const wins = trades.filter((trade) => trade.returnRate > 0).length;
-  const averageReturn =
-    trades.length > 0
-      ? trades.reduce((sum, trade) => sum + trade.returnRate, 0) / trades.length
-      : null;
-  const bestReturn = trades.length ? Math.max(...trades.map((trade) => trade.returnRate)) : null;
-  const worstReturn = trades.length ? Math.min(...trades.map((trade) => trade.returnRate)) : null;
-  const annVol = standardDeviation(dailyReturns);
-  const annualVol = isFiniteNumber(annVol) ? annVol * Math.sqrt(factor) : null;
-  const annualReturn = dailyReturns.length ? equity ** (factor / dailyReturns.length) - 1 : null;
-
-  return {
-    status: "ok",
-    trades,
-    totalReturn: equity - 1,
-    winRate: trades.length ? wins / trades.length : null,
-    averageReturn,
-    bestReturn,
-    worstReturn,
-    annualReturn,
-    annualVol,
-    sharpe:
-      isFiniteNumber(annualReturn) && isFiniteNumber(annualVol) && annualVol > 0
-        ? annualReturn / annualVol
-        : null,
-    maxDrawdown,
-    averageExposure: dailyReturns.length ? exposureSum / dailyReturns.length : null,
-    latestPosition,
-    dailyReturnMode: true,
-    openPosition: activeTrade
-      ? {
-          side: activeTrade.side,
-          entryDate: activeTrade.entryDate,
-          entryPrice: activeTrade.entryPrice
-        }
-      : null,
-    priceModeLabel: "次根K线持仓收益"
-  };
-}
-
-function computeBacktest(candles, strategy) {
+function computeBacktest(candles, strategy, options = {}) {
   if (!strategy) return { status: "no-strategy", trades: [] };
 
-  const startTs = inputTimestamp(state.backtestStart);
-  const endTs = inputTimestamp(state.backtestEnd);
+  const startTs = inputTimestamp(options.start ?? state.backtestStart);
+  const endTs = inputTimestamp(options.end ?? state.backtestEnd);
   if (startTs !== null && endTs !== null && startTs > endTs) {
     return { status: "invalid-range", trades: [] };
   }
 
-  if (strategy.usesPositionSeries && Array.isArray(strategy.positionSeries)) {
-    return computePositionSeriesBacktest(candles, strategy, startTs, endTs);
-  }
-
   const mode = state.backtestPriceMode;
-  const direction = state.backtestDirection;
+  const direction = options.direction ?? state.backtestDirection;
   const signals = strategy.signals
     .filter((signal) => signal.type === "buy" || signal.type === "sell")
     .filter((signal) => {
@@ -1541,6 +1144,67 @@ function computeBacktest(candles, strategy) {
   };
 }
 
+function closeEquityDrawdown(candles, result, startValue, endValue) {
+  const start = inputTimestamp(startValue);
+  const end = inputTimestamp(endValue);
+  let cursor = 0;
+  let realized = 1;
+  let peak = 1;
+  let drawdown = 0;
+  for (const candle of candles) {
+    const ts = candleTimestamp(candle.date);
+    if ((start !== null && ts < start) || (end !== null && ts > end)) continue;
+    while (cursor < result.trades.length && candleTimestamp(result.trades[cursor].exitDate) <= ts) {
+      realized *= 1 + result.trades[cursor].returnRate;
+      cursor += 1;
+    }
+    const position = result.trades[cursor] || result.openPosition;
+    let equity = realized;
+    if (position && candleTimestamp(position.entryDate) <= ts) {
+      const sign = position.side === "long" ? 1 : -1;
+      equity *= 1 + sign * (candle.close / position.entryPrice - 1);
+    }
+    peak = Math.max(peak, equity);
+    drawdown = Math.min(drawdown, equity / peak - 1);
+  }
+  return drawdown;
+}
+
+function calendarMonthsBefore(day, months) {
+  const [year, month, date] = day.slice(0, 10).split("-").map(Number);
+  const target = new Date(Date.UTC(year, month - 1 - months, 1));
+  const lastDay = new Date(Date.UTC(target.getUTCFullYear(), target.getUTCMonth() + 1, 0)).getUTCDate();
+  target.setUTCDate(Math.min(date, lastDay));
+  return target.toISOString().slice(0, 10);
+}
+
+function strategyPeriodComparison(candles, direction = "both") {
+  if (!candles.length) return [];
+  const endDay = candles[candles.length - 1].date.slice(0, 10);
+  const strategies = Object.keys(STRATEGY_CONFIGS).map(key => computeStrategy(candles, key));
+  return [1, 3, 6, 12].map(months => {
+    const startDay = calendarMonthsBefore(endDay, months);
+    const warmupCount = candles.filter(candle => candle.date.slice(0, 10) < startDay).length;
+    const ready = warmupCount >= 24;
+    const options = { start: `${startDay}T00:00`, end: `${endDay}T23:59`, direction };
+    return { months, startDay, endDay, ready, results: strategies.map(strategy => {
+      const result = computeBacktest(candles, strategy, options);
+      return { key: strategy.key, label: strategy.label, ...result,
+        maxDrawdown: closeEquityDrawdown(candles, result, options.start, options.end) };
+    }) };
+  });
+}
+
+function renderStrategyComparison(candles, payload) {
+  const container = document.querySelector("#strategyComparison");
+  if (!container) return;
+  const periods = strategyPeriodComparison(candles, state.backtestDirection);
+  if (!periods.length) { container.innerHTML = ""; return; }
+  const labels = periods[0].results.map(result => `<th>${escapeHtml(result.label)}</th>`).join("");
+  const rows = periods.map(period => `<tr><th>近 ${period.months} 个月<small>${period.startDay} 起</small></th>${period.results.map(result => `<td>${period.ready ? `<strong class="${trendClass(result.totalReturn)}">${formatRate(result.totalReturn)}</strong><small>回撤 ${formatRate(result.maxDrawdown)} · ${result.trades.length} 笔</small>` : '<span class="muted">历史不足</span>'}</td>`).join("")}</tr>`).join("");
+  container.innerHTML = `<div class="section-heading"><h3>四周期对比</h3><span class="muted">截至 ${periods[0].endDay}</span></div><p class="backtest-assumption">${escapeHtml(payload.code || payload.symbol)} · ${escapeHtml(intervalLabel(payload.interval))} · ${BACKTEST_DIRECTION_LABELS[state.backtestDirection]}</p><div class="comparison-table-wrap"><table><thead><tr><th>回测区间</th>${labels}</tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+
 function formatBacktestRange() {
   const start = state.backtestStart ? state.backtestStart.replace("T", " ") : "--";
   const end = state.backtestEnd ? state.backtestEnd.replace("T", " ") : "--";
@@ -1589,6 +1253,19 @@ function renderBacktestTrades(result) {
 }
 
 function renderBacktest(candles, strategy) {
+  const rangeLabel = document.querySelector("#backtestRangeLabel");
+  if (rangeLabel) rangeLabel.textContent = `当前回测：${formatBacktestRange()}`;
+  if (candles.length) {
+    const endDay = candles[candles.length - 1].date.slice(0, 10);
+    document.querySelectorAll("[data-backtest-months]").forEach(button => {
+      const startDay = calendarMonthsBefore(endDay, Number(button.dataset.backtestMonths));
+      const ready = candles.filter(candle => candle.date.slice(0, 10) < startDay).length >= 24;
+      button.disabled = !ready;
+      button.title = ready ? `${startDay} 至 ${endDay}` : "当前品种历史不足以覆盖此区间及指标预热";
+      button.setAttribute("aria-pressed", String(state.backtestStart?.slice(0, 10) === startDay && state.backtestEnd?.slice(0, 10) === endDay));
+    });
+  }
+
   if (!candles.length) {
     els.backtestMeta.innerHTML = "";
     if (els.backtestTrades) els.backtestTrades.innerHTML = "";
@@ -1599,7 +1276,6 @@ function renderBacktest(candles, strategy) {
     els.backtestMeta.innerHTML = `
       <div><span>策略回测</span><strong>选择策略后计算</strong></div>
       <div><span>时间范围</span><strong>${escapeHtml(formatBacktestRange())}</strong></div>
-      <div><span>成交价</span><strong>${BACKTEST_PRICE_MODE_LABELS[state.backtestPriceMode]}</strong></div>
       <div><span>方向</span><strong>${BACKTEST_DIRECTION_LABELS[state.backtestDirection]}</strong></div>
     `;
     if (els.backtestTrades) els.backtestTrades.innerHTML = "";
@@ -1618,34 +1294,18 @@ function renderBacktest(candles, strategy) {
     ? `${result.openPosition.side === "long" ? "多单" : "空单"}未平仓`
     : "无";
   const tradeCount = result.trades.length;
-  const annualText =
-    result.annualReturn === undefined
-      ? "--"
-      : `${formatRate(result.annualReturn)} / ${
-          isFiniteNumber(result.sharpe) ? result.sharpe.toFixed(2) : "--"
-        }`;
-  const drawdownText =
-    result.maxDrawdown === undefined || !isFiniteNumber(result.maxDrawdown)
-      ? "--"
-      : formatRate(result.maxDrawdown);
-  const exposureText =
-    result.latestPosition === undefined ? "--" : formatExposure(result.latestPosition);
-  const priceModeText = result.priceModeLabel || BACKTEST_PRICE_MODE_LABELS[state.backtestPriceMode];
-  const hasReturn = tradeCount > 0 || result.dailyReturnMode;
+  const drawdown = closeEquityDrawdown(candles, result, state.backtestStart, state.backtestEnd);
+  const drawdownText = formatRate(drawdown);
 
   els.backtestMeta.innerHTML = `
-    <div><span>回测收益率</span><strong class="${trendClass(result.totalReturn)}">${hasReturn ? formatRate(result.totalReturn) : "--"}</strong></div>
-    <div><span>年化 / 夏普</span><strong>${annualText}</strong></div>
-    <div><span>最大回撤</span><strong class="${trendClass(result.maxDrawdown)}">${drawdownText}</strong></div>
-    <div><span>当前仓位</span><strong>${exposureText}</strong></div>
+    <div><span>已平仓收益率</span><strong class="${trendClass(result.totalReturn)}">${formatRate(result.totalReturn)}</strong></div>
+    <div><span>收盘净值回撤</span><strong class="${trendClass(drawdown)}">${drawdownText}</strong></div>
     <div><span>完成交易</span><strong>${tradeCount} 笔</strong></div>
     <div><span>胜率</span><strong>${result.winRate === null ? "--" : formatRate(result.winRate)}</strong></div>
     <div><span>平均单笔</span><strong class="${trendClass(result.averageReturn)}">${result.averageReturn === null ? "--" : formatRate(result.averageReturn)}</strong></div>
     <div><span>最佳 / 最差</span><strong>${result.bestReturn === null ? "--" : `${formatRate(result.bestReturn)} / ${formatRate(result.worstReturn)}`}</strong></div>
-    <div><span>成交价</span><strong>${priceModeText}</strong></div>
     <div><span>方向</span><strong>${BACKTEST_DIRECTION_LABELS[state.backtestDirection]}</strong></div>
     <div><span>未平仓</span><strong>${openPositionText}</strong></div>
-    <div><span>策略说明</span><strong>${escapeHtml(strategy.description || strategy.label)}</strong></div>
   `;
   renderBacktestTrades(result);
 }
@@ -1678,6 +1338,15 @@ function updateZoomUi() {
 }
 
 function setKlineZoom(value) {
+  if (window.ALChart?.isActive()) {
+    const nextZoom = normalizeZoom(value);
+    if (nextZoom === KLINE_DEFAULT_ZOOM) window.ALChart.showBars(90);
+    else window.ALChart.zoom(nextZoom > state.klineZoom ? 1.4 : 1 / 1.4);
+    state.klineZoom = nextZoom;
+    localStorage.setItem("klineZoom", String(nextZoom));
+    updateZoomUi();
+    return;
+  }
   const wrap = els.chartWrap;
   const centerRatio =
     wrap && wrap.scrollWidth > 0
@@ -1701,6 +1370,7 @@ function setKlineZoom(value) {
 }
 
 function resetKlineViewToFullRange() {
+  window.ALChart?.showBars(90);
   state.klineZoom = KLINE_DEFAULT_ZOOM;
   localStorage.setItem("klineZoom", String(state.klineZoom));
   updateZoomUi();
@@ -1715,21 +1385,40 @@ function applyKlineRangeInputs() {
   state.klineStart = els.klineStart.value;
   state.klineEnd = els.klineEnd.value;
   normalizeKlineRange();
+  state.backtestStart = `${state.klineStart}T00:00`;
+  state.backtestEnd = `${state.klineEnd}T23:59`;
+  localStorage.setItem("backtestStart", state.backtestStart);
+  localStorage.setItem("backtestEnd", state.backtestEnd);
   resetKlineViewToFullRange();
   state.klineIntervalLoaded = null;
   fetchKline(state.selectedSymbol);
 }
 
 function renderKline(payload, cacheMode = false) {
+  // Deduplicate and sort before computing indicators so chart, signals and
+  // backtest all share exactly the same candle indexes.
+  if (window.ALChart) {
+    payload = { ...payload, candles: window.ALChart.normalizeCandles(payload.candles, payload.interval) };
+  }
   state.klinePayload = payload;
   state.klineCacheMode = cacheMode;
 
   const quote = state.payload?.quotes?.find((item) => item.symbol === payload.symbol);
-  const candles = payload.candles || [];
+  const historyCandles = payload.candles || [];
+  const visibleStart = payload.requestedStart || state.klineStart;
+  const firstVisible = historyCandles.findIndex(candle => candle.date.slice(0, 10) >= visibleStart);
+  const offset = Math.max(0, firstVisible);
+  const candles = firstVisible < 0 ? [] : historyCandles.slice(offset);
+  const allMaValues = movingAverage(historyCandles, state.maPeriod);
+  const allStrategy = computeStrategy(historyCandles, state.strategy);
   const latest = candles[candles.length - 1];
   const previous = candles[candles.length - 2];
-  const maValues = movingAverage(candles, state.maPeriod);
-  const strategy = computeStrategy(candles, state.strategy);
+  const maValues = allMaValues.slice(offset);
+  const strategy = allStrategy ? {
+    ...allStrategy,
+    lines: allStrategy.lines.map(line => ({ ...line, values: line.values.slice(offset) })),
+    signals: allStrategy.signals.filter(signal => signal.index >= offset).map(signal => ({ ...signal, index: signal.index - offset }))
+  } : null;
   const latestMa = maValues[maValues.length - 1];
   const change = latest && previous ? latest.close - previous.close : null;
   const changePct = change !== null && previous?.close ? (change / previous.close) * 100 : null;
@@ -1739,30 +1428,48 @@ function renderKline(payload, cacheMode = false) {
   const openInterestLabel = latest?.openInterest === null ? "累计量" : "持仓量";
   const openInterestValue =
     latest?.openInterest === null ? latest?.cumulativeVolume : latest?.openInterest;
-  const chartWidth = chartWidthForCandles(candles, payload.interval);
-
+  if (!quote && latest) {
+    // K-line history can load independently when the quote endpoint is down.
+    // Show the selected instrument, but identify the price as a candle close.
+    setText("contractBadge", payload.code || payload.symbol);
+    setText("contractName", `${payload.productLabel || ""} ${payload.code || payload.symbol}`.trim());
+    setText("lastPrice", formatPrice(latest.close));
+    setText("marketState", "最近 K 线收盘 · 报价不可用");
+    setText("quoteTime", `K线 ${latest.date}`);
+    document.querySelector("#priceUnit").textContent = payload.priceUnit || (isUsSymbol(payload.symbol) ? "美元/股" : "元/吨");
+    els.changeLine.className = `change-line ${trendClass(change)}`;
+    els.changeLine.innerHTML = `<span>K线涨跌 ${formatChange(change)}</span><span>${formatPct(changePct)}</span>`;
+    ["openPrice", "highPrice", "lowPrice", "volume", "openInterest"].forEach((id) => setText(id, "—"));
+  }
   els.klineTitle.textContent = `${quote?.name || payload.code} ${label} K线`;
   els.klineStatus.textContent = cacheMode ? "离线缓存" : `更新 ${localTime(payload.fetchedAt)}`;
-  els.klineSubtitle.textContent = `${label} · ${formatKlineRange(payload.requestedStart || state.klineStart, payload.requestedEnd || state.klineEnd)} · ${candles.length} 根 · 缩放 ${zoomLabel(state.klineZoom)} · ${maText}${strategyText} · ${payload.priceUnit}`;
+  els.klineSubtitle.textContent = `${label} · ${formatKlineRange(payload.requestedStart || state.klineStart, payload.requestedEnd || state.klineEnd)} · ${candles.length} 根 · ${maText}${strategyText} · ${payload.priceUnit}`;
   els.klineChart.className = `kline-chart theme-${state.klineTheme}`;
-  applyChartWidth(chartWidth);
+  resetChartWidth();
   updateZoomUi();
-  els.klineChart.innerHTML = buildKlineSvg(
-    candles,
-    maValues,
-    state.maPeriod,
-    payload.interval,
-    strategy,
-    chartWidth
-  );
-  setupChartPointer(candles);
-  if (state.klineZoom <= KLINE_DEFAULT_ZOOM) {
-    window.requestAnimationFrame(() => {
-      if (els.chartWrap) els.chartWrap.scrollLeft = 0;
-    });
+  let interactive = false;
+  try {
+    interactive = Boolean(window.ALChart?.render({
+      container: els.klineChart,
+      legend: document.querySelector("#chartLegend"),
+      candles, maValues, maPeriod: state.maPeriod, strategy,
+      interval: payload.interval, theme: state.klineTheme,
+      key: `${state.product}:${payload.symbol}:${payload.interval}:${payload.requestedStart || state.klineStart}:${payload.requestedEnd || state.klineEnd}`
+    }));
+  } catch (error) {
+    window.ALChart?.clear();
+    console.warn("Interactive chart unavailable; using SVG fallback.", error);
   }
-  syncBacktestRangeControls(candles);
-  renderBacktest(candles, strategy);
+  if (!interactive) {
+    const chartWidth = chartWidthForCandles(candles, payload.interval);
+    applyChartWidth(chartWidth);
+    els.klineChart.innerHTML = buildKlineSvg(candles, maValues, state.maPeriod, payload.interval, strategy, chartWidth);
+    setupChartPointer(candles);
+    if (state.klineZoom <= KLINE_DEFAULT_ZOOM && els.chartWrap) els.chartWrap.scrollLeft = 0;
+  }
+  syncBacktestRangeControls(historyCandles);
+  renderBacktest(historyCandles, allStrategy);
+  renderStrategyComparison(historyCandles, payload);
   els.klineMeta.innerHTML = latest
     ? `
       <div><span>时间</span><strong>${escapeHtml(latest.date)}</strong></div>
@@ -2042,49 +1749,9 @@ function buildKlineSvg(candles, maValues, maPeriod, interval, strategy, chartWid
 }
 
 function setupInstallButton() {
-  const isStandalone =
-    window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone;
-
-  els.installButton.hidden = false;
-
-  if (isStandalone) {
-    els.installButton.textContent = "已安装";
-    els.installButton.disabled = true;
-    return;
+  if (window.matchMedia("(display-mode: standalone)").matches || navigator.standalone) {
+    els.installButton.textContent = "安装说明";
   }
-
-  els.installButton.textContent = "安装";
-
-  window.addEventListener("beforeinstallprompt", (event) => {
-    event.preventDefault();
-    state.installPrompt = event;
-    els.installButton.hidden = false;
-  });
-
-  els.installButton.addEventListener("click", async () => {
-    if (!state.installPrompt) {
-      showToast(getInstallHelpText(), 9000);
-      return;
-    }
-    state.installPrompt.prompt();
-    const result = await state.installPrompt.userChoice;
-    state.installPrompt = null;
-    if (result.outcome === "accepted") {
-      els.installButton.textContent = "已安装";
-      els.installButton.disabled = true;
-    }
-  });
-}
-
-function getInstallHelpText() {
-  const ua = navigator.userAgent.toLowerCase();
-  if (/iphone|ipad|ipod/.test(ua)) {
-    return "iPhone/iPad：请用 Safari 打开这个地址，点底部分享按钮，再选“添加到主屏幕”。";
-  }
-  if (/android/.test(ua)) {
-    return "安卓手机：请用 Chrome 或 Edge 打开，点右上角菜单，再选“安装应用”或“添加到主屏幕”。";
-  }
-  return "电脑：请用 Edge 或 Chrome 打开，点地址栏右侧安装图标；如果没有图标，点右上角菜单 → 应用 → 将此站点安装为应用。Codex 内置浏览器通常不会显示系统安装入口。";
 }
 
 function setupServiceWorker() {
@@ -2176,15 +1843,17 @@ els.strategySelect.addEventListener("change", () => {
   }
 });
 
-els.backtestPriceMode.value = state.backtestPriceMode;
-els.backtestPriceMode.addEventListener("change", () => {
-  state.backtestPriceMode = BACKTEST_PRICE_MODE_LABELS[els.backtestPriceMode.value]
-    ? els.backtestPriceMode.value
-    : "ideal";
-  localStorage.setItem("backtestPriceMode", state.backtestPriceMode);
-  if (state.klinePayload) {
+document.querySelectorAll("[data-backtest-months]").forEach(button => {
+  button.addEventListener("click", () => {
+    const candles = state.klinePayload?.candles;
+    if (!candles?.length) return;
+    const endDay = candles[candles.length - 1].date.slice(0, 10);
+    state.backtestStart = `${calendarMonthsBefore(endDay, Number(button.dataset.backtestMonths))}T00:00`;
+    state.backtestEnd = `${endDay}T23:59`;
+    localStorage.setItem("backtestStart", state.backtestStart);
+    localStorage.setItem("backtestEnd", state.backtestEnd);
     renderKline(state.klinePayload, state.klineCacheMode);
-  }
+  });
 });
 
 els.backtestDirection.value = state.backtestDirection;
@@ -2217,6 +1886,7 @@ els.backtestEnd.addEventListener("change", () => {
 });
 
 els.refreshButton.addEventListener("click", () => {
+  if (els.appShell.dataset.activeView === "news") { window.ALNewsFeed?.refresh(); return; }
   window.clearTimeout(state.timer);
   state.klineSymbol = null;
   fetchQuotes();
@@ -2247,7 +1917,28 @@ els.quickZoomButton?.addEventListener("click", () => {
   setKlineZoom(state.klineZoom <= KLINE_DEFAULT_ZOOM ? 0.1 : KLINE_DEFAULT_ZOOM);
 });
 
-showView("market");
+showView(location.hash === "#news" ? "news" : "chart");
 setupInstallButton();
 setupServiceWorker();
 fetchQuotes();
+
+// Range presets control the requested history; chart gestures control the visible window.
+document.querySelectorAll("[data-range-days]").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll("[data-range-days]").forEach(item => item.classList.toggle("active", item === button));
+    els.klineStart.value = button.dataset.rangeDays === "all" ? KLINE_MIN_DATE : daysAgoDateValue(Number(button.dataset.rangeDays));
+    els.klineEnd.value = todayDateValue();
+    applyKlineRangeInputs();
+  });
+});
+[els.klineStart, els.klineEnd].forEach(input => input.addEventListener("change", () => {
+  document.querySelectorAll("[data-range-days]").forEach(item => item.classList.remove("active"));
+}));
+window.setInterval(() => {
+  if (document.hidden || els.appShell.dataset.activeView !== "chart") return;
+  fetchKline(state.selectedSymbol);
+}, 60000);
+document.addEventListener("visibilitychange", () => {
+  window.clearTimeout(state.timer);
+  if (!document.hidden) fetchQuotes();
+});

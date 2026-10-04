@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f7fa">
+  <meta name="description" content="将 ALNEWS 铝市场研究安装到手机或电脑，随时打开行情与快讯。">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <link rel="stylesheet" href="/install.css?v=43">
+  <title>安装应用 · ALNEWS</title>
+  <script src="/install.js?v=43" defer></script>
+</head>
+<body>
+  <header class="install-header">
+    <a class="install-brand" href="/"><span class="brand-mark">AL</span><span><strong>ALNEWS</strong><small>铝市场研究</small></span></a>
+    <a class="back-link" href="/">返回工作台 <span aria-hidden="true">↗</span></a>
+  </header>
+  <main class="install-main">
+    <section class="install-intro">
+      <span class="eyebrow">YOUR MARKET DESK, EVERYWHERE</span>
+      <h1>把市场，放在手边。</h1>
+      <p>手机查看快讯，电脑深入研究。<br>安装后，从主屏幕或桌面直接打开 ALNEWS。</p>
+    </section>
+    <div class="device-grid" aria-label="选择安装设备">
+      <a class="device-card" id="mobileCard" href="/install.html?device=mobile" data-device="mobile">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="13" y="5" width="22" height="38" rx="5"/><path d="M21 10h6M21 37h6M18 28l5-8 4 3 4-9"/></svg>
+        <span class="device-label">手机版 <span aria-hidden="true">↗</span></span>
+        <span class="device-description">适配小屏与触控<br>行情、策略与快讯随身查看</span>
+        <span class="device-platforms">iPhone · iPad · Android</span>
+      </a>
+      <a class="device-card" id="desktopCard" href="/install.html?device=desktop" data-device="desktop">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="7" width="40" height="28" rx="3"/><path d="M17 42h14M24 35v7M10 26l7-8 6 4 7-10 8 4"/></svg>
+        <span class="device-label">电脑版 <span aria-hidden="true">↗</span></span>
+        <span class="device-description">适配宽屏与键盘鼠标<br>展开图表，专注策略研究</span>
+        <span class="device-platforms">Windows · macOS · Linux</span>
+      </a>
+    </div>
+    <section class="install-panel" aria-labelledby="installHeading">
+      <div class="panel-heading"><div><span class="eyebrow">READY WHEN YOU ARE</span><h2 id="installHeading">选择设备，查看安装方式</h2></div><span class="platform-badge" id="platformLabel">网页应用</span></div>
+      <p class="device-context" id="deviceContext">手机版与电脑版使用同一应用，界面会随设备尺寸调整。</p>
+      <div class="browser-notice" id="browserNotice" hidden></div>
+      <div class="install-actions">
+        <button type="button" class="primary-button" id="nativeInstall" hidden>安装到当前设备</button>
+        <a class="primary-button" id="guideLink" href="#installGuide">查看安装步骤 <span aria-hidden="true">↓</span></a>
+        <a class="secondary-button" id="openApp" href="/">直接打开工作台</a>
+      </div>
+      <p class="install-status" id="installStatus" role="status" aria-live="polite">安装需要在浏览器或系统提示中确认。</p>
+      <div class="install-guide" id="installGuide">
+        <h3 id="guideHeading">按设备安装</h3>
+        <ol id="guideSteps"><li>iPhone / iPad：在 Safari 打开本页，点击分享，选择“添加到主屏幕”，再点击“添加”。</li><li>Android：在 Chrome 或 Edge 的菜单中选择“安装应用”或“添加到主屏幕”。</li><li>电脑：在 Chrome / Edge 的地址栏或菜单中安装；Mac Safari 可使用“添加到程序坞”。</li></ol>
+      </div>
+      <details class="other-platforms"><summary>其他设备的安装步骤</summary>
+        <div class="platform-help"><h3>iPhone / iPad · Safari</h3><p>分享 → 添加到主屏幕 → 添加。如果看到“作为网页 App 打开”，保持开启。</p><h3>Android · Chrome / Edge</h3><p>右上角菜单 → 安装应用 / 添加到主屏幕 → 按系统提示确认。</p><h3>电脑 · Chrome / Edge</h3><p>地址栏的安装图标，或浏览器菜单中的“安装应用 / 应用” → 确认安装。</p><h3>Mac · Safari</h3><p>支持网页应用的 macOS：Safari 的“文件”菜单或分享按钮 → 添加到程序坞 → 添加。</p></div>
+      </details>
+    </section>
+    <section class="share-panel">
+      <div><h2>也在手机上使用</h2><p>复制安装链接，发到自己的手机，在浏览器中打开。</p></div>
+      <button type="button" class="secondary-button" id="copyMobileLink">复制手机版链接</button>
+      <p class="copy-status" id="localPreviewNotice" hidden>当前为本机预览；手机安装请使用正式上线后的 HTTPS 链接。</p>
+      <div class="copy-fallback" id="copyFallback" hidden><label for="mobileInstallUrl">自动复制不可用，请选中下方链接手动复制</label><input id="mobileInstallUrl" type="url" readonly aria-label="手机版安装链接"></div>
+      <p class="copy-status" id="copyStatus" role="status" aria-live="polite"></p>
+    </section>
+    <p class="install-footnote">安装后仍需联网获取行情和新快讯。若浏览器没有安装入口，可先使用网页版；已经安装过的设备，也可从应用图标打开。</p>
+  </main>
+  <footer class="install-footer"><span>ALNEWS / 铝市场研究</span><a href="/">回到市场 →</a></footer>
+</body>
+</html>
